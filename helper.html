@@ -3,91 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🤖 Lithmath Bot de Ajuda - Suporte Oficial</title>
+    <title>⚡ Lithmath Analytics - Suporte e Rede de Conhecimento</title>
     <style>
+        /* --- ESTILOS GERAIS E MODO DARK COMPLEXO --- */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Consolas', 'Monospace', monospace; /* Fonte técnica */
             margin: 0;
             padding: 0;
-            background-color: #f4f7f9;
-            color: #333;
+            background-color: #0d1117; /* Cor de fundo do GitHub Dark */
+            color: #c9d1d9; /* Cor do texto claro */
+            line-height: 1.6;
         }
         .container {
-            max-width: 900px;
-            margin: 50px auto;
+            max-width: 1100px;
+            margin: 40px auto;
             padding: 30px;
-            background-color: #fff;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            background-color: #161b22; /* Fundo do Conteúdo Principal */
+            border-radius: 10px;
+            border: 1px solid #30363d;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
         }
         h1 {
-            color: #1a73e8;
-            font-size: 2.2em;
+            color: #58a6ff; /* Destaque Primário (Azul) */
+            font-size: 2.8em;
             text-align: center;
-            margin-bottom: 5px;
+            border-bottom: 2px solid #30363d;
+            padding-bottom: 10px;
         }
         h2 {
-            color: #4285f4;
-            border-bottom: 2px solid #e0e0e0;
+            color: #4cd1c5; /* Destaque Secundário (Ciano) */
+            border-bottom: 1px solid #30363d;
             padding-bottom: 5px;
-            margin-top: 30px;
+            margin-top: 35px;
+            font-size: 1.8em;
+        }
+        h3 {
+            color: #c9d1d9;
+            margin-top: 20px;
+            font-size: 1.3em;
         }
         .intro-text {
             text-align: center;
-            margin-bottom: 30px;
-            color: #555;
+            margin-bottom: 20px;
+            color: #8b949e;
+            font-style: italic;
         }
-        .image-placeholder {
-            text-align: center;
-            margin: 20px 0;
+        hr {
+            border-color: #30363d;
+            margin: 30px 0;
         }
-        .image-placeholder img {
-            max-width: 150px;
-            height: auto;
-            border-radius: 50%;
-            border: 3px solid #1a73e8;
+        a {
+            color: #58a6ff;
+            text-decoration: none;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
+        a:hover {
+            color: #79c0ff;
         }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: left;
-        }
-        th {
-            background-color: #e8f0fe;
-            color: #1a73e8;
-        }
+
+        /* --- BOT E CTA --- */
         .cta-button {
             display: block;
-            width: 80%;
-            max-width: 300px;
+            width: 90%;
+            max-width: 400px;
             margin: 30px auto;
-            padding: 15px 20px;
-            background-color: #34a853; /* Cor de ação (Verde) */
-            color: white;
+            padding: 18px 25px;
+            background-color: #4cd1c5; /* Cor de Ação (Ciano) */
+            color: #0d1117;
             text-align: center;
             text-decoration: none;
-            border-radius: 8px;
-            font-size: 1.1em;
+            border-radius: 6px;
+            font-size: 1.3em;
             font-weight: bold;
             transition: background-color 0.3s ease;
         }
         .cta-button:hover {
-            background-color: #2c8c48;
+            background-color: #3aa098;
         }
-        .contact-info p {
-            margin: 5px 0;
-        }
-        .note {
-            background-color: #fff3cd;
-            border-left: 5px solid #ffc107;
-            padding: 15px;
-            margin-top: 20px;
+        .code-block {
+            background-color: #010409;
+            border: 1px solid #30363d;
+            padding: 10px;
             border-radius: 4px;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+        
+        /* --- TABELAS TÉCNICAS --- */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            font-size: 0.9em;
+        }
+        th, td {
+            border: 1px solid #30363d;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #21262d;
+            color: #58a6ff;
+            text-transform: uppercase;
+        }
+
+        /* --- SEÇÃO FÓRUM/COMUNIDADE TÉCNICA --- */
+        .forum-section {
+            padding: 20px;
+            background-color: #21262d;
+            border-radius: 8px;
+            margin-top: 25px;
+            border: 1px dashed #30363d;
+        }
+        .topic {
+            background-color: #010409;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            border-left: 3px solid #4cd1c5;
+            transition: background-color 0.2s;
+        }
+        .topic:hover {
+            background-color: #21262d;
+        }
+        .topic-title {
+            font-weight: bold;
+            color: #c9d1d9;
+            margin-bottom: 5px;
+        }
+        .topic-meta {
+            font-size: 0.8em;
+            color: #8b949e;
+        }
+        .emphasis {
+            color: #f0f6fc;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -95,83 +144,102 @@
 
 <div class="container">
     
-    <h1>🤖 Lithmath Bot de Ajuda - Sua Rede de Suporte Inteligente! 💡</h1>
-    <p class="intro-text">### O Assistente Oficial para o Aplicativo Lithmath e Lithmat-Network</p>
+    <h1>⚡ Lithmath Analytics: Suporte Nível L4 & Rede de Conhecimento </h1>
+    <p class="intro-text">Plataforma de Suporte Analítico para o Core Aplicacional Lithmath e os Protocolos da <a href="https://gbzstudio.github.io/lithmat-network/" target="_blank" class="emphasis">Lithmat-Network</a>.</p>
     
     <hr>
 
-    <h2>🧠 Conhecimento Especializado: Lithmat-Network</h2>
+    <h2>🧠 Módulo de Resposta Preditiva (MRP)</h2>
     
-    <div class="image-placeholder">
-        <img src="placeholder-bot-icon.png" alt="Ícone de um chatbot amigável">
-        </div>
-    
-    <p>Nosso bot é treinado especificamente para entender e responder a perguntas baseadas no conteúdo da **Lithmat-Network**, garantindo que você obtenha informações precisas e alinhadas com a fonte oficial: <a href="https://gbzstudio.github.io/lithmat-network/" target="_blank">https://gbzstudio.github.io/lithmat-network/</a>.</p>
+    <p>O Módulo de Resposta Preditiva (Bot) é alimentado por um modelo de linguagem otimizado com <span class="emphasis">Retrieval-Augmented Generation (RAG)</span> sobre o corpus documental da Lithmat-Network. Ele é capaz de processar consultas de sintaxe complexa e recuperar trechos relevantes da documentação oficial.</p>
 
-    <br>
-
-    <h3>Perguntas que o Bot Pode Responder:</h3>
+    <h3>Domínios de Proficiência e Taxonomia de Suporte</h3>
     
     <table>
         <thead>
             <tr>
-                <th>Categoria</th>
-                <th>Descrição e Exemplos</th>
+                <th>Domínio de Consulta</th>
+                <th>Exemplos de Queries Estruturadas</th>
+                <th>Nível de Complexidade (L)</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td>**Visão Geral da Rede**</td>
-                <td>Qual o objetivo principal da Lithmat-Network? Qual é a sua missão?</td>
+                <td>**Algoritmos de Core (Kernel)**</td>
+                <td>Qual a derivação matemática do fator de regularização $\lambda$ no $M_{\alpha}$?</td>
+                <td>L4 (Analítico)</td>
             </tr>
             <tr>
-                <td>**Recursos do Aplicativo**</td>
-                <td>Onde encontro o módulo de cálculo $M_{\lambda}$ no Lithmath? Quais são as novas funcionalidades da última atualização?</td>
+                <td>**Protocolos de Rede (LMN)**</td>
+                <td><span class="emphasis">Decodificar</span> o payload de handshake do Protocolo $\rho$ versão 2.0. Qual a latência máxima $t_{\text{max}}$ recomendada?</td>
+                <td>L3 (Protocolar)</td>
             </tr>
             <tr>
-                <td>**Integração e Conexão**</td>
-                <td>Como configuro minha conta do Lithmath para interagir com a rede? Qual é o protocolo de segurança?</td>
+                <td>**API e Integração (SDK)**</td>
+                <td>Fornecer o <span class="emphasis">snippet Python</span> para inicializar a sessão assíncrona $S_{async}$ com token $T_{auth}$ na API v1.1.</td>
+                <td>L3 (Desenvolvimento)</td>
             </tr>
             <tr>
-                <td>**Documentação Técnica**</td>
-                <td>O que significa o parâmetro $\phi$ mencionado na documentação técnica? Quais são as dependências de sistema?</td>
-            </tr>
-            <tr>
-                <td>**Solução de Problemas**</td>
-                <td>O que fazer quando o erro *'Protocolo de Rede Não Encontrado'* aparece?</td>
+                <td>**Tratamento de Exceções**</td>
+                <td>Diagnóstico para a exceção <code class="code-block">CRITICAL_EXCEPTION: MEM_ALLOC_FAIL @ 0x4fA7</code> durante a fase de <span class="emphasis">post-processing</span>.</td>
+                <td>L4 (Diagnóstico)</td>
             </tr>
         </tbody>
     </table>
 
     <hr>
 
-    <h2>💬 Como Iniciar a Conversa</h2>
+    <h2>⚙️ Interface de Query: Inicie a Análise</h2>
     
-    <p>Basta digitar sua pergunta no campo abaixo. Seja claro e conciso. O Bot de Ajuda processará sua solicitação e fornecerá a melhor resposta baseada na documentação.</p>
+    <p style="text-align: center;">Insira sua consulta técnica no campo abaixo. O sistema prioriza a sintaxe <span class="emphasis">Key-Value</span> ou frases completas de engenharia.</p>
     
-    <div class="note">
-        <strong>Exemplo de Interação:</strong>
-        <p>1. <em>Você:</em> "Explique a função de sincronização de dados do Lithmath."</p>
-        <p>2. <em>Bot:</em> "A função de sincronização usa o protocolo $\rho$ da Lithmat-Network, garantindo que os dados sejam atualizados a cada 5 minutos..."</p>
+    <div class="code-block" style="text-align: center; color: #79c0ff;">
+        > QUERY: [Insira sua consulta técnica aqui, ex: "Explicar o fluxo de dados entre Módulo $M_{\beta}$ e a camada DAO do Lithmath v3.0"]
     </div>
-
-    <a href="#" class="cta-button">👉 INICIAR CONVERSA COM O BOT 👈</a>
+    
+    <a href="#" class="cta-button">🚀 EXECUTAR ANÁLISE PREDITIVA</a>
     
     <hr>
-
-    <h2>❓ Suporte Adicional</h2>
     
-    <p>Se você precisar de ajuda que vá além do escopo da documentação ou se o bot não conseguir solucionar seu problema:</p>
+    <h2>💬 Lithmath **Fórum de Engenharia** e Discussões de Arquitetura</h2>
+    <p>Um ambiente para a comunidade discutir implementações complexas, sugerir *pull requests* não oficiais e debater a arquitetura subjacente do Lithmath.</p>
+
+    <div class="forum-section">
+        <h3>Tópicos Ativos e Contribuições Recentes</h3>
+        
+        <div class="topic">
+            <div class="topic-title"><span class="emphasis">[THREAD]</span> Otimização de Garbage Collection para o Motor de Cálculo $\xi$ - Sugestão de Patch.</div>
+            <div class="topic-meta">Criado por: CoreDev_A7 | Última Resposta: há 45 min | Status: Pendente Análise (P3)</div>
+        </div>
+        
+        <div class="topic">
+            <div class="topic-title">Análise de Desempenho: Comparativo de Latência na Sincronização LMN via WebSockets vs. gRPC.</div>
+            <div class="topic-meta">Criado por: User_Benchmark | Última Resposta: há 1 dia | Status: Fechado (Conclusivo)</div>
+        </div>
+        
+        <div class="topic">
+            <div class="topic-title">Documentação ausente: Parâmetros para configuração *custom* do algoritmo de *clustering* $C_{k}$</div>
+            <div class="topic-meta">Criado por: Prof_System | Última Resposta: há 3 dias | Status: Em Revisão Documental</div>
+        </div>
+        
+        <p style="text-align: center; margin-top: 15px;"><a href="#">Explorar Repositório de Tópicos</a> | <a href="#">Abrir Novo Thread (Requer Autenticação L3)</a></p>
+    </div>
+
+    <hr>
+
+    <h2>🔗 Suporte Direto Nível L5 e Recursos Externos</h2>
+    
+    <p>Para falhas de sistema críticas ou escalonamento que excedam a capacidade do MRP:</p>
 
     <div class="contact-info">
-        <p><strong>📧 E-mail de Suporte:</strong> <a href="mailto:suporte@lithmath.com">suporte@lithmath.com</a></p>
-        <p><strong>📄 Página de FAQ (Perguntas Frequentes):</strong> <a href="#">[Acesse nossa FAQ]</a></p>
-        <p><strong>⏰ Horário de Suporte Humano:</strong> Segunda a Sexta, das 9h às 17h (Horário de Brasília).</p>
+        <p><strong>📧 Escalation Point:</strong> <a href="mailto:support.l5@lithmath.com">support.l5@lithmath.com</a> (Apenas para incidentes de Prioridade P1/P2)</p>
+        <p><strong>💾 Repositório Oficial:</strong> <a href="[Link para o repositório principal do projeto]">GitHub Repository / Source Code</a></p>
+        <p><strong>📘 FAQ Técnica Detalhada:</strong> <a href="#">[Acesse o Wiki de Problemas Conhecidos]</a></p>
     </div>
 
     <hr>
 
-    <p style="text-align: center; font-style: italic; margin-top: 30px;">Obrigado por usar o Lithmath!</p>
+    <p style="text-align: center; font-style: italic; margin-top: 30px; color: #8b949e;">Lithmath - Integridade Analítica e Suporte de Arquitetura de Missão Crítica.</p>
 
 </div>
 
