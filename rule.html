@@ -9,34 +9,38 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
     <style>
-        /* Variáveis de Cores */
+        /* Variáveis de Cores (Tema Dark) */
         :root {
-            --primary-color: #007BFF; /* Azul mais vibrante para a marca */
+            --primary-color: #A020F0; /* Roxo/Violeta (Similar ao Litmatch) */
             --secondary-color: #4CAF50; /* Verde para sucesso/ação */
-            --bg-light: #f4f6f9; /* Fundo mais claro */
-            --text-dark: #343a40;
-            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Sombra suave */
+            --bg-dark: #121212; /* Fundo principal escuro */
+            --card-dark: #1E1E1E; /* Fundo dos cartões */
+            --text-light: #F0F0F0; /* Cor principal do texto */
+            --text-muted: #B0B0B0; /* Texto secundário/info */
+            --border-dark: #333333; /* Bordas e separadores */
+            --card-shadow: 0 4px 10px rgba(0, 0, 0, 0.4); /* Sombra escura mais visível */
+            --input-bg: #2C2C2C;
         }
 
         /* Estilo Base */
         body {
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-light); 
+            background-color: var(--bg-dark); 
             margin: 0;
             padding: 0;
-            color: var(--text-dark);
+            color: var(--text-light);
         }
 
         .container {
-            max-width: 960px; /* Levemente maior */
+            max-width: 960px;
             margin: 20px auto;
             padding: 0 20px;
         }
 
         /* Cartões (Containers de Conteúdo) */
         .card {
-            background-color: #ffffff;
-            border-radius: 12px; /* Cantos mais arredondados */
+            background-color: var(--card-dark);
+            border-radius: 16px; /* Mais arredondado */
             box-shadow: var(--card-shadow);
             padding: 25px;
             margin-bottom: 25px;
@@ -44,16 +48,16 @@
         }
         
         .card:hover {
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6);
         }
 
         /* Header (Cabeçalho do "App") */
         .app-header {
-            background-color: var(--primary-color);
+            background: linear-gradient(135deg, #A020F0, #D8BFD8); /* Gradiente Roxo/Rosa */
             color: white;
             padding: 30px 0;
             text-align: center;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
         }
 
         .header-title {
@@ -68,22 +72,32 @@
             opacity: 0.9;
         }
 
+        h2 {
+            color: var(--text-light);
+            border-bottom: 2px solid var(--border-dark);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
         /* Formulário de Postagem */
         .rule-form input[type="text"],
+        .rule-form input[type="url"],
         .rule-form textarea {
             width: 100%;
             padding: 12px;
             margin-bottom: 15px;
-            border: 1px solid #ced4da;
-            border-radius: 6px;
+            border: 1px solid var(--border-dark);
+            border-radius: 8px; 
             box-sizing: border-box;
             font-size: 1em;
+            background-color: var(--input-bg);
+            color: var(--text-light);
             transition: border-color 0.3s, box-shadow 0.3s;
         }
         
         .rule-form input:focus, .rule-form textarea:focus {
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+            box-shadow: 0 0 0 0.2rem rgba(160, 32, 240, 0.3);
             outline: none;
         }
 
@@ -92,11 +106,11 @@
         }
 
         .submit-btn {
-            background-color: var(--secondary-color);
+            background-color: var(--primary-color);
             color: white;
             padding: 12px 20px;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 1.1em;
             font-weight: 600;
@@ -104,7 +118,7 @@
         }
 
         .submit-btn:hover {
-            background-color: #43A047;
+            background-color: #8A2BE2; /* Roxo mais escuro */
             transform: translateY(-1px);
         }
 
@@ -113,7 +127,7 @@
             margin-top: 15px;
             font-weight: 600;
             font-size: 1.05em;
-            /* Cor será definida pelo JS */
+            /* Cores ajustadas no JS para o tema dark */
         }
 
         /* Exibição das Regras */
@@ -124,27 +138,27 @@
         }
 
         .rule-card {
-            border: 1px solid #e9ecef;
-            border-top: 5px solid var(--primary-color);
+            border: 1px solid var(--border-dark);
+            border-top: 5px solid var(--primary-color); /* Destaque roxo */
             padding: 20px;
             border-radius: 12px;
-            background-color: #ffffff;
+            background-color: var(--card-dark);
             position: relative;
             box-shadow: var(--card-shadow);
         }
 
         .rule-card h3 {
             margin-top: 0;
-            color: var(--text-dark);
+            color: var(--text-light);
             font-size: 1.5em;
             padding-bottom: 8px;
             margin-bottom: 12px;
-            border-bottom: 2px solid #f8f9fa; /* Separador sutil */
+            border-bottom: 1px solid var(--border-dark);
         }
 
         .rule-text {
-            background-color: #f8f9fa; /* Fundo mais claro para o bloco de texto */
-            border: 1px solid #e9ecef;
+            background-color: var(--input-bg); /* Fundo do código da regra */
+            border: 1px solid #3A3A3A;
             padding: 15px;
             border-radius: 8px;
             white-space: pre-wrap;
@@ -153,17 +167,34 @@
             margin-bottom: 15px;
             cursor: copy;
             line-height: 1.5;
+            color: #7FFF00; /* Cor de destaque verde limão para o código (estilo terminal) */
+        }
+        
+        /* Melhorando a cor da tag <a> dentro do rule-text, se houver */
+        .rule-text a {
+            color: #ADD8E6; /* Azul claro para links */
         }
 
         .rule-info {
             font-size: 0.9em;
-            color: #6c757d;
+            color: var(--text-muted);
             margin-bottom: 8px;
         }
 
         .rule-info strong {
-            color: var(--text-dark);
+            color: var(--text-light);
             font-weight: 600;
+        }
+        
+        .rule-info a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .rule-info a:hover {
+            color: #8A2BE2;
+            text-decoration: underline;
         }
 
         .copy-btn {
@@ -171,7 +202,7 @@
             color: white;
             border: none;
             padding: 10px 15px;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 1em;
             font-weight: 500;
@@ -180,7 +211,7 @@
         }
 
         .copy-btn:hover {
-            background-color: #0056b3;
+            background-color: #8A2BE2;
         }
 
         /* Footer */
@@ -188,10 +219,10 @@
             text-align: center;
             padding: 15px;
             margin-top: 30px;
-            border-top: 1px solid #dee2e6;
-            color: #6c757d;
+            border-top: 1px solid var(--border-dark);
+            color: var(--text-muted);
             font-size: 0.9em;
-            background-color: #e9ecef;
+            background-color: var(--card-dark);
         }
     </style>
 </head>
@@ -296,10 +327,10 @@
                 // Usa a API de Clipboard para copiar
                 navigator.clipboard.writeText(textToCopy).then(() => {
                     e.target.textContent = 'Copiado! ✅';
-                    e.target.style.backgroundColor = 'var(--secondary-color)';
+                    e.target.style.backgroundColor = 'var(--secondary-color)'; // Verde de sucesso
                     setTimeout(() => {
                         e.target.textContent = 'Copiar Regra';
-                        e.target.style.backgroundColor = 'var(--primary-color)';
+                        e.target.style.backgroundColor = 'var(--primary-color)'; // Volta ao roxo
                     }, 2000);
                 }).catch(err => {
                     console.error('Falha ao copiar:', err);
@@ -317,7 +348,7 @@
             const ruleKeys = Object.keys(rules);
             
             if (ruleKeys.length === 0) {
-                rulesContainer.innerHTML = '<p class="loading-message">Nenhuma regra postada ainda. Seja o primeiro!</p>';
+                rulesContainer.innerHTML = '<p class="loading-message" style="color: var(--text-muted);">Nenhuma regra postada ainda. Seja o primeiro!</p>';
                 return;
             }
 
@@ -340,11 +371,11 @@
             if (data) {
                 displayRules(data);
             } else {
-                rulesContainer.innerHTML = '<p class="loading-message">Nenhuma regra postada ainda. Seja o primeiro!</p>';
+                rulesContainer.innerHTML = '<p class="loading-message" style="color: var(--text-muted);">Nenhuma regra postada ainda. Seja o primeiro!</p>';
             }
         }, (error) => {
             console.error("Erro ao carregar dados do Firebase:", error);
-            rulesContainer.innerHTML = '<p class="loading-message" style="color: red;">Erro ao carregar regras. Verifique a conexão com o banco de dados.</p>';
+            rulesContainer.innerHTML = '<p class="loading-message" style="color: #FF6347;">Erro ao carregar regras. Verifique a conexão com o banco de dados.</p>';
         });
 
 
@@ -365,25 +396,26 @@
             // Validação simples
             if (newRule.title === '' || newRule.groupRule === '') {
                  messageElement.textContent = 'O título e a regra são campos obrigatórios.';
-                 messageElement.style.color = 'red';
+                 messageElement.style.color = '#FF6347'; // Vermelho para erro
                  return;
             }
             
             messageElement.textContent = 'Postando...';
-            messageElement.style.color = 'var(--secondary-color)';
+            messageElement.style.color = 'var(--secondary-color)'; // Verde de processamento
 
             // Salva a regra no Firebase
             rulesRef.push(newRule)
                 .then(() => {
                     messageElement.textContent = 'Regra postada com sucesso! 🎉';
                     ruleForm.reset(); // Limpa o formulário
+                    messageElement.style.color = 'var(--secondary-color)';
                     setTimeout(() => {
                         messageElement.textContent = '';
                     }, 3000);
                 })
                 .catch((error) => {
                     messageElement.textContent = `Erro ao postar regra: ${error.message}`;
-                    messageElement.style.color = 'red';
+                    messageElement.style.color = '#FF6347';
                     console.error("Erro ao salvar no Firebase:", error);
                 });
         });
