@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>⚙️ Suporte Lithmath Core: Arquitetura e Programação</title>
+    <title>🚨 Lithmath Security Intel: Análise de Ameaças e Códigos Vazados</title>
     <style>
-        /* --- ESTILOS GERAIS E MODO DARK --- */
+        /* [Estilos CSS: Mantidos como na versão anterior (Modo Dark Complexo/Alerta)] */
         body {
             font-family: 'Consolas', 'Monospace', monospace;
             margin: 0;
@@ -24,7 +24,7 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
         }
         h1 {
-            color: #58a6ff;
+            color: #ff5e5e; 
             font-size: 2.8em;
             text-align: center;
             border-bottom: 2px solid #30363d;
@@ -38,7 +38,7 @@
             font-size: 1.8em;
         }
         h3 {
-            color: #e3b341; /* Amarelo/Dourado para Módulos */
+            color: #e3b341;
             margin-top: 25px;
             font-size: 1.5em;
         }
@@ -59,15 +59,13 @@
         a:hover {
             color: #79c0ff;
         }
-        
-        /* Bot e CTA */
         .cta-button {
             display: block;
             width: 90%;
             max-width: 400px;
             margin: 30px auto;
             padding: 18px 25px;
-            background-color: #4cd1c5;
+            background-color: #ff5e5e; 
             color: #0d1117;
             text-align: center;
             text-decoration: none;
@@ -77,7 +75,7 @@
             transition: background-color 0.3s ease;
         }
         .cta-button:hover {
-            background-color: #3aa098;
+            background-color: #d13d3d;
         }
         .code-block {
             background-color: #010409;
@@ -87,8 +85,27 @@
             margin: 15px 0;
             overflow-x: auto;
         }
-        
-        /* Tabela Estrutural */
+        .alert-section {
+            background-color: #491f25; 
+            border: 2px solid #ff5e5e;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+        }
+        .alert-section h3 {
+            color: #ff5e5e;
+            border-bottom: 1px solid #ff5e5e;
+            padding-bottom: 5px;
+        }
+        .vulnerability-code {
+            color: #e3b341;
+            font-weight: bold;
+        }
+        .emphasis {
+            color: #f0f6fc;
+            font-weight: bold;
+        }
+        /* Tabelas Adicionais */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -105,8 +122,6 @@
             color: #58a6ff;
             text-transform: uppercase;
         }
-
-        /* Fórum/Comunidade (Tópicos de Programação) */
         .forum-section {
             padding: 20px;
             background-color: #21262d;
@@ -134,102 +149,115 @@
             font-size: 0.8em;
             color: #8b949e;
         }
-        .emphasis {
-            color: #f0f6fc;
-            font-weight: bold;
-        }
     </style>
 </head>
 <body>
 
 <div class="container">
     
-    <h1>⚙️ Suporte Lithmath Core: Arquitetura e Programação </h1>
-    <p class="intro-text">Base de Conhecimento e Módulo de Resposta Preditiva (MRP) focados na **estrutura de programação** e protocolos internos do Lithmath, em sinergia com a <a href="https://gbzstudio.github.io/lithmat-network/" target="_blank" class="emphasis">Lithmat-Network</a>.</p>
+    <h1>🚨 Lithmath Security Intel: Análise de Ameaças e Códigos Vazados </h1>
+    <p class="intro-text">Plataforma de Suporte e Análise de Risco. O Módulo de Resposta Preditiva (MRP) inclui agora um *data-feed* de **Inteligência de Ameaças**.</p>
     
     <hr>
-
-    <h2>🧠 Mapeamento da Arquitetura Lithmath</h2>
     
-    <p>O MRP foi treinado em todo o *corpus* de documentação do **Lithmath**, com foco especial na estrutura modular, que se divide em três camadas principais:</p>
-
-    <h3>1. Kernel de Cálculo $(K_{\text{core}})$</h3>
-    <p>Responsável pelo processamento assíncrono e pelos algoritmos matemáticos primários (otimização, transformadas). O Kernel utiliza o motor $\xi$ e a memória compartilhada do sistema.</p>
-    <ul>
-        <li>**Diagnóstico:** Falhas no $K_{\text{core}}$ geralmente resultam em `EXCEPTION: KERNEL_HALT` ou erros de precisão ($\epsilon$).</li>
-        <li>**Query Exemplo:** "Qual o método de alocação de heap usado pelo motor $\xi$ na v3.2?"</li>
-    </ul>
-
-    <h3>2. Protocolos de I/O e Sincronização ($\rho$)</h3>
-    <p>Gerencia a entrada/saída de dados (I/O) e a comunicação com a rede LMN. Isso inclui o <span class="emphasis">Protocolo de Sincronização $\rho$</span> para intercâmbio de *datasets* e metadados, e a API de terceiros.</p>
-    <ul>
-        <li>**Diagnóstico:** Problemas de conectividade ou erros de autenticação (e.g., LMN-401) são tratados nesta camada.</li>
-        <li>**Query Exemplo:** "Descrever o fluxo de pacotes (headers e payload) no *handshake* do Protocolo $\rho$."</li>
-    </ul>
+    <h2>🛡️ Threat Intelligence: Vazamentos Confirmados na LMN</h2>
     
-    <h3>3. Módulos de Implementação $(M_n)$</h3>
-    <p>Camada de alto nível que implementa funcionalidades específicas (e.g., visualização, modelagem, *scripting*). Os módulos $(M_n)$ dependem do Kernel para o cálculo e do Protocolo $\rho$ para persistência de dados.</p>
-    <ul>
-        <li>**Módulos Chave:** $M_{\alpha}$ (Análise Avançada), $M_{\beta}$ (Visualização 3D), $M_{\gamma}$ (Otimização).</li>
-        <li>**Query Exemplo:** "Qual o *hook* (gancho) de callback para a finalização do processo do Módulo $M_{\alpha}$?"</li>
-    </ul>
+    <div class="alert-section">
+        <h3>ALERTA DE SEGURANÇA CRÍTICO (P1)</h3>
+        <p>A equipe de segurança confirma a dispersão de informações internas do projeto Lithmath (v3.x e v4.x) na rede externa. O MRP foi atualizado com metadados de análise para esses incidentes. **Não utilize códigos de teste não documentados.**</p>
+        
+        <h4>Tabela de Vulnerabilidades Ativas e Correções</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID da Ameaça</th>
+                    <th>Vulnerabilidade Exposta</th>
+                    <th>Componente Afetado</th>
+                    <th>Status de Correção</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="vulnerability-code">LMN-CVE-001</span></td>
+                    <td>Injeção de Comando (Input Sanitization)</td>
+                    <td>Protocolos de I/O ($\rho$)</td>
+                    <td><span style="color: #4cd1c5;">Corrigido (v4.1.2)</span></td>
+                </tr>
+                <tr>
+                    <td><span class="vulnerability-code">LMN-SEC-002</span></td>
+                    <td>Exposição de Variáveis de Ambiente (Configuração Interna)</td>
+                    <td>Kernel de Cálculo ($K_{\text{core}}$)</td>
+                    <td><span style="color: #e3b341;">Mitigação Parcial</span></td>
+                </tr>
+                <tr>
+                    <td><span class="vulnerability-code">LMN-EGG-003</span></td>
+                    <td>Ativação de Módulo de Teste Oculto (Backdoor de Engenharia)</td>
+                    <td>Módulos de Implementação ($M_n$)</td>
+                    <td><span style="color: #ff5e5e;">Aberto (Em Monitoramento)</span></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h4>Exemplo de Código Vazado - LMN-EGG-003 (Módulo de Teste)</h4>
+        <p>O trecho de código abaixo, proveniente do vazamento, ativa um módulo de *benchmark* interno que pode levar a um **DDoS local** no seu próprio sistema. Seu uso é estritamente não-suportado.</p>
+        <div class="code-block">
+            <span style="color: #4cd1c5;">// Funções internas reveladas. Não chame diretamente.</span><br>
+            <span style="color: #ff5e5e;">// Defina estas variáveis para ativar:</span><br>
+            <span style="color: #e3b341;">const string KEY_01 = "Lithmath_Epsilon_01";</span><br>
+            <span style="color: #ff5e5e;">const bool ENABLE_TEST_OVERLOAD = true;</span><br>
+            <span style="color: #4cd1c5;">if (CheckSystemKey(KEY_01) == ENABLE_TEST_OVERLOAD) {</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;ActivateInternalModule(<span class="vulnerability-code">M_ALPHA_TEST</span>); <span style="color: #8b949e;">// Causa sobrecarga.</span><br>
+            <span style="color: #4cd1c5;">}</span>
+        </div>
+    </div>
 
     <hr>
-
-    <h2>💬 Interface de Query MRP (Módulo de Resposta Preditiva)</h2>
     
-    <p style="text-align: center;">Formule sua consulta usando a terminologia Lithmath Core. O MRP buscará o fragmento de código ou documentação mais relevante.</p>
+    <h2>💬 Interface de Query MRP (Análise de Risco)</h2>
+    
+    <p style="text-align: center;">Use o MRP para buscar informações detalhadas sobre as vulnerabilidades, o código de *patch* ou a função exata dos códigos vazados.</p>
     
     <div class="code-block" style="text-align: center; color: #79c0ff;">
-        > QUERY:: <span style="color: #e3b341;">[CAMADA]</span> | <span style="color: #4cd1c5;">[COMPONENTE]</span> | <span style="color: #58a6ff;">[QUESTÃO ESPECÍFICA]</span>
+        > QUERY:: <span style="color: #ff5e5e;">[ID DA AMEAÇA]</span> | <span style="color: #4cd1c5;">[FUNÇÃO/COMPONENTE]</span> | <span style="color: #58a6ff;">[DETALHE ESPECÍFICO]</span>
     </div>
     <div class="code-block" style="text-align: center; color: #8b949e; font-style: italic;">
-        Exemplo: QUERY:: KERNEL | MOTOR\_XI | Qual a função de inicialização thread-safe?
+        Exemplo: QUERY:: LMN-SEC-002 | K\_CORE | Variáveis de ambiente afetadas pelo vazamento
     </div>
     
-    <a href="#" class="cta-button">🚀 EXECUTAR BUSCA DE CÓDIGO/DOC</a>
+    <a href="#" class="cta-button">💥 EXECUTAR ANÁLISE DE SEGURANÇA</a>
     
     <hr>
     
-    <h2>💻 Fórum de Desenvolvimento e Arquitetura</h2>
-    <p>Discussões abertas sobre a implementação de *patches*, extensões de API e *workarounds* para problemas no Core.</p>
+    <h2>💻 Fórum de Engenharia e Security Briefings</h2>
+    <p>Discussões abertas focadas em **hardening** (endurecimento de segurança), análise de *diffs* de patches e o impacto dos códigos vazados na arquitetura.</p>
 
     <div class="forum-section">
-        <h3>Threads Ativos por Camada</h3>
+        <h3>Tópicos Ativos (Foco em Risco e Vazamentos)</h3>
         
         <div class="topic">
-            <div class="topic-title"><span class="emphasis">[M-IMP]</span> Performance Degradada na Renderização do Módulo $M_{\beta}$ após a v4.0 (OpenGL/Vulkan)</div>
-            <div class="topic-meta">Camada: Módulos de Implementação | Última Atividade: 15 min | Tags: Render, GPU, $M_{\beta}$</div>
+            <div class="topic-title"><span class="emphasis">[SEC-002]</span> Análise dos riscos de exposição da variável <code class="vulnerability-code">DB_ACCESS_TOKEN</code> no Core.</div>
+            <div class="topic-meta">Camada: Kernel | Última Atividade: 30 min | Tags: Configuração, Segurança, Vazamento</div>
         </div>
         
         <div class="topic">
-            <div class="topic-title"><span class="emphasis">[P-IO]</span> Implementando um *fallback* para o Protocolo $\rho$ em ambientes de alta latência.</div>
-            <div class="topic-meta">Camada: Protocolos de I/O | Última Atividade: 3 horas | Tags: Rede, $\rho$, Tolerância a Falhas</div>
+            <div class="topic-title"><span class="emphasis">[EGG-003]</span> Como o $M_{\text{alpha-test}}$ foi usado internamente para *stress testing* antes do vazamento?</div>
+            <div class="topic-meta">Camada: Módulos | Última Atividade: 2 horas | Tags: Código Oculto, Benchmark</div>
         </div>
         
-        <div class="topic">
-            <div class="topic-title"><span class="emphasis">[K-CORE]</span> Análise do *deadlock* potencial na comunicação entre *threads* do motor $\xi$ e o Kernel.</div>
-            <div class="topic-meta">Camada: Kernel | Última Atividade: 1 dia | Tags: Concorrência, $\xi$, Bug Crítico</div>
-        </div>
-        
-        <p style="text-align: center; margin-top: 15px;"><a href="#">Explorar Todas as Arquiteturas</a> | <a href="#">Abrir Novo Thread (Detalhe a Camada)</a></p>
+        <p style="text-align: center; margin-top: 15px;"><a href="#">Explorar Arquivo de Threat Intel</a> | <a href="#">Abrir Novo Thread de Análise de Código</a></p>
     </div>
 
     <hr>
 
-    <h2>🔗 Recursos de Escalabilidade (L5)</h2>
+    <h2>🔗 Recursos Oficiais de Mitigação</h2>
     
-    <p>Para falhas de Core que exigem intervenção direta da equipe de Engenharia de Sistemas:</p>
+    <p>Para reportar novas vulnerabilidades (Zero-Days) ou obter documentação oficial sobre os patches:</p>
 
     <div class="contact-info">
-        <p><strong>📧 Escalation Point L5:</strong> <a href="mailto:core.engineering@lithmath.com">core.engineering@lithmath.com</a> (Para falhas de compilação ou Kernel Panic P1)</p>
-        <p><strong>💾 Repositório de Patch Notes:</strong> <a href="[Link para o repositório de patch notes]">Acesso ao Log de Alterações e Fixes</a></p>
+        <p><strong>📧 Security Escalation Point (P1):</strong> <a href="mailto:security@lithmath.com">security@lithmath.com</a></p>
+        <p><strong>💾 Repositório Oficial:</strong> <a href="[Link para o repositório de diffs e patches]">Acesso ao Log de Alterações e Fixes (Patch 4.1.2)</a></p>
         <p><strong>📘 Wiki de Defeitos e Workarounds:</strong> <a href="#">[Wiki de Problemas Conhecidos & CVEs]</a></p>
     </div>
-
-    <hr>
-
-    <p style="text-align: center; font-style: italic; margin-top: 30px; color: #8b949e;">Lithmath - Integridade de Código e Suporte à Arquitetura Modular.</p>
 
 </div>
 
