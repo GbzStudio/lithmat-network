@@ -1,94 +1,88 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>LithMate PRO — Regras</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%233DA4FF'/><text x='50' y='58' font-size='45' text-anchor='middle' fill='white' font-family='Arial'>L</text></svg>">
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>LithMate PRO — Regras (COMPLETO)</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%238A2BE2'/><text x='50' y='58' font-size='45' text-anchor='middle' fill='white' font-family='Arial'>L</text></svg>">
+
 <style>
-  :root{
-    --bg:#0b1116; --panel:#0f1720; --glass:rgba(255,255,255,0.03);
-    --accent:#3DA4FF; --accent-2:#70c3ff; --muted:#9fb0c6; --card:#0e1822;
-    --radius:14px;
-  }
-  *{box-sizing:border-box}
-  body{
-    margin:0; font-family:Inter,Segoe UI,Arial; background:linear-gradient(180deg,#071017 0%, #0b1218 100%);
-    color:#e7f2ff; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
-  }
+:root{
+  --bg:#08020a;
+  --panel:#100418;
+  --panel-2:#16092a;
+  --accent:#8A2BE2;
+  --accent-2:#b077ff;
+  --muted:#9aa7bf;
+  --card:#0f0a14;
+  --radius:14px;
+  --glass:rgba(255,255,255,0.03);
+  --shadow:0 10px 30px rgba(0,0,0,0.6);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Inter, "Segoe UI", Arial;
+  background:linear-gradient(180deg,#05030a 0%,var(--bg) 100%);
+  color:#eaf4ff;
+  -webkit-font-smoothing:antialiased;
+}
+.top{
+  position:fixed; inset:0 0 auto 0; height:78px; display:flex; align-items:center; gap:14px;
+  padding:12px 22px; background:linear-gradient(180deg, rgba(13,6,22,0.6), rgba(8,2,12,0.6));
+  backdrop-filter: blur(6px); z-index:80; border-bottom:1px solid rgba(255,255,255,0.02);
+}
+.logoWrap{display:flex;align-items:center;gap:12px}
+.logoSVG{width:54px;height:54px;flex-shrink:0}
+.brand{font-weight:900;color:var(--accent);letter-spacing:-0.6px}
+.small{font-size:13px;color:var(--muted)}
+nav{margin-left:14px;display:flex;gap:8px;align-items:center}
+.navBtn{background:transparent;border:0;padding:8px 12px;border-radius:10px;color:var(--muted);cursor:pointer;font-weight:700}
+.navBtn.active{color:var(--accent); background:linear-gradient(90deg, rgba(138,43,226,0.06), rgba(176,119,255,0.02)); border:1px solid rgba(138,43,226,0.06)}
 
-  /* TOP NAV */
-  .top{
-    position:fixed; top:0; left:0; right:0; height:76px;
-    display:flex; align-items:center; gap:18px; padding:12px 20px;
-    background:rgba(6,13,18,0.45); backdrop-filter: blur(8px); border-bottom:1px solid rgba(255,255,255,0.03); z-index:60;
-  }
-  .logoWrap{display:flex;align-items:center;gap:12px;cursor:default}
-  .logoSVG{width:48px;height:48px}
-  .brand{font-weight:800; letter-spacing:-0.6px; font-size:18px; color:var(--accent)}
-  nav{margin-left:8px; display:flex; gap:8px; align-items:center}
-  .navBtn{background:transparent;border:0;padding:8px 12px;border-radius:10px;color:var(--muted);cursor:pointer;font-weight:600}
-  .navBtn.active{color:var(--accent); background:linear-gradient(90deg, rgba(61,164,255,0.08), rgba(112,195,255,0.03)); border:1px solid rgba(61,164,255,0.08)}
+.page{max-width:1180px;margin:110px auto 80px;padding:18px}
+.grid{display:grid;grid-template-columns:1fr 360px;gap:20px}
+@media (max-width:980px){ .grid{grid-template-columns:1fr} .top{padding:10px} .page{margin-top:120px} }
 
-  /* container */
-  .page{max-width:1100px;margin:110px auto 80px;padding:18px}
-  .grid{display:grid;grid-template-columns:1fr 360px;gap:20px}
-  .panel{background:var(--card); border-radius:var(--radius); padding:18px;border:1px solid rgba(255,255,255,0.03); box-shadow:0 10px 30px rgba(2,8,12,0.6)}
+.panel{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:18px;border-radius:14px;border:1px solid rgba(255,255,255,0.02); box-shadow:var(--shadow)}
+.h1{font-size:20px;color:var(--accent);font-weight:800;margin:0 0 8px}
+.sub{color:var(--muted);font-size:13px;margin-bottom:10px}
 
-  /* Post form */
-  .h1{font-size:20px;color:var(--accent);font-weight:700;margin:0 0 8px}
-  label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
-  input[type="text"], textarea, select{
-    width:100%; padding:12px 14px; border-radius:10px; border:1px solid rgba(255,255,255,0.03); background:rgba(10,15,20,0.45);
-    color:#e8f6ff; font-size:15px; outline:none; resize:vertical;
-  }
-  textarea{min-height:140px}
-  .row{display:flex;gap:10px}
-  .btn{display:inline-block;padding:12px 14px;border-radius:10px;border:0;cursor:pointer;font-weight:700}
-  .btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#042533}
-  .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.03);color:var(--muted)}
+.searchBar{display:flex;gap:10px;align-items:center;margin-bottom:12px}
+.searchBar input{flex:1;padding:12px;border-radius:12px;background:transparent;border:1px solid rgba(255,255,255,0.03);color:#eaf4ff}
+.select{padding:10px;border-radius:10px;background:transparent;border:1px solid rgba(255,255,255,0.03);color:#eaf4ff}
 
-  /* search / filters */
-  .searchBar{display:flex;gap:10px;align-items:center;margin-bottom:12px}
-  .searchBar input{flex:1;padding:12px;border-radius:12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.02);color:#e6f3ff}
-  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
-  .chip{padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.02);cursor:pointer;color:var(--muted);font-weight:600}
-  .chip.active{background:linear-gradient(90deg, rgba(61,164,255,0.08), rgba(112,195,255,0.03)); color:var(--accent)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 14px}
+.chip{padding:8px 12px;border-radius:999px;background:transparent;border:1px solid rgba(255,255,255,0.02);color:var(--muted);cursor:pointer;font-weight:700}
+.chip.active{background:linear-gradient(90deg, rgba(138,43,226,0.06), rgba(176,119,255,0.03)); color:var(--accent)}
 
-  /* rules list */
-  .list{display:flex;flex-direction:column;gap:12px}
-  .rule{
-    padding:14px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-    border:1px solid rgba(255,255,255,0.02); display:flex; justify-content:space-between; gap:12px;cursor:pointer;
-  }
-  .rule:hover{transform:translateY(-4px);transition:all .18s}
-  .ruleLeft{flex:1}
-  .title{font-weight:700;color:#eaf7ff}
-  .meta{font-size:13px;color:var(--muted);margin-top:6px}
-  .tag{display:inline-block;padding:6px 10px;border-radius:999px;border:1px solid rgba(255,255,255,0.02);font-weight:700;font-size:12px;color:var(--accent);background:rgba(61,164,255,0.04)}
+.list{display:flex;flex-direction:column;gap:12px}
+.rule{padding:14px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));border:1px solid rgba(255,255,255,0.02);display:flex;justify-content:space-between;gap:12px;cursor:pointer}
+.rule:hover{transform:translateY(-4px);transition:all .16s}
+.title{font-weight:800;color:#f3f9ff}
+.meta{font-size:13px;color:var(--muted);margin-top:6px}
+.tag{display:inline-block;padding:6px 10px;border-radius:999px;border:1px solid rgba(255,255,255,0.02);font-weight:800;font-size:12px;color:var(--accent);background:rgba(138,43,226,0.04)}
 
-  .ruleActions{display:flex;flex-direction:column;gap:8px;align-items:flex-end}
-  .actRow{display:flex;gap:8px}
+.ruleActions{display:flex;flex-direction:column;gap:8px;align-items:flex-end}
+.actRow{display:flex;gap:8px}
+.linkBtn{background:transparent;border:1px solid rgba(255,255,255,0.03);padding:8px 10px;border-radius:10px;color:var(--muted);cursor:pointer}
 
-  .small{font-size:13px;color:var(--muted)}
+.modalBg{position:fixed;inset:0;background:rgba(2,3,6,0.72);display:none;justify-content:center;align-items:center;z-index:120}
+.modal{width:92%;max-width:760px;background:linear-gradient(180deg,#0a0513,#080312);border-radius:12px;padding:18px;border:1px solid rgba(255,255,255,0.03)}
+.modal .title{font-size:20px;color:var(--accent);font-weight:800}
+.modal .body{margin-top:10px;color:var(--muted);line-height:1.6}
+.modal .controls{display:flex;gap:8px;justify-content:flex-end;margin-top:12px}
 
-  /* modal */
-  .modalBg{position:fixed;inset:0;background:rgba(1,3,6,0.68);display:none;justify-content:center;align-items:center;z-index:120}
-  .modal{width:92%;max-width:720px;background:linear-gradient(180deg,#081019,#071018);border-radius:14px;padding:20px;border:1px solid rgba(255,255,255,0.03)}
-  .modal .title{font-size:20px}
-  .modal .body{margin-top:10px;color:var(--muted);line-height:1.5}
-  .closeX{cursor:pointer;color:var(--muted);font-weight:800}
+.formRow{display:flex;gap:10px}
+input[type="text"],textarea,select{width:100%;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:#eaf4ff;outline:none}
+textarea{min-height:140px;resize:vertical}
 
-  /* right column */
-  .cardSmall{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:12px;border-radius:12px}
-  .fav{display:flex;align-items:center;gap:10px;justify-content:space-between}
+.footerActions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
 
-  /* footer utilities */
-  .util{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:10px}
-  .linkBtn{background:transparent;border:1px solid rgba(255,255,255,0.03);padding:8px 10px;border-radius:10px;color:var(--muted);cursor:pointer}
+.cardSmall{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:12px;border-radius:12px}
+.smallGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 
-  /* responsive */
-  @media (max-width:980px){ .grid{grid-template-columns:1fr} .top{padding:10px} .page{margin-top:120px} }
+.toast{position:fixed;right:18px;bottom:18px;background:linear-gradient(90deg,#0e1a20,#071217);padding:10px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);color:#cfefff;box-shadow:var(--shadow)}
 </style>
 </head>
 <body>
@@ -96,16 +90,21 @@
 <!-- TOP -->
 <div class="top">
   <div class="logoWrap">
-    <!-- Animated Inline SVG logo -->
-    <svg class="logoSVG" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-      <defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#3DA4FF"/><stop offset="1" stop-color="#70C3FF"/></linearGradient></defs>
-      <circle cx="50" cy="50" r="45" fill="url(#g)" opacity="0.95"/>
-      <path d="M36 66 L50 30 L64 66 Z" fill="#042533" opacity="0.95"/>
-      <animateTransform attributeName="transform" type="rotate" values="0 50 50;6 50 50;0 50 50" dur="6s" repeatCount="indefinite"/>
+    <!-- Purple animated logo -->
+    <svg class="logoSVG" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <linearGradient id="lp" x1="0" x2="1">
+          <stop offset="0" stop-color="#8A2BE2"/>
+          <stop offset="1" stop-color="#b077ff"/>
+        </linearGradient>
+      </defs>
+      <circle cx="50" cy="50" r="44" fill="url(#lp)" opacity="0.95"/>
+      <path d="M36 66 L50 28 L64 66 Z" fill="#07040a"/>
+      <animateTransform attributeName="transform" type="rotate" values="0 50 50;5 50 50;0 50 50" dur="7s" repeatCount="indefinite"/>
     </svg>
     <div>
-      <div class="brand brandName" style="font-weight:900;color:var(--accent)">LithMate</div>
-      <div class="small">Regras • Sistema público</div>
+      <div class="brand">LithMate</div>
+      <div class="small">Regras • Versão Completa</div>
     </div>
   </div>
 
@@ -117,39 +116,36 @@
   </nav>
 </div>
 
-<!-- MAIN PAGE -->
+<!-- PAGE -->
 <div class="page">
   <div class="grid">
 
-    <!-- LEFT: Conteúdo principal -->
+    <!-- LEFT -->
     <div>
-      <!-- Search + Filters -->
+      <!-- HOME VIEW -->
       <div class="panel" id="view-home">
         <div style="display:flex;justify-content:space-between;align-items:center">
           <div>
             <div class="h1">Regras publicadas</div>
-            <div class="small">Pesquise, filtre, copie e compartilhe.</div>
+            <div class="sub">Pesquise, filtre, copie, compartilhe e edite com token.</div>
           </div>
           <div class="small" id="stats">—</div>
         </div>
 
         <div style="height:12px"></div>
+
         <div class="searchBar">
           <input id="searchInput" placeholder="Pesquisar por título ou texto..." />
-          <select id="sortSelect" style="width:160px;border-radius:10px;padding:10px;background:transparent;color:#dff6ff;border:1px solid rgba(255,255,255,0.03)">
+          <select id="sortSelect" class="select">
             <option value="new">Mais recentes</option>
             <option value="old">Mais antigas</option>
             <option value="category">Por categoria</option>
           </select>
         </div>
 
-        <div class="chips" id="chips">
-          <!-- dynamic chips -->
-        </div>
+        <div class="chips" id="chips"></div>
 
-        <div class="list" id="rulesList">
-          <!-- rules -->
-        </div>
+        <div class="list" id="rulesList"></div>
 
         <div style="display:flex;gap:10px;justify-content:center;margin-top:14px">
           <button class="linkBtn" id="prevPage">Anterior</button>
@@ -158,36 +154,38 @@
         </div>
       </div>
 
-      <!-- NEW RULE VIEW -->
+      <!-- NEW VIEW -->
       <div class="panel" id="view-new" style="display:none">
         <div class="h1">Publicar nova regra</div>
-        <div class="small">Ao publicar, você recebe um token que permite editar/deletar esta regra (guardado no seu navegador).</div>
+        <div class="sub">Ao publicar você recebe um <strong>token</strong> que permite editar/deletar sua regra. Guarde-o!</div>
+
         <div style="height:12px"></div>
 
-        <label>Título</label>
-        <input id="newTitle" placeholder="Ex: Regras gerais do grupo" />
+        <label class="small">Título</label>
+        <input id="newTitle" placeholder="Ex: Respeito ao próximo" />
 
-        <label>Categoria</label>
+        <label class="small">Categoria</label>
         <select id="newCategory">
           <option>Geral</option><option>Comportamento</option><option>Conteúdo</option><option>Banimentos</option><option>Moderação</option>
         </select>
 
-        <label>Conteúdo (use quebras de linha para separar)</label>
-        <textarea id="newText" placeholder="Digite a regra completa..."></textarea>
+        <label class="small">Conteúdo</label>
+        <textarea id="newText" placeholder="Detalhe a regra..."></textarea>
 
         <div style="display:flex;gap:10px;margin-top:10px">
-          <button class="btn primary" id="publishBtn">Publicar regra</button>
-          <button class="btn ghost" id="clearBtn">Limpar</button>
+          <button class="linkBtn" id="publishBtn" style="background:linear-gradient(90deg,var(--accent),var(--accent-2));border:none;color:#04111a;padding:12px 16px;font-weight:800">Publicar regra</button>
+          <button class="linkBtn" id="clearBtn">Limpar</button>
         </div>
 
-        <div style="height:12px"></div>
-        <div class="small">Ao publicar, guarde o token. Ele também será salvo automaticamente no seu navegador.</div>
+        <div style="height:8px"></div>
+        <div class="small">O token é exibido UMA vez no alerta e também salvo no seu navegador automaticamente.</div>
       </div>
 
-      <!-- EXPORT/IMPORT VIEW -->
+      <!-- EXPORT VIEW -->
       <div class="panel" id="view-export" style="display:none">
-        <div class="h1">Exportar e Importar Regras</div>
+        <div class="h1">Exportar / Importar</div>
         <div style="height:8px"></div>
+
         <div class="cardSmall">
           <div class="small">Exportar todas as regras (JSON)</div>
           <div style="height:8px"></div>
@@ -195,68 +193,64 @@
             <button class="linkBtn" id="exportBtn">Exportar JSON</button>
             <button class="linkBtn" id="downloadSample">Baixar amostra JSON</button>
             <label style="margin-left:auto">
-              <input type="file" id="importFile" style="display:none" />
+              <input type="file" id="importFile" style="display:none" accept=".json"/>
               <button class="linkBtn" id="importBtn">Importar JSON</button>
             </label>
           </div>
         </div>
-        <div style="height:16px"></div>
-        <div class="small">Importe apenas JSON formatado corretamente (a importação cria novos registros).</div>
+
+        <div style="height:12px"></div>
+        <div class="small">Importe apenas JSON válido (array de objetos {titulo,texto,categoria}).</div>
       </div>
 
-      <!-- ABOUT VIEW -->
+      <!-- ABOUT -->
       <div class="panel" id="view-about" style="display:none">
-        <div class="h1">Sobre LithMate — Sistema de Regras</div>
-        <div class="small" style="margin-top:8px">Versão PRO pública — criado por você. Recursos:</div>
-        <ul class="small" style="margin-top:10px;color:var(--muted)">
-          <li>Publicar regras com token de edição</li>
-          <li>Pesquisar, filtrar e favoritar</li>
-          <li>Compartilhar via link</li>
-          <li>Export/Import JSON</li>
+        <div class="h1">Sobre</div>
+        <div class="small">LithMate — Sistema de Regras público (versão COMPLETA). Recursos:</div>
+        <ul class="small" style="color:var(--muted)">
+          <li>Publicar regras com token de edição/deleção</li>
+          <li>Pesquisar, filtrar por categoria, favoritos</li>
+          <li>Export/Import JSON, compartilhar link direto</li>
+          <li>Interface responsiva e tema roxo premium</li>
         </ul>
       </div>
     </div>
 
-    <!-- RIGHT: utilidades -->
+    <!-- RIGHT -->
     <div>
-      <div class="panel cardSmall" id="rightPanel">
-        <div style="display:flex;align-items:center;gap:12px">
-          <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(90deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;color:#041f24;font-weight:900">L</div>
+      <div class="panel cardSmall">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="width:48px;height:48px;border-radius:10px;background:linear-gradient(90deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;color:#051018;font-weight:900">L</div>
           <div>
-            <div style="font-weight:800">LithMate</div>
-            <div class="small">Sistema de Regras — público</div>
+            <div style="font-weight:900">LithMate</div>
+            <div class="small">Regras • Público</div>
           </div>
         </div>
 
         <div style="height:12px"></div>
 
         <div style="display:flex;flex-direction:column;gap:8px">
-          <div class="fav">
-            <div>
-              <div class="small">Favoritos salvos</div>
-              <div id="favCount" style="font-weight:800">0</div>
-            </div>
-            <button class="linkBtn" id="clearFavs">Limpar favoritos</button>
+          <div>
+            <div class="small">Favoritos</div>
+            <div id="favCount" style="font-weight:800">0</div>
           </div>
 
           <div style="height:8px"></div>
-
-          <div class="small">Compartilhar</div>
+          <div class="small">Ações rápidas</div>
           <div style="display:flex;gap:8px;margin-top:6px">
-            <button class="linkBtn" id="copyPageLink">Copiar link desta página</button>
+            <button class="linkBtn" id="copyPageLink">Copiar link</button>
             <button class="linkBtn" id="themeToggle">Tema Claro</button>
           </div>
 
-          <div style="height:12px"></div>
+          <div style="height:10px"></div>
 
           <div class="small">Suas regras (local)</div>
           <div id="ownRulesList" style="display:flex;flex-direction:column;gap:8px;margin-top:8px"></div>
         </div>
 
         <div style="height:12px"></div>
-
         <div class="small">Status do Firebase</div>
-        <div id="fbStatus" class="small" style="color:var(--muted)">—</div>
+        <div id="fbStatus" class="small" style="color:var(--muted)">Conectando...</div>
       </div>
     </div>
 
@@ -267,28 +261,32 @@
 <div class="modalBg" id="modalBg">
   <div class="modal" role="dialog" aria-modal="true">
     <div style="display:flex;justify-content:space-between;align-items:center">
-      <div><div class="title" id="modalTitle"></div><div class="small" id="modalMeta"></div></div>
-      <div class="closeX" id="modalClose">✖</div>
+      <div>
+        <div class="title" id="modalTitle"></div>
+        <div class="small" id="modalMeta"></div>
+      </div>
+      <div style="cursor:pointer;color:var(--muted)" id="modalClose">✖</div>
     </div>
     <div class="body" id="modalBody"></div>
-    <div style="height:12px"></div>
-    <div style="display:flex;gap:8px;justify-content:flex-end">
+    <div class="controls" style="margin-top:12px">
       <button class="linkBtn" id="modalCopy">Copiar</button>
       <button class="linkBtn" id="modalShare">Compartilhar</button>
       <button class="linkBtn" id="modalFav">Favoritar</button>
       <button class="linkBtn" id="modalEdit">Editar (token)</button>
-      <button class="linkBtn" id="modalDelete" style="background:linear-gradient(90deg,#ff6b6b,#ff8c6b)">Deletar</button>
+      <button class="linkBtn" id="modalDelete" style="background:linear-gradient(90deg,#ff6b6b,#ff8c6b);border:none;color:#041018">Deletar</button>
     </div>
   </div>
 </div>
 
-<!-- SCRIPTS: Firebase + App -->
-<script type="module">
-  // IMPORTS FIREBASE (modular)
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-  import { getDatabase, ref, push, set, onValue, get, child, remove, update, query, orderByChild, limitToLast } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+<!-- TOAST CONTAINER -->
+<div id="toastRoot" aria-hidden="true"></div>
 
-  // SUA CONFIG EXACTA (mantive a que você enviou)
+<!-- FIREBASE (modular) -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+  import { getDatabase, ref, push, set, onValue, get, child, remove, update } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+
+  // ==== SUA CONFIGURAÇÃO FIREBASE (mantive a que você enviou) ====
   const firebaseConfig = {
     apiKey: "AIzaSyBgU_MiSKWchHcItzu62cF_RySm0EmPKIE",
     authDomain: "bancodataregrageneral.firebaseapp.com",
@@ -299,21 +297,22 @@
     appId: "1:578599910104:web:38e9fdf1aea786376fb5ad"
   };
 
+  // Inicializa
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
   const rootRef = ref(db, 'regras');
 
-  // UTIL state
-  let allRules = []; // local cache
+  // STATE
+  let allRules = [];
   let filtered = [];
   let page = 1;
   const PAGE_SIZE = 7;
   let activeChip = 'Todas';
   let favorites = JSON.parse(localStorage.getItem('lm_favs')||'[]');
   let tokens = JSON.parse(localStorage.getItem('lm_tokens')||'{}'); // { ruleId: token }
-  let ownRules = JSON.parse(localStorage.getItem('lm_own')||'[]'); // list of ids posted from this browser
+  let ownRules = JSON.parse(localStorage.getItem('lm_own')||'[]');
 
-  // DOM refs
+  // DOM
   const rulesList = document.getElementById('rulesList');
   const searchInput = document.getElementById('searchInput');
   const chipsWrap = document.getElementById('chips');
@@ -335,7 +334,7 @@
     };
   });
 
-  // THEME toggle (simple)
+  // THEME
   const themeToggle = document.getElementById('themeToggle');
   let light = false;
   themeToggle.onclick = ()=>{
@@ -347,15 +346,15 @@
       document.body.style.color='#0a1b24';
       themeToggle.textContent='Tema Escuro';
     } else {
-      document.documentElement.style.setProperty('--bg','#0b1116');
-      document.documentElement.style.setProperty('--card','#0e1822');
-      document.documentElement.style.setProperty('--muted','#9fb0c6');
-      document.body.style.color='#e7f2ff';
+      document.documentElement.style.setProperty('--bg','#08020a');
+      document.documentElement.style.setProperty('--card','#0f0a14');
+      document.documentElement.style.setProperty('--muted','#9aa7bf');
+      document.body.style.color='#eaf4ff';
       themeToggle.textContent='Tema Claro';
     }
   };
 
-  // CHIPS (categories)
+  // CATEGORIES
   const CATS = ['Todas','Geral','Comportamento','Conteúdo','Banimentos','Moderação'];
   function renderChips(){
     chipsWrap.innerHTML = '';
@@ -371,37 +370,37 @@
   prevPage.onclick = ()=>{ if(page>1){ page--; render(); } };
   nextPage.onclick = ()=>{ page++; render(); };
 
-  // load realtime from Firebase
+  // FIREBASE: realtime
   function markFB(status,color){
     fbStatus.textContent = status;
     fbStatus.style.color = color || 'var(--muted)';
   }
-  markFB('Conectando...', '#9fb0c6');
+  markFB('Conectando...', '#9aa7bf');
 
   onValue(rootRef, snapshot=>{
     const data = snapshot.val() || {};
     allRules = Object.keys(data).map(k=>({ id:k, ...data[k] }));
-    // sort newest by default
+    // sort by _ts desc if exists
     allRules.sort((a,b)=> (b._ts||0) - (a._ts||0));
-    markFB('Conectado • '+allRules.length+' regras', '#9fb0c6');
+    markFB('Conectado • '+allRules.length+' regras', '#9aa7bf');
     page = 1;
     render();
     renderOwnList();
+    checkHash(); // open rule if link used
   }, (err)=>{
     markFB('Erro Firebase', '#ff8b8b');
     console.error(err);
   });
 
-  // RENDER main list with filters, search, pagination
+  // RENDER function
   function render(){
-    const q = searchInput.value.trim().toLowerCase();
+    const q = (searchInput.value||'').trim().toLowerCase();
     filtered = allRules.filter(r=>{
       const matchCat = (activeChip==='Todas') ? true : (r.categoria === activeChip);
       const matchText = (r.titulo + ' ' + r.texto).toLowerCase().includes(q);
       return matchCat && matchText;
     });
 
-    // sorting
     const sort = document.getElementById('sortSelect').value;
     if(sort==='new') filtered.sort((a,b)=> (b._ts||0)-(a._ts||0));
     if(sort==='old') filtered.sort((a,b)=> (a._ts||0)-(b._ts||0));
@@ -416,7 +415,7 @@
     rulesList.innerHTML = '';
     pageItems.forEach(r=>{
       const el = document.createElement('div'); el.className='rule';
-      const left = document.createElement('div'); left.className='ruleLeft';
+      const left = document.createElement('div'); left.style.flex='1';
       left.innerHTML = `<div class="title">${escapeHtml(r.titulo)}</div>
                         <div class="meta">${escapeHtml(r.texto.split('\\n').slice(0,3).join(' '))}</div>
                         <div style="margin-top:8px"><span class="tag">${r.categoria||'Geral'}</span></div>`;
@@ -434,7 +433,7 @@
       el.appendChild(right);
 
       // actions
-      el.querySelectorAll('button').forEach(btn=>{
+      right.querySelectorAll('button').forEach(btn=>{
         btn.onclick = (ev)=>{
           ev.stopPropagation();
           const act = btn.dataset.act;
@@ -447,7 +446,6 @@
         };
       });
 
-      // click whole card = open
       el.onclick = ()=> openModal(allRules.find(x=>x.id===r.id));
       rulesList.appendChild(el);
     });
@@ -457,29 +455,25 @@
     favCount.textContent = favorites.length;
   }
 
-  // UTILS: escape for HTML display
+  // escape HTML
   function escapeHtml(s){ if(!s) return ''; return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
-  // TOAST (simple)
-  function toast(txt){
-    const el = document.createElement('div'); el.textContent=txt;
-    el.style = 'position:fixed;right:18px;bottom:18px;background:#042533;color:#bff6ff;padding:10px 14px;border-radius:10px;box-shadow:0 8px 18px rgba(2,8,12,0.6);z-index:999';
-    document.body.appendChild(el);
-    setTimeout(()=>el.style.opacity='0',2200); setTimeout(()=>el.remove(),2600);
-  }
+  // toast
+  function toast(txt){ const el=document.createElement('div'); el.className='toast'; el.textContent=txt; document.getElementById('toastRoot').appendChild(el); setTimeout(()=>el.style.opacity='0',2000); setTimeout(()=>el.remove(),2600); }
 
-  // FAVORITES (localStorage)
+  // favorites
   function toggleFav(id){
     if(favorites.includes(id)) favorites = favorites.filter(x=>x!==id);
     else favorites.push(id);
     localStorage.setItem('lm_favs', JSON.stringify(favorites));
-    favCount.textContent = favorites.length;
     render();
     renderOwnList();
   }
-  document.getElementById('clearFavs').onclick = () => { favorites=[]; localStorage.setItem('lm_favs','[]'); render(); toast('Favoritos limpos'); };
+  document.getElementById('copyPageLink').onclick = ()=>{ copyToClipboard(window.location.href); toast('Link copiado'); };
 
-  // OPEN MODAL
+  document.getElementById('clearBtn').onclick = ()=>{ if(confirm('Limpar campos?')){ document.getElementById('newTitle').value=''; document.getElementById('newText').value=''; } };
+
+  // modal
   const modalBg = document.getElementById('modalBg');
   const modalTitle = document.getElementById('modalTitle');
   const modalMeta = document.getElementById('modalMeta');
@@ -490,7 +484,6 @@
     modalBody.innerHTML = '<pre style="white-space:pre-wrap;font-family:inherit;color:var(--muted);">'+escapeHtml(rule.texto)+'</pre>';
     modalBg.style.display = 'flex';
 
-    // button hook ups
     document.getElementById('modalCopy').onclick = ()=>{ navigator.clipboard.writeText(rule.titulo + '\\n\\n' + rule.texto); toast('Copiado'); };
     document.getElementById('modalShare').onclick = ()=>{ copyToClipboard(window.location.href.split('#')[0] + '#rule=' + rule.id); toast('Link copiado'); };
     document.getElementById('modalFav').onclick = ()=>{ toggleFav(rule.id); toast('Favorito atualizado'); };
@@ -500,32 +493,32 @@
   document.getElementById('modalClose').onclick = ()=> modalBg.style.display='none';
   modalBg.onclick = e => { if(e.target === modalBg) modalBg.style.display='none'; };
 
-  // EDIT FLOW: asks for token or uses saved token
+  // edit flow (token)
   async function startEditFlow(rule){
     const saved = tokens[rule.id];
     let token = saved || prompt('Insira o token de edição para essa regra (ou pressione OK para usar token salvo no navegador)');
     if(!token && saved) token = saved;
     if(!token){ alert('Token necessário para editar'); return; }
-    // verify token with DB
     try{
       const snap = await get(child(ref(db), 'regras/'+rule.id));
       if(!snap.exists()){ alert('Regra não encontrada'); return; }
       const data = snap.val();
       if(data.token !== token){ alert('Token inválido'); return; }
-      // allow edit: open simple prompt form
+      // edit UI prompts
       const newTitle = prompt('Novo título:', data.titulo);
       if(newTitle === null) return;
       const newText = prompt('Novo texto:', data.texto);
       if(newText === null) return;
       const newCat = prompt('Nova categoria:', data.categoria||'Geral');
-      // update db
       await update(ref(db,'regras/'+rule.id), { titulo: newTitle, texto: newText, categoria: newCat, _edited: Date.now() });
+      // save token locally for convenience
+      tokens[rule.id] = token; localStorage.setItem('lm_tokens', JSON.stringify(tokens));
       toast('Regra atualizada');
       modalBg.style.display='none';
     } catch(e){ console.error(e); alert('Erro ao verificar token'); }
   }
 
-  // DELETE FLOW
+  // delete flow (token)
   async function startDeleteFlow(rule){
     const saved = tokens[rule.id];
     let token = saved || prompt('Insira o token de edição para deletar essa regra');
@@ -538,7 +531,6 @@
       const data = snap.val();
       if(data.token !== token){ alert('Token inválido'); return; }
       await remove(ref(db,'regras/'+rule.id));
-      // cleanup local tokens/ownlist/favs
       delete tokens[rule.id]; localStorage.setItem('lm_tokens', JSON.stringify(tokens));
       ownRules = ownRules.filter(x=>x!==rule.id); localStorage.setItem('lm_own', JSON.stringify(ownRules));
       favorites = favorites.filter(x=>x!==rule.id); localStorage.setItem('lm_favs', JSON.stringify(favorites));
@@ -547,29 +539,33 @@
     } catch(e){ console.error(e); alert('Erro ao deletar'); }
   }
 
-  // PUBLISH new rule
+  // publish new rule
   document.getElementById('publishBtn').onclick = async ()=>{
-    const titulo = document.getElementById('newTitle').value.trim();
-    const texto = document.getElementById('newText').value.trim();
-    const categoria = document.getElementById('newCategory').value;
+    const titulo = (document.getElementById('newTitle').value||'').trim();
+    const texto = (document.getElementById('newText').value||'').trim();
+    const categoria = (document.getElementById('newCategory').value||'Geral');
     if(!titulo || !texto){ alert('Preencha título e conteúdo'); return; }
     const token = randomToken(18);
     const payload = { titulo, texto, categoria, token, _ts: Date.now() };
     try{
       const newRef = push(rootRef);
       await set(newRef, payload);
-      // save token locally for convenience
+      // save token locally and own list
       tokens[newRef.key] = token; localStorage.setItem('lm_tokens', JSON.stringify(tokens));
       ownRules.push(newRef.key); localStorage.setItem('lm_own', JSON.stringify(ownRules));
       toast('Regra publicada — token salvo localmente');
-      // show token to user (once)
-      alert('Regra publicada! Seu token de edição (guarde com segurança):\\n\\n' + token);
-      // clear form
+      alert('Regra publicada! Seu token de edição (guarde com segurança):\n\n' + token);
       document.getElementById('newTitle').value=''; document.getElementById('newText').value='';
+      // switch to home
+      document.querySelectorAll('.navBtn').forEach(x=>x.classList.remove('active'));
+      document.querySelector('.navBtn[data-view="home"]').classList.add('active');
+      document.querySelectorAll('#view-home,#view-new,#view-export,#view-about').forEach(v=>v.style.display='none');
+      document.getElementById('view-home').style.display='block';
     } catch(e){ console.error(e); alert('Erro ao publicar'); }
   };
 
-  document.getElementById('clearBtn').onclick = ()=>{ if(confirm('Limpar campos?')){ document.getElementById('newTitle').value=''; document.getElementById('newText').value=''; } };
+  // random token helper
+  function randomToken(len=12){ const chars='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; let s=''; for(let i=0;i<len;i++) s+=chars[Math.floor(Math.random()*chars.length)]; return s; }
 
   // export/import
   document.getElementById('exportBtn').onclick = async ()=>{
@@ -600,40 +596,15 @@
     } catch(er){ console.error(er); alert('Erro ao importar: '+er.message); }
   };
 
-  // helpers
-  function randomToken(len=12){
-    const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    let s=''; for(let i=0;i<len;i++) s+=chars[Math.floor(Math.random()*chars.length)];
-    return s;
-  }
-  // copy helper
-  function copyToClipboard(txt){ navigator.clipboard.writeText(txt); }
-
   // search debounce
   let sd;
   searchInput.oninput = ()=>{ clearTimeout(sd); sd = setTimeout(()=>{ page=1; render(); }, 220); };
-
-  // sort change
   document.getElementById('sortSelect').onchange = ()=>{ page=1; render(); };
 
-  // share page
-  document.getElementById('copyPageLink').onclick = ()=>{ copyToClipboard(window.location.href); toast('Link da página copiado'); };
+  // helper: copy to clipboard
+  function copyToClipboard(txt){ navigator.clipboard.writeText(txt); }
 
-  // load rule from URL hash if present
-  function checkHash(){
-    const h = location.hash;
-    if(h && h.startsWith('#rule=')){
-      const id = h.split('=')[1];
-      if(id){
-        // wait until rules loaded
-        setTimeout(()=>{ const r = allRules.find(x=>x.id===id); if(r) openModal(r); else toast('Regra não encontrada'); }, 700);
-      }
-    }
-  }
-  window.addEventListener('hashchange', checkHash);
-  checkHash();
-
-  // own rules / keep list of rules created in this browser
+  // own rules list UI
   function renderOwnList(){
     ownRulesList.innerHTML = '';
     ownRules.forEach(id=>{
@@ -649,7 +620,7 @@
           const id=b.dataset.id;
           const rr = allRules.find(x=>x.id===id);
           if(act==='goto'){ if(rr) openModal(rr); else alert('Regra removida'); }
-          if(act==='copy'){ if(rr){ navigator.clipboard.writeText(rr.titulo+'\\n\\n'+rr.texto); toast('Copiado'); } else alert('Regra removida'); }
+          if(act==='copy'){ if(rr){ navigator.clipboard.writeText(rr.titulo+'\n\n'+rr.texto); toast('Copiado'); } else alert('Regra removida'); }
         };
       });
       ownRulesList.appendChild(el);
@@ -657,13 +628,19 @@
     favCount.textContent = favorites.length;
   }
 
-  // copy page link on load
-  document.getElementById('copyPageLink').onclick = ()=>{ copyToClipboard(window.location.href); toast('Link copiado'); };
+  // check URL hash
+  function checkHash(){
+    const h = location.hash;
+    if(h && h.startsWith('#rule=')){
+      const id = h.split('=')[1];
+      if(id){
+        setTimeout(()=>{ const r = allRules.find(x=>x.id===id); if(r) openModal(r); else toast('Regra não encontrada'); }, 700);
+      }
+    }
+  }
+  window.addEventListener('hashchange', checkHash);
 
-  // route on nav load (default home)
-  document.querySelectorAll('[data-view]').forEach(b=>{ if(b.classList.contains('active')){ document.getElementById('view-'+b.dataset.view).style.display='block'; }});
-
-  // load tokens and ownRules from storage on start
+  // initial load of local state
   (function loadLocal(){
     const t = localStorage.getItem('lm_tokens'); if(t) tokens = JSON.parse(t);
     const o = localStorage.getItem('lm_own'); if(o) ownRules = JSON.parse(o);
@@ -671,24 +648,23 @@
     renderOwnList(); favCount.textContent = favorites.length;
   })();
 
-  // simple route: nav buttons already handle views
-  // small helper to update stats when rules change
-  setInterval(()=>{ document.getElementById('stats').textContent = `${allRules.length} regras • ${filtered.length||0} visíveis`; }, 1700);
-
-  // initial small sample if DB empty: create demo (only if truly empty)
+  // small auto-seed if DB empty
   (async ()=>{
     const snap = await get(rootRef);
     if(!snap.exists()){
       const sample = [
         { titulo:'Respeito mútuo', texto:'Trate todos com respeito. Insultos e ofensas são proibidos.', categoria:'Geral', token:randomToken(12), _ts:Date.now() - 1000*60*60*24 },
-        { titulo:'Sem conteúdo adulto', texto:'Proibido enviar nudez, pornografia ou links para conteúdo adulto.', categoria:'Conteúdo', token:randomToken(12), _ts:Date.now() - 1000*60*60*23 }
+        { titulo:'Proibido conteúdo adulto', texto:'Não enviar nudez explícita ou links pornográficos.', categoria:'Conteúdo', token:randomToken(12), _ts:Date.now() - 1000*60*60*23 }
       ];
       for(const s of sample){ const n = push(rootRef); await set(n, s); }
     }
   })();
 
-  // small helper: escape in modal pre tags okay
-  // DONE
+  // small helper to show toast and cleanup every so often already done
+
+  // route nav initial display
+  document.querySelectorAll('[data-view]').forEach(b=>{ if(b.classList.contains('active')){ document.getElementById('view-'+b.dataset.view).style.display='block'; }});
 </script>
+
 </body>
 </html>
