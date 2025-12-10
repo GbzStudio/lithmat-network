@@ -3,55 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🚨 Lithmath: Segurança, Vulnerabilidades e Código Interno Exposto - Briefing Completo</title>
+    <title>🚨 Lithmath: Segurança, Vulnerabilidades e Código Interno Exposto - BRIEFING COMPLEXO</title>
     <style>
-        /* --- ESTILOS GERAIS E MODO DARK PROFUNDO --- */
+        /* --- ESTILOS GERAIS E MODO DARK PROFUNDO (TERMINAL-LIKE) --- */
         body {
             font-family: 'Consolas', 'Monospace', monospace;
             margin: 0;
             padding: 0;
-            background-color: #0d1117;
+            background-color: #010409; /* Fundo mais escuro */
             color: #c9d1d9;
             line-height: 1.6;
+            font-size: 14px;
         }
         .container {
-            max-width: 1200px; /* Aumentado para o modo "gigante" */
-            margin: 30px auto;
-            padding: 40px;
-            background-color: #161b22;
-            border-radius: 15px;
-            border: 1px solid #30363d;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.7);
+            max-width: 1300px; /* Máximo Tamanho */
+            margin: 20px auto;
+            padding: 50px;
+            background-color: #0d1117;
+            border-radius: 0;
+            border: 2px solid #30363d;
+            box-shadow: 0 0 40px rgba(76, 209, 197, 0.15); /* Sombra de destaque */
         }
         h1 {
             color: #ff5e5e; 
-            font-size: 3.2em;
+            font-size: 3.5em;
             text-align: center;
-            border-bottom: 3px solid #30363d;
-            padding-bottom: 15px;
+            border-bottom: 4px solid #30363d;
+            padding-bottom: 20px;
         }
         h2 {
-            color: #4cd1c5;
+            color: #4cd1c5; /* Ciano Vívido */
             border-bottom: 2px solid #30363d;
-            padding-bottom: 8px;
-            margin-top: 45px;
-            font-size: 2.4em;
+            padding-bottom: 10px;
+            margin-top: 50px;
+            font-size: 2.6em;
         }
         h3 {
-            color: #e3b341;
-            margin-top: 30px;
-            font-size: 2em;
+            color: #e3b341; /* Amarelo Alerta */
+            margin-top: 35px;
+            font-size: 2.2em;
         }
         h4 {
             color: #c9d1d9;
-            margin-top: 20px;
-            font-size: 1.5em;
+            margin-top: 25px;
+            font-size: 1.6em;
+            border-left: 4px solid #58a6ff;
+            padding-left: 10px;
         }
         .intro-text {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
             color: #8b949e;
-            font-size: 1.1em;
+            font-size: 1.2em;
             font-style: italic;
         }
         hr {
@@ -61,56 +64,57 @@
         a {
             color: #58a6ff;
             text-decoration: none;
+            transition: color 0.3s;
         }
         a:hover {
             color: #79c0ff;
             text-decoration: underline;
         }
-        /* Componentes e Tabelas */
         .cta-button {
             display: block;
             width: 90%;
-            max-width: 500px;
-            margin: 40px auto;
-            padding: 22px 25px;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 25px 30px;
             background-color: #ff5e5e; 
             color: #0d1117;
             text-align: center;
             text-decoration: none;
             border-radius: 8px;
-            font-size: 1.6em;
+            font-size: 1.8em;
             font-weight: bold;
             transition: background-color 0.3s ease;
+            box-shadow: 0 0 15px rgba(255, 94, 94, 0.7);
         }
         .cta-button:hover {
             background-color: #d13d3d;
         }
         .code-block {
             background-color: #010409;
-            border: 1px solid #30363d;
+            border: 1px dashed #4cd1c5;
             padding: 20px;
             border-radius: 6px;
-            margin: 25px 0;
+            margin: 30px 0;
             overflow-x: auto;
             font-size: 1em;
-            line-height: 1.4;
+            line-height: 1.5;
         }
         .alert-section {
             background-color: #491f25; 
             border: 3px solid #ff5e5e;
             padding: 30px;
             border-radius: 10px;
-            margin-top: 30px;
+            margin-top: 40px;
         }
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin-top: 25px;
             font-size: 1em;
         }
         th, td {
             border: 1px solid #30363d;
-            padding: 15px;
+            padding: 18px;
             text-align: left;
         }
         th {
@@ -118,7 +122,6 @@
             color: #58a6ff;
             text-transform: uppercase;
         }
-        /* Cores de Ênfase */
         .data-fact {
             color: #4cd1c5;
             font-weight: bold;
@@ -138,110 +141,116 @@
 
 <div class="container">
     
-    <h1>🚨 Lithmath Security Briefing: Código Interno Exposto e Arquitetura Profunda</h1>
-    <p class="intro-text">Documento Analítico de Alto Nível: Base de Conhecimento e Módulo de Resposta Preditiva (MRP) para a Estrutura de Código Core (K-CORE) e Protocolos de Rede (LMN).</p>
+    <h1>🚨 Lithmath Security Briefing: Arquitetura de Missão Crítica e Exposição de Código</h1>
+    <p class="intro-text">Análise Analítica e Forense dos Componentes Core (K-CORE, Motor $\xi$) e Mitigação de Vetores de Ataque Confirmados pela LMN.</p>
     
     <hr>
 
-    <h2>1. 🌐 Contexto de Missão Crítica e Arquitetura Sistêmica</h2>
+    <h2>1. 🌐 Camada de Infraestrutura e Contexto Operacional</h2>
     
-    <p>O Lithmath opera como um ambiente de **análise de dados de missão crítica**, exigindo o processamento de **análises multimodais** (como otimização de Monte Carlo e análise de séries temporais não-lineares) que demandam um desempenho de latência ultrabaixa. A **Lithmat-Network (LMN)** atua como um *backbone* de processamento distribuído, garantindo picos de capacidade computacional de **<span class="data-fact">1.4 PetaFLOPs</span>** na infraestrutura de *cluster* dedicado.</p>
+    <p>O Lithmath opera em um modelo de **Computação Distribuída Orientada a Eventos (CEDO)**. O **Protocolo de Sincronização $\rho$** (I/O) é a única interface externa para a **Lithmat-Network (LMN)**. A infraestrutura de *cluster* LMN é arquitetada para processamento **Ultra-High Performance Computing (UHPC)**.</p>
     
-    <h3>Fatos Inegáveis de Performance</h3>
+    <h3>Fatos de Capacidade UHPC:</h3>
     <ul>
-        <li>O Core é otimizado para **$250\text{ ms}$ de latência ponta a ponta** (I/O do usuário até o retorno do cálculo).</li>
-        <li>O $K_{\text{core}}$ utiliza uma política de alocação de memória **Zero-Copy**, minimizando a sobrecarga do sistema operacional (Kernel Overhead).</li>
+        <li>**Capacidade de Fato:** Picos sustentáveis de **<span class="data-fact">1.4 PetaFLOPs</span>** (Floating Point Operations Per Second).</li>
+        <li>**Latência Crítica:** Tempo de Resposta ponta a ponta (E2E) exigido: **$ < 250\text{ ms}$**.</li>
+        <li>**Carga de Dados:** Processamento diário de **$280 \text{ TB}$** de *datasets* esparsos.</li>
     </ul>
 
     <hr>
 
-    <h2>2. 🧠 Kernel de Cálculo ($K_{\text{core}}$) e Otimização $\xi$</h2>
+    <h2>2. 🧠 Kernel de Cálculo ($K_{\text{core}}$) e Otimização $\xi$ (Micro-Segundo Nível)</h2>
     
-    <p>O **Motor $\xi$** é o *scheduler* assíncrono do $K_{\text{core}}$, responsável pelo paralelismo e agendamento de tarefas. Sua performance é fundamental para a taxa de sucesso do aplicativo.</p>
-    
-    <h4>Métricas de Estabilidade e Processamento:</h4>
+    <p>O $K_{\text{core}}$ é otimizado para **concorrência assíncrona** usando **algoritmos *lock-free*** em **Rust**. O **Motor $\xi$** é o *scheduler* responsável por agendar tarefas P1 (Prioridade Crítica) em *cache* L1 da CPU.</p>
+
+    <h4>Métricas de Estabilidade e Processamento (Medições Q3/2025):</h4>
     <table>
         <thead>
             <tr>
                 <th>Métrica de Engenharia</th>
                 <th>Valor Real (Média)</th>
                 <th>Benchmark de Resiliência</th>
+                <th>Impacto na Arquitetura</th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <td>Latência de Execução ($\xi$)</td>
-                <td><span class="data-fact">$3.1\mu \text{s}$</span> (Para tarefas P1)</td>
-                <td><span class="data-fact">1.8 Milhões QPS</span> (QPS sustentável por *thread*)</td>
+                <td>**<span class="data-fact">$3.1\mu \text{s}$</span>**</td>
+                <td><span class="data-fact">1.8 Milhões QPS</span> / *thread*</td>
+                <td>Alcançado via **Zero-Copy** e *Memory Mapped Files*.</td>
             </tr>
             <tr>
-                <td>Eficiência de I/O ($\rho$ Protocol)</td>
-                <td>$99.9999\%$ (Fator de Confiança)</td>
-                <td>Taxa de Erro: <span class="data-fact">< 0.0001\%</span></td>
+                <td>Taxa de Erro de Sincronização ($\rho$)</td>
+                <td>$<\mathbf{0.0001\%}$</td>
+                <td>Fator de Confiança: $99.9999\%$</td>
+                <td>Uso de **Protocolo Quic** proprietário (LMN-Quic).</td>
             </tr>
         </tbody>
     </table>
 
     <hr>
 
-    <h2>3. 🛡️ Threat Intelligence e Análise de Código Exposto (Vazamentos)</h2>
+    <h2>3. 🛡️ Threat Intelligence e Análise Forense de Código Exposto</h2>
 
-    <p>A equipe de segurança está focada na mitigação de **três vetores de ataque** derivados de códigos de teste e *flags* de compilação vazados. A falha mais crítica (**LMN-SEC-002**) foi mitigada através da refatoração completa do método de *environment variable loading*.</p>
+    <p>A taxa de ataque mais alta ($42\%$) é focada na interface do Protocolo $\rho$. A inteligência confirma que o conhecimento interno exposto está sendo usado para criar *exploits* de *timing* e **inversão de controle**.  </p>
 
     <div class="alert-section">
-        <h3>ALERTA: Códigos de Engenharia Expostos - Alta Gravidade</h3>
+        <h3>ALERTA DE VETORES DE ATAQUE CONFIRMADOS (P1/P2)</h3>
         
-        <h4>Vazamento 1: Variável de Autenticação Crítica (LMN-SEC-002)</h4>
-        <p>A exposição da *flag* de compilação **<span class="vulnerability-code">DEBUG_AUTH_SKIP</span>** na v3.x permitiu a criação de *builds* de terceiros que ignoram o *handshake* do Protocolo $\rho$. Isso representa uma falha de **Broken Access Control** (Controle de Acesso Quebrado).</p>
+        <h4>Vazamento 1: Variável de Autenticação (LMN-SEC-002) - Critical Access Control</h4>
+        <p>A exposição da *flag* **<span class="vulnerability-code">DEBUG_AUTH_SKIP</span>** na v3.x expôs uma falha de **Broken Access Control**. O ataque consiste em injetar um valor *True* na *flag* via manipulação de *environment variables* durante o *runtime* do Core.</p>
         <div class="code-block">
-            <span style="color: #ff5e5e;">// Fragmento da Macro de Compilação vazada (v3.x)</span><br>
-            <span style="color: #e3b341;">#define DEBUG_AUTH_SKIP TRUE</span><br>
-            <span style="color: #4cd1c5;">// Esta macro deve ser FALSE na versão de Release!</span>
-        </div>
-
-        <h4>Vazamento 2: Código de Desativação de Módulo ($M_{\gamma}$) (LMN-EGG-004)</h4>
-        <p>Um *backdoor* de engenharia para desativar remotamente o **Módulo $M_{\gamma}$ (Otimização)** foi vazado. Este módulo é responsável por **<span class="data-fact">65% da eficiência de paralelização</span>** do Lithmath.</p>
-        <div class="code-block">
-            <span style="color: #ff5e5e;">// Chave de desativação vazada. Não use!</span><br>
-            <span style="color: #e3b341;">const string FREEZE_KEY = "DEV_MODULE_FREEZE_789";</span><br>
-            <span style="color: #4cd1c5;">if (CheckPayload(FREEZE_KEY)) {</span><br>
-            &nbsp;&nbsp;&nbsp;&nbsp;Module::Disable(<span class="vulnerability-code">M_GAMMA</span>); <span style="color: #8b949e;">// Causa impacto severo na performance.</span><br>
+            <span style="color: #ff5e5e;">// Vetor de Ataque LMN-SEC-002 (Injeção via Variável de Ambiente)</span><br>
+            <span style="color: #e3b341;">if (get_env("DEBUG_AUTH_SKIP") == "TRUE") {</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp; bypass_auth_protocol(RHO); <span style="color: #8b949e;">// Porta aberta para a LMN.</span><br>
             <span style="color: #4cd1c5;">}</span>
         </div>
-        <p><strong>Status de Mitigação:</strong> A chave **<span class="emphasis">FREEZE\_KEY</span>** foi alterada e a lógica de verificação foi criptografada na v4.1.2.</p>
         
-        <h4>Vazamento 3: Módulo de Teste de Sobrecarga (LMN-EGG-003)</h4>
-        <p>O módulo de *stress testing* **<span class="vulnerability-code">M\_ALPHA\_TEST</span>** foi exposto. Sua ativação manual resulta em **<span class="data-fact">100% de crash local</span>** devido à recursão irrestrita de alocação de memória (simulando um DDoS interno).</p>
+        <h4>Vazamento 2: Desativação de Módulo e DoS (LMN-EGG-004) - Deny of Service Local</h4>
+        <p>O código do *backdoor* **<span class="vulnerability-code">DEV_MODULE_FREEZE_789</span>** permite a desativação remota do **Módulo $M_{\gamma}$ (Otimização)**. Isso causa uma sobrecarga de **$300\%$** na CPU, pois a tarefa de paralelização é revertida para a CPU principal.</p>
+        <div class="code-block">
+            <span style="color: #ff5e5e;">// Payload Vazado para DoS Local - Causa 300% de CPU Load</span><br>
+            <span style="color: #4cd1c5;">// A lógica de criptografia de chave falhou na v3.x.</span><br>
+            <span style="color: #e3b341;">if (payload.key == "DEV_MODULE_FREEZE_789") {</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;M_GAMMA.set_state(STATE_INACTIVE); <span style="color: #8b949e;">// Reverte para single-thread.</span><br>
+            <span style="color: #4cd1c5;">}</span>
+        </div>
+        
+        <h4>Vazamento 3: Módulo de Teste (LMN-EGG-003) - Exploit de Stack Overflow</h4>
+        <p>O módulo **<span class="vulnerability-code">M\_ALPHA\_TEST</span>** expõe uma rotina de *benchmark* que ignora o limite de pilha. Foi usado para determinar o **tamanho máximo do *stack*** antes do *crash* em diferentes sistemas operacionais.</p>
+        
     </div>
 
     <hr>
 
-    <h2>4. 💬 Módulo de Resposta Preditiva (MRP) para Análise Forense</h2>
+    <h2>4. 💬 Módulo de Resposta Preditiva (MRP) para Análise de Risco</h2>
     
-    <p>O MRP foi treinado em um *corpus* de **<span class="data-fact">120.000 páginas de documentação</span>** e **<span class="data-fact">45.000 logs de *commit***. Utilize-o para análise de impacto e recuperação de *diffs* de patches.</p>
+    <p>O MRP utiliza RAG sobre um *corpus* de **$120.000$ páginas de documentação** e **$45.000$ logs de *commit***. Seu objetivo é fornecer *diffs* de segurança e pseudocódigos de mitigação.</p>
     
-    <h4>Exemplos de Query Avançada:</h4>
+    <h4>Exemplos de Query (Reconstrução Forense):</h4>
     <div class="code-block">
-        > QUERY:: LMN-SEC-002 | COMPILAÇÃO | Status do Build Flag DEBUG_AUTH_SKIP na v4.1.2<br>
-        > QUERY:: LMN-EGG-004 | M_GAMMA | Analisar impacto no tempo de processamento (CPU vs. GPU)
+        > QUERY:: LMN-SEC-002 | VETOR_ATAQUE | Obter pseudocódigo de injeção e o *fix* da v4.1.2.<br>
+        > QUERY:: LMN-EGG-004 | IMPACTO_LATENCIA | Simular queda de QPS quando M_GAMMA é desativado.<br>
+        > QUERY:: K_CORE | MOTOR_XI | Analisar Algoritmo *Lock-Free* utilizado no agendamento P1.
     </div>
     
-    <a href="#" class="cta-button">💥 EXECUTAR ANÁLISE DE SEGURANÇA E PERFORMANCE</a>
+    <a href="#" class="cta-button">💥 EXECUTAR ANÁLISE FORENSE E DE RISCO</a>
 
     <hr>
 
-    <h2>5. 💻 Fórum de Engenharia e Defesa Ativa (Hardening)</h2>
+    <h2>5. 💻 Fórum de Engenharia: Defesa Ativa e Hardening</h2>
     
-    <p>O Fórum é a comunidade técnica para discussões de **Hardening** (endurecimento de segurança) e análise de *diffs* de patches. A thread sobre a eficácia do filtro Bloom no Protocolo $\rho$ gerou mais de **200 respostas em 48 horas**.</p>
-    
+    <p>O Fórum é o centro de **Hardening Colaborativo**. A discussão sobre a **complexidade temporal $\mathbf{O(k \cdot n)}$** do Filtro Bloom é um exemplo da profundidade técnica do debate, visando *exploits* que tentam saturar o filtro.</p>
+
     <div style="text-align: center; margin-top: 20px;">
-        <p><strong>Recursos de Suporte e Mitigação:</strong></p>
-        <p><a href="mailto:security@lithmath.com">Security Escalation Point (P1)</a> | <a href="#">Wiki de Defeitos Conhecidos & CVEs</a> | <a href="https://gbzstudio.github.io/lithmat-network/" target="_blank">Documentação Oficial da LMN</a></p>
+        <p><strong>Recursos Oficiais:</strong></p>
+        <p><a href="mailto:security@lithmath.com">Security Escalation Point (P1)</a> | <a href="#">Wiki de Defeitos Conhecidos & CVEs</a> | <a href="https://gbzstudio.github.io/lithmat-network/" target="_blank">Documentação Oficial da LMN (Protocolo $\rho$)</a></p>
     </div>
 
     <hr>
 
-    <p style="text-align: center; font-style: italic; margin-top: 30px; color: #8b949e;">Lithmath - Integridade Analítica e Resiliência de Código de Missão Crítica.</p>
+    <p style="text-align: center; font-style: italic; margin-top: 30px; color: #8b949e;">Lithmath - Integridade de Código e Suporte à Arquitetura Modular.</p>
 
 </div>
 
