@@ -1,177 +1,99 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>LithMat — Central Completa de Regras (Pública)</title>
-
-<!-- ==========================
-     STYLES: limpo, responsivo
-     ========================== -->
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LithMat Regras — Database Edition</title>
 <style>
 :root{
-  --bg:#071027; --card:#0f1630; --glass:rgba(255,255,255,0.03);
-  --accent1:#53a8ff; --accent2:#7b4aff; --muted:#9fb1d1; --txt:#e6eef8;
-  --radius:14px; --shadow:0 10px 30px rgba(2,6,23,0.6);
+  --bg:#0e1118;
+  --panel:#131823;
+  --glass:rgba(255,255,255,0.06);
+  --accent:#00e1ff;
+  --border:rgba(255,255,255,0.12);
+  --text:#e9edf5;
+  --muted:#a2acc0;
+  --radius:16px;
 }
-*{box-sizing:border-box}
-html,body{height:100%;margin:0;font-family:Inter,system-ui,Arial;color:var(--txt);background:radial-gradient(circle at 10% 10%,#07142a,#020612 60%)}
-.container{max-width:1100px;margin:28px auto;padding:18px}
-.header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
-.brand{display:flex;gap:12px;align-items:center}
-.logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent1),var(--accent2));display:flex;align-items:center;justify-content:center;font-weight:800}
-.title{font-size:20px;font-weight:800}
-.subtitle{color:var(--muted);font-size:13px}
-
-.grid{display:grid;grid-template-columns:360px 1fr;gap:18px}
-@media(max-width:960px){.grid{grid-template-columns:1fr}}
-.card{background:var(--card);border-radius:12px;padding:16px;border:1px solid rgba(255,255,255,0.03);box-shadow:var(--shadow)}
-.section-title{font-weight:700;margin:0 0 8px 0}
-.input,textarea,select{width:100%;padding:12px;border-radius:10px;background:rgba(0,0,0,0.25);border:1px solid rgba(255,255,255,0.03);color:var(--txt);margin-bottom:10px}
-.btn{display:inline-block;padding:12px 14px;border-radius:12px;border:0;background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#000;font-weight:800;cursor:pointer}
-.btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--txt)}
-.small{font-size:13px;color:var(--muted)}
-
-/* list */
-.controls{display:flex;gap:8px;align-items:center;margin-bottom:12px}
-.search{flex:1}
-.chips{display:flex;gap:8px;flex-wrap:wrap}
-.chip{padding:8px 10px;border-radius:999px;background:var(--glass);cursor:pointer;border:1px solid rgba(255,255,255,0.02)}
-.rule{padding:14px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent);border:1px solid rgba(255,255,255,0.03);margin-bottom:12px}
-.rule h3{margin:0 0 6px 0}
-.meta{font-size:12px;color:var(--muted);margin-bottom:8px}
-.actions{display:flex;gap:8px}
-.action{padding:8px 10px;border-radius:10px;border:0;cursor:pointer}
-.action.copy{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#000}
-.action.report{background:#1f2a42;color:var(--txt)}
-.action.share{background:#18324a;color:var(--txt)}
-
-/* footer */
-.footer{margin-top:18px;text-align:center;color:var(--muted);font-size:13px}
-
-/* stats panel */
-.stats{display:flex;gap:12px;flex-wrap:wrap}
-.stat{background:rgba(255,255,255,0.02);padding:10px;border-radius:10px;min-width:120px}
-
-/* simple transitions */
-.fade{transition:all .22s ease}
-
+body{
+  background:var(--bg);
+  color:var(--text);
+  margin:0;
+  font-family:Arial, sans-serif;
+  padding:20px;
+}
+.frame{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:20px;
+  margin-bottom:20px;
+  box-shadow:0 0 25px rgba(0,0,0,0.4);
+}
+.frame-title{
+  font-size:26px;
+  font-weight:700;
+  margin-bottom:8px;
+}
+input, textarea{
+  width:100%;
+  padding:12px;
+  background:var(--glass);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  color:var(--text);
+  margin-bottom:10px;
+}
+button{
+  background:var(--accent);
+  border:none;
+  padding:12px 18px;
+  border-radius:var(--radius);
+  cursor:pointer;
+  font-weight:700;
+  color:#000;
+}
+.rule-card{
+  background:var(--glass);
+  border:1px solid var(--border);
+  padding:16px;
+  border-radius:var(--radius);
+  margin-bottom:12px;
+}
+.rule-title{font-size:20px;font-weight:700;}
+.rule-meta{color:var(--muted);font-size:13px;margin-bottom:8px;}
 </style>
-
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 </head>
 <body>
 
-<div class="container">
-  <div class="header">
-    <div class="brand">
-      <div class="logo">LM</div>
-      <div>
-        <div class="title">LithMat — Central de Regras (Pública)</div>
-        <div class="subtitle">Poste, copie, compartilhe — tudo sem login. Moderation básica incluída.</div>
-      </div>
-    </div>
-    <div style="display:flex;gap:8px;align-items:center">
-      <button class="btn" id="exportJson">Exportar JSON</button>
-      <button class="btn ghost" id="exportCsv">Exportar CSV</button>
-    </div>
-  </div>
-
-  <div class="grid">
-    <!-- SIDEBAR: form + stats -->
-    <aside class="card">
-      <h3 class="section-title">Publicar Regra</h3>
-      <div class="small">Estrutura: título, texto, categoria, usuário (opcional), id e link de perfil.</div>
-      <input id="titulo" class="input" placeholder="Título da regra" />
-      <textarea id="regra" class="input" rows="4" placeholder="Conteúdo da regra"></textarea>
-      <select id="categoria" class="input">
-        <option value="geral">Geral</option>
-        <option value="whatsapp">WhatsApp</option>
-        <option value="discord">Discord</option>
-        <option value="telegram">Telegram</option>
-        <option value="conteudo">Conteúdo</option>
-        <option value="outros">Outros</option>
-      </select>
-      <input id="user" class="input" placeholder="Autor (opcional)" />
-      <input id="link" class="input" placeholder="Link do perfil (opcional)" />
-      <div style="display:flex;gap:8px">
-        <button class="btn" id="btnPost">Publicar</button>
-        <button class="btn ghost" id="btnClear">Limpar</button>
-      </div>
-
-      <hr style="margin:14px 0;border:none;border-top:1px solid rgba(255,255,255,0.03)" />
-
-      <h4 class="section-title">Estatísticas</h4>
-      <div class="stats" id="statsPanel">
-        <div class="stat">Total: <b id="statTotal">0</b></div>
-        <div class="stat">Categorias: <b id="statCats">0</b></div>
-        <div class="stat">Mais recente: <b id="statRecent">—</b></div>
-      </div>
-
-    </aside>
-
-    <!-- MAIN: busca, filtros, lista -->
-    <main>
-      <div class="card">
-        <div class="controls">
-          <div class="search"><input id="search" class="input" placeholder="Pesquisar título, texto ou autor" oninput="applyFilters()" /></div>
-          <div class="chips" id="chipList">
-            <div class="chip" data-cat="all">Todas</div>
-            <div class="chip" data-cat="geral">Geral</div>
-            <div class="chip" data-cat="whatsapp">WhatsApp</div>
-            <div class="chip" data-cat="discord">Discord</div>
-            <div class="chip" data-cat="telegram">Telegram</div>
-            <div class="chip" data-cat="conteudo">Conteúdo</div>
-          </div>
-          <div style="margin-left:auto;display:flex;gap:8px">
-            <select id="sortBy" class="input" style="width:170px" onchange="applyFilters()">
-              <option value="new">Mais novas</option>
-              <option value="old">Mais antigas</option>
-              <option value="az">Título A→Z</option>
-              <option value="za">Título Z→A</option>
-            </select>
-          </div>
-        </div>
-
-        <div id="list" style="margin-top:12px"></div>
-
-        <div style="text-align:center;margin-top:10px">
-          <button class="btn ghost" id="loadMore">Carregar mais</button>
-        </div>
-      </div>
-
-      <div class="card">
-        <h4 class="section-title">Relatórios / Denúncias</h4>
-        <div class="small">Os usuários podem enviar denúncias que serão salvas no banco em /reports. Sem moderação automática.</div>
-        <div style="margin-top:10px">
-          <input id="reportId" class="input" placeholder="ID da regra a denunciar" />
-          <textarea id="reportMsg" class="input" rows="3" placeholder="Motivo da denúncia"></textarea>
-          <div style="display:flex;gap:8px"><button class="btn" id="btnReport">Enviar denúncia</button></div>
-        </div>
-      </div>
-
-    </main>
-  </div>
-
-  <div class="footer">Feito com ♥ — Sem login. Se quiser adicionar moderação, auth ou filtros anti-abuso, posso integrar.</div>
+<!-- POSTAGEM -->
+<div class="frame">
+  <div class="frame-title">Postar Regra</div>
+  <input id="titulo" placeholder="Título da regra" />
+  <textarea id="regra" rows="4" placeholder="Regra do grupo"></textarea>
+  <input id="categoria" placeholder="Categoria" />
+  <input id="user" placeholder="Nome do usuário (opcional)" />
+  <input id="linkuser" placeholder="Link do perfil" />
+  <button onclick="postarRegra()">Enviar</button>
 </div>
 
-<!-- =====================
-     SCRIPTS: LÓGICA E FIREBASE
-     ===================== -->
+<!-- FUNÇÕES -->
+<div class="frame">
+  <div class="frame-title">Funções</div>
+  <input id="buscar" placeholder="Buscar regras..." oninput="filtrarBusca()" />
+  <button onclick="ordenarNovas()">Mais novas</button>
+  <button onclick="ordenarAntigas()">Mais antigas</button>
+</div>
+
+<!-- LISTA -->
+<div class="frame">
+  <div class="frame-title">Regras Publicadas</div>
+  <div id="rules-container"></div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 <script>
-// Firebase config (do usuário)
-const firebaseConfig = {
-  apiKey: "AIzaSyBgU_MiSKWchHcItzu62cF_RySm0EmPKIE",
-  authDomain: "bancodataregrageneral.firebaseapp.com",
-  databaseURL: "https://bancodataregrageneral-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "bancodataregrageneral",
-  storageBucket: "bancodataregrageneral.firebasestorage.app",
-  messagingSenderId: "578599910104",
-  appId: "1:578599910104:web:38e9fdf1aea786376fb5ad"
-};
 const firebaseConfig = {
   apiKey: "AIzaSyBgU_MiSKWchHcItzu62cF_RySm0EmPKIE",
   authDomain: "bancodataregrageneral.firebaseapp.com",
@@ -184,145 +106,57 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
+let regras = [];
 
-// App state
-let cache = []; // todas as regras
-let view = []; // regras filtradas
-let page = 0; const perPage = 8;
-let currentCat = 'all';
+function escapar(t){return t.replace(/[<>]/g,m=>({'<':'&lt;','>':'&gt;'}[m]));}
 
-// Helpers
-const $ = id => document.getElementById(id);
-const escape = s => s==null? '': String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
-
-// Load realtime
-const regrasRef = db.ref('regras');
-regrasRef.on('value', snap => {
-  cache = [];
-  snap.forEach(child => cache.push({...child.val(), key: child.key}));
-  // newest first by time or key
-  cache.sort((a,b)=> (b.time||0) - (a.time||0));
-  resetView();
-  updateStats();
-});
-
-// Publish
-$('btnPost').addEventListener('click', ()=>{
-  const titulo = $('titulo').value.trim();
-  const regra = $('regra').value.trim();
-  if(!titulo || !regra) return alert('Preencha título e regra');
-  const data = {
-    titulo: escape(titulo),
-    regra: escape(regra),
-    categoria: $('categoria').value||'geral',
-    user: escape($('user').value.trim()),
-    link: escape($('link').value.trim()),
-    time: Date.now(),
-    likes: 0
+function postarRegra(){
+  const data={
+    titulo:escapar(titulo.value.trim()),
+    regra:escapar(regra.value.trim()),
+    categoria:escapar(categoria.value.trim()),
+    user:escapar(user.value.trim()),
+    link:escapar(linkuser.value.trim()),
+    time:Date.now()
   };
-  const id = db.ref('regras').push().key;
-  db.ref('regras/'+id).set(data).then(()=>{
-    $('titulo').value='';$('regra').value='';$('user').value='';$('link').value='';
-    alert('Regra publicada!');
-  }).catch(e=>alert('Erro: '+e.message));
-});
-$('btnClear').addEventListener('click', ()=>{ $('titulo').value='';$('regra').value='';$('user').value='';$('link').value=''; });
-
-// Reports
-$('btnReport').addEventListener('click', ()=>{
-  const id = $('reportId').value.trim(); const msg = $('reportMsg').value.trim();
-  if(!id || !msg) return alert('Informe ID e motivo');
-  const rref = db.ref('reports').push();
-  rref.set({ruleId: id, msg: escape(msg), time: Date.now()}).then(()=>{ alert('Denúncia enviada'); $('reportId').value='';$('reportMsg').value=''; });
-});
-
-// Filters + render
-function resetView(){ page=0; applyFilters(); }
-function applyFilters(){
-  const q = ($('search').value||'').trim().toLowerCase();
-  const sort = $('sortBy').value || 'new';
-  // category chip
-  view = cache.filter(r => currentCat==='all' ? true : (r.categoria===currentCat));
-  if(q) view = view.filter(r => (r.titulo||'').toLowerCase().includes(q) || (r.regra||'').toLowerCase().includes(q) || (r.user||'').toLowerCase().includes(q));
-  // sort
-  if(sort==='new') view.sort((a,b)=> (b.time||0)-(a.time||0));
-  if(sort==='old') view.sort((a,b)=> (a.time||0)-(b.time||0));
-  if(sort==='az') view.sort((a,b)=> (a.titulo||'').localeCompare(b.titulo||''));
-  if(sort==='za') view.sort((a,b)=> (b.titulo||'').localeCompare(a.titulo||''));
-
-  renderPage(true);
+  if(!data.titulo||!data.regra){alert("Preencha título e regra!");return;}
+  const id=db.ref("regras").push().key;
+  db.ref("regras/"+id).set(data);
+  titulo.value=""; regra.value=""; categoria.value=""; user.value=""; linkuser.value="";
 }
 
-// render page
-function renderPage(reset=false){
-  const list = $('list');
-  if(reset) list.innerHTML='';
-  const start = page*perPage; const end = start+perPage;
-  const slice = view.slice(start,end);
-  slice.forEach(r=>{
-    const div = document.createElement('div'); div.className='rule fade';
-    div.innerHTML = `
-      <h3>${r.titulo}</h3>
-      <div class='meta'>Categoria: ${r.categoria||'geral'} • ID: ${r.key} • ${r.user? 'Autor: '+r.user : 'Autor: —'}</div>
-      <div>${r.regra}</div>
-      <div class='actions'>
-        <button class='action copy' onclick='copyRule("${r.key}")'>Copiar</button>
-        <button class='action share' onclick='shareRule("${r.key}")'>Compartilhar</button>
-        <button class='action report' onclick='quickReport("${r.key}")'>Denunciar</button>
-        <button class='action' onclick='likeRule("${r.key}")'>👍 <span id="likes_${r.key}">${r.likes||0}</span></button>
-        <button class='action ghost' onclick='openRule("${r.key}")'>Abrir</button>
-      </div>`;
-    list.appendChild(div);
+function carregar(){
+  db.ref("regras").on("value",snap=>{
+    regras=[];
+    snap.forEach(r=>regras.push({...r.val(),id:r.key}));
+    render();
   });
-  page++;
 }
 
-$('loadMore').addEventListener('click', ()=>{ renderPage(); });
-
-// chips
-document.getElementById('chipList').addEventListener('click', e=>{
-  const chip = e.target.closest('.chip'); if(!chip) return;
-  currentCat = chip.dataset.cat||'all';
-  // highlight
-  Array.from(document.querySelectorAll('.chip')).forEach(c=> c.style.outline='');
-  chip.style.outline='2px solid rgba(120,150,255,0.12)';
-  resetView();
-});
-
-// quick actions
-function copyRule(key){ const item = cache.find(x=>x.key===key); if(!item) return alert('Não encontrado'); navigator.clipboard.writeText((item.titulo+'
-
-'+item.regra)); alert('Copiado'); }
-function shareRule(key){ const url = location.href.split('#')[0] + '#rule='+encodeURIComponent(key); if(navigator.share){ navigator.share({title:'Regra: '+key, text:'Veja essa regra', url}).catch(()=>{}); } else { navigator.clipboard.writeText(url); alert('Link copiado: '+url); } }
-function quickReport(key){ const motivo = prompt('Motivo da denúncia (spam/abuso/outro)'); if(!motivo) return; db.ref('reports').push({ruleId:key,msg:escape(motivo),time:Date.now()}).then(()=>alert('Denúncia enviada.')); }
-function likeRule(key){ const r = db.ref('regras/'+key+'/likes'); r.transaction(v=> (v||0)+1 ); }
-function openRule(key){ location.hash='rule='+encodeURIComponent(key); // optional: could render modal
-  // highlight after slight delay
-  setTimeout(()=>{ const el = document.querySelector(`[onclick*="${key}"]`); if(el) el.scrollIntoView({behavior:'smooth',block:'center'}); },600);
+function render(lista=regras){
+  const box=document.getElementById("rules-container");
+  box.innerHTML="";
+  lista.forEach(r=>{
+    box.innerHTML+=`
+      <div class='rule-card'>
+        <div class='rule-title'>${r.titulo}</div>
+        <div class='rule-meta'>Categoria: ${r.categoria||"-"} • Usuário: ${r.user||"Anônimo"}</div>
+        <div>${r.regra}</div>
+        <br>
+        ${r.link?`<a href='${r.link}' target='_blank' style='color:var(--accent)'>Perfil</a>`:""}
+      </div>`;
+  });
 }
 
-// reports export, stats, export data
-function updateStats(){ $('statTotal').textContent = cache.length; const cats = Array.from(new Set(cache.map(r=>r.categoria||'geral'))).length; $('statCats').textContent = cats; $('statRecent').textContent = cache[0]? new Date(cache[0].time).toLocaleString() : '—'; }
+function filtrarBusca(){
+  const q=buscar.value.toLowerCase();
+  render(regras.filter(r => r.titulo.toLowerCase().includes(q) || r.regra.toLowerCase().includes(q)));
+}
+function ordenarNovas(){render([...regras].sort((a,b)=>b.time-a.time));}
+function ordenarAntigas(){render([...regras].sort((a,b)=>a.time-b.time));}
 
-$('exportJson').addEventListener('click', ()=>{
-  const data = JSON.stringify(cache, null, 2);
-  const blob = new Blob([data],{type:'application/json'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a'); a.href=url; a.download='lithmat_regras.json'; a.click(); URL.revokeObjectURL(url);
-});
-$('exportCsv').addEventListener('click', ()=>{
-  if(!cache.length) return alert('Sem dados');
-  const keys = ['key','titulo','regra','categoria','user','link','time','likes'];
-  const rows = [keys.join(',')].concat(cache.map(r=>keys.map(k=>'"'+(r[k]||'')+'"').join(',')));
-  const blob = new Blob([rows.join('
-')],{type:'text/csv'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='lithmat_regras.csv'; a.click(); URL.revokeObjectURL(url);
-});
-
-// initialize view on load
-window.addEventListener('load', ()=>{ applyFilters(); // check hash for rule
-  const h = location.hash.replace('#',''); if(h.startsWith('rule=')){ const key = decodeURIComponent(h.split('=')[1]); setTimeout(()=>{ const el = document.querySelector(`[onclick*="${key}"]`); if(el) el.scrollIntoView({behavior:'smooth'}); },900); }
-});
-
+carregar();
 </script>
+
 </body>
 </html>
