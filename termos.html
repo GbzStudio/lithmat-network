@@ -1,250 +1,215 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Termos & Privacidade • LithMat Network</title>
-
-<style>
-/* ========= FONTS ========= */
-body {
-    font-family: "Segoe UI", Arial, sans-serif;
-    background: linear-gradient(180deg, #05060a 0%, #0a0c12 100%);
-    color: #dfe6ff;
-    margin: 0;
-    overflow-x: hidden;
-}
-
-/* ========= NAVBAR ========= */
-.navbar {
-    width: 100%;
-    padding: 18px 30px;
-    background: rgba(255,255,255,0.04);
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-    backdrop-filter: blur(15px);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.logo svg {
-    width: 34px;
-    height: 34px;
-    filter: drop-shadow(0 0 6px #4ea1ff);
-}
-
-.logo-text {
-    font-size: 1.2rem;
-    font-weight: 700;
-    background: linear-gradient(90deg, #4ea1ff, #6e63ff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.nav-links a {
-    color: #c8d6ff;
-    margin-left: 20px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: 0.2s;
-}
-
-.nav-links a:hover {
-    color: #7db8ff;
-}
-
-/* ========= CONTENT ========= */
-.container {
-    max-width: 900px;
-    margin: 40px auto;
-    padding: 20px;
-    animation: fadeIn 0.8s ease forwards;
-}
-
-h1 {
-    text-align: center;
-    font-size: 2.5rem;
-    margin-bottom: 25px;
-    background: linear-gradient(90deg, #4ea1ff, #6e63ff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-h2 {
-    font-size: 1.4rem;
-    margin-bottom: 12px;
-    color: #7db8ff;
-}
-
-section {
-    background: rgba(255,255,255,0.03);
-    padding: 25px;
-    margin-bottom: 25px;
-    border-radius: 12px;
-    border: 1px solid rgba(255,255,255,0.06);
-    backdrop-filter: blur(10px);
-    transition: 0.25s ease;
-}
-
-section:hover {
-    border-color: rgba(78,161,255,0.4);
-    box-shadow: 0 0 18px rgba(78,161,255,0.18);
-    transform: translateY(-2px);
-}
-
-/* ========= BUTTON ========= */
-.btn {
-    display: block;
-    width: fit-content;
-    margin: 40px auto 20px;
-    padding: 12px 22px;
-    text-align: center;
-    background: linear-gradient(90deg, #4ea1ff, #6e63ff);
-    color: #fff;
-    font-weight: 600;
-    border-radius: 10px;
-    text-decoration: none;
-    box-shadow: 0 0 14px rgba(110, 99, 255, .5);
-    transition: .25s;
-}
-
-.btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 20px rgba(110, 99, 255, .7);
-}
-
-/* ========= FOOTER ========= */
-.footer {
-    margin-top: 60px;
-    padding: 25px;
-    text-align: center;
-    background: rgba(255,255,255,0.04);
-    border-top: 1px solid rgba(255,255,255,0.07);
-    font-size: .9rem;
-    color: #7f8bb5;
-}
-
-/* ========= ANIMATION ========= */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(15px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* ========= RESPONSIVIDADE ========= */
-@media (max-width: 600px) {
-    .nav-links { display: none; }
-    h1 { font-size: 2rem; }
-    section { padding: 18px; }
-}
-</style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚠️ Lithmath Security Briefing: Código Vazado e Suporte de Programação</title>
+    <style>
+        /* --- ESTILOS GERAIS E MODO DARK --- */
+        body {
+            font-family: 'Consolas', 'Monospace', monospace;
+            margin: 0;
+            padding: 0;
+            background-color: #0d1117;
+            color: #c9d1d9;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: #161b22;
+            border-radius: 10px;
+            border: 1px solid #30363d;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+        h1 {
+            color: #ff5e5e; /* Vermelho/Alerta para o título */
+            font-size: 2.8em;
+            text-align: center;
+            border-bottom: 2px solid #30363d;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #4cd1c5;
+            border-bottom: 1px solid #30363d;
+            padding-bottom: 5px;
+            margin-top: 35px;
+            font-size: 1.8em;
+        }
+        h3 {
+            color: #e3b341;
+            margin-top: 25px;
+            font-size: 1.5em;
+        }
+        .intro-text {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #8b949e;
+            font-style: italic;
+        }
+        hr {
+            border-color: #30363d;
+            margin: 30px 0;
+        }
+        a {
+            color: #58a6ff;
+            text-decoration: none;
+        }
+        a:hover {
+            color: #79c0ff;
+        }
+        
+        /* Bot e CTA */
+        .cta-button {
+            display: block;
+            width: 90%;
+            max-width: 400px;
+            margin: 30px auto;
+            padding: 18px 25px;
+            background-color: #ff5e5e; /* Vermelho para a CTA de Segurança */
+            color: #0d1117;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 1.3em;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        .cta-button:hover {
+            background-color: #d13d3d;
+        }
+        .code-block {
+            background-color: #010409;
+            border: 1px solid #30363d;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+        
+        /* Seção de Alerta */
+        .alert-section {
+            background-color: #491f25; /* Fundo escuro e avermelhado */
+            border: 2px solid #ff5e5e;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+        }
+        .alert-section h3 {
+            color: #ff5e5e;
+            border-bottom: 1px solid #ff5e5e;
+            padding-bottom: 5px;
+        }
+        .vulnerability-code {
+            color: #e3b341;
+            font-weight: bold;
+        }
+        .emphasis {
+            color: #f0f6fc;
+            font-weight: bold;
+        }
+    </style>
 </head>
-
 <body>
 
-<!-- ========== NAVBAR ========== -->
-<div class="navbar">
-    <div class="logo">
-        <!-- LOGO LITHMAT (SVG PREMIUM) -->
-        <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" stroke="#4ea1ff" stroke-width="6" fill="none"/><path d="M30 55 L50 30 L70 55" stroke="#6e63ff" stroke-width="6" fill="none"/></svg>
-        <span class="logo-text">LithMat Network</span>
-    </div>
-
-    <div class="nav-links">
-        <a href="https://gbzstudio.github.io/lithmat-network/">Início</a>
-        <a href="#">Sobre</a>
-        <a href="#">Contato</a>
-    </div>
-</div>
-
-<!-- ========== CONTEÚDO ========== -->
 <div class="container">
+    
+    <h1>⚠️ Lithmath Security Briefing: Código Vazado e Suporte de Programação </h1>
+    <p class="intro-text">Base de Conhecimento e Módulo de Resposta Preditiva (MRP) focado na **estrutura de programação** e protocolos internos do Lithmath, incluindo **análise de vulnerabilidade** e <a href="https://gbzstudio.github.io/lithmat-network/" target="_blank" class="emphasis">Lithmat-Network</a>.</p>
+    
+    <hr>
+    
+    <div class="alert-section">
+        <h3>🚨 ALERTA DE VULNERABILIDADE (Security Patch 2.5b)</h3>
+        <p>A equipe de segurança do Lithmath confirma que trechos de código interno foram vazados na rede (LMN). O código exposto não afeta a segurança de dados do usuário, mas revelou um **módulo de teste oculto** e uma **brecha de injeção** no I/O do Kernel.</p>
+        
+        <h4>CÓDIGO SECRETO / EASTER EGG VAZADO</h4>
+        <p>Um módulo de teste de *benchmark* (internamente chamado de $M_{\text{alpha-test}}$) foi exposto. Sua ativação manual pode sobrecarregar o $K_{\text{core}}$.</p>
+        <div class="code-block">
+            <span style="color: #4cd1c5;">// Trecho vazado que aciona o módulo secreto</span><br>
+            <span style="color: #ff5e5e;">if (input.equals("Lithmath_Epsilon_01")){</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;call_kernel_module(<span class="vulnerability-code">M_ALPHA_TEST</span>);<br>
+            <span style="color: #ff5e5e;">}</span>
+        </div>
+        
+        <h4>VULNERABILIDADE CRÍTICA EXPOSTA (CVE-LITH-2025-001)</h4>
+        <p>Foi identificado que a função de *parsing* do Protocolo $\rho$ não sanitiza totalmente strings de entrada, permitindo injeção de comandos na camada de I/O.</p>
+        <p><strong>Status:</strong> Corrigido na versão **v4.1.2** (Patch de Emergência). Recomenda-se a <span class="emphasis">atualização imediata</span>.</p>
+    </div>
 
-<h1>Termos de Uso & Política de Privacidade</h1>
+    <hr>
+    
+    <h2>🧠 Mapeamento da Arquitetura Lithmath (Referência de Código)</h2>
+    
+    <p>O MRP foi treinado para auxiliar na análise forense e depuração de código, com base nas três camadas principais do Lithmath:</p>
 
-<section>
-<h2>Seja bem-vindo</h2>
-<p>
-Antes de usar o site <strong>https://gbzstudio.github.io/lithmat-network/</strong> ou qualquer serviço da GbzStudio, leia atentamente este documento.  
-Ao continuar navegando, você concorda com todos os termos abaixo.
-</p>
-</section>
+    <h3>1. Kernel de Cálculo $(K_{\text{core}})$</h3>
+    <p>Núcleo de processamento. Diagnóstico: Falhas no Kernel, como o <span class="emphasis">Buffer Overflow</span> explorado no CVE-001, são tratados aqui. **Query Exemplo:** "Qual o *pointer* de memória alvo na vulnerabilidade CVE-LITH-2025-001?"</p>
 
-<section>
-<h2>1. Aceitando os Termos</h2>
-<p>
-Ao acessar o site, você concorda com nossas regras. Atualizações podem ocorrer e, ao continuar usando o site, você aceita automaticamente a nova versão.
-</p>
-</section>
+    <h3>2. Protocolos de I/O e Sincronização ($\rho$)</h3>
+    <p>Gerenciamento de rede LMN e API de terceiros. **Query Exemplo:** "Descrever o algoritmo de validação de *payload* introduzido no Patch 4.1.2 para mitigar o CVE."</p>
+    
+    <h3>3. Módulos de Implementação $(M_n)$</h3>
+    <p>Funcionalidades específicas. **Query Exemplo:** "Como desabilitar programaticamente a chamada para o módulo de teste <span class="vulnerability-code">M_ALPHA_TEST</span> usando a API oficial?"</p>
 
-<section>
-<h2>2. Como Usar o Site</h2>
-<p>
-Grande parte do site é aberta ao público. Algumas áreas podem exigir conta.  
-Use o site com respeito e conforme a lei.
-</p>
-</section>
+    <hr>
 
-<section>
-<h2>3. Privacidade</h2>
-<p>
-Seguimos práticas sérias de proteção de dados.  
-Coletamos apenas o necessário, protegemos com segurança moderna e não vendemos informações pessoais.
-</p>
-</section>
+    <h2>💬 Interface de Query MRP (Análise Forense e Depuração)</h2>
+    
+    <p style="text-align: center;">Use o MRP para analisar o impacto do código vazado ou para buscar o status da correção de vulnerabilidades.</p>
+    
+    <div class="code-block" style="text-align: center; color: #79c0ff;">
+        > QUERY:: <span style="color: #ff5e5e;">[VULNERABILIDADE/EASTER_EGG]</span> | <span style="color: #4cd1c5;">[PATCH/CÓDIGO]</span> | <span style="color: #58a6ff;">[STATUS]</span>
+    </div>
+    <div class="code-block" style="text-align: center; color: #8b949e; font-style: italic;">
+        Exemplo: QUERY:: CVE-LITH-2025-001 | PATCH 4.1.2 | Explique a mitigação
+    </div>
+    
+    <a href="#" class="cta-button">💥 EXECUTAR ANÁLISE DE SEGURANÇA</a>
+    
+    <hr>
+    
+    <h2>💻 Fórum de Engenharia e Security Briefings</h2>
+    <p>Discussões abertas sobre a arquitetura e os impactos dos recentes eventos de segurança.</p>
 
-<section>
-<h2>4. Direitos de Conteúdo</h2>
-<p>
-Todo conteúdo é protegido por direitos autorais.  
-Você pode visualizar, mas não copiar, redistribuir ou modificar sem autorização.
-</p>
-</section>
+    <div class="forum-section">
+        <h3>Threads Ativos (Foco em Segurança)</h3>
+        
+        <div class="topic">
+            <div class="topic-title"><span class="emphasis">[SECURITY]</span> Discussão sobre a eficácia da sanitização de strings no Protocolo $\rho$ pós-patch.</div>
+            <div class="topic-meta">Camada: Protocolos de I/O | Última Atividade: 15 min | Tags: CVE-001, Injeção, Segurança</div>
+        </div>
+        
+        <div class="topic">
+            <div class="topic-title"><span class="emphasis">[EASTER EGG]</span> O que mais o módulo secreto $M_{\text{alpha-test}}$ pode fazer? (Análise de código)</div>
+            <div class="topic-meta">Camada: Módulos de Implementação | Última Atividade: 3 horas | Tags: Teste, Código Oculto</div>
+        </div>
+        
+        <div class="topic">
+            <div class="topic-title"><span class="emphasis">[K-CORE]</span> Relatório de latência após a implementação do patch de emergência 4.1.2.</div>
+            <div class="topic-meta">Camada: Kernel | Última Atividade: 1 dia | Tags: Performance, Patch, K-CORE</div>
+        </div>
+        
+        <p style="text-align: center; margin-top: 15px;"><a href="#">Explorar Logs de Segurança</a> | <a href="#">Abrir Novo Thread (Detalhe a Vulnerabilidade)</a></p>
+    </div>
 
-<section>
-<h2>5. Cookies</h2>
-<p>
-Usamos cookies para melhorar sua experiência.  
-Você pode desativá-los, mas algumas funções deixarão de funcionar.
-</p>
-</section>
+    <hr>
 
-<section>
-<h2>6. Links Externos</h2>
-<p>
-Podemos mostrar links externos.  
-A GbzStudio não controla o conteúdo desses sites.
-</p>
-</section>
+    <h2>🔗 Recursos de Escalabilidade (Security Team)</h2>
+    
+    <p>Para reportar novas vulnerabilidades ou falhas no patch:</p>
 
-<section>
-<h2>7. Alterações</h2>
-<p>
-Os termos podem ser atualizados.  
-A versão mais recente estará sempre aqui.
-</p>
-</section>
+    <div class="contact-info">
+        <p><strong>📧 Security Escalation Point:</strong> <a href="mailto:security@lithmath.com">security@lithmath.com</a> (Para reportar Zero-Days ou falhas P1)</p>
+        <p><strong>💾 Repositório de Patch Notes:</strong> <a href="[Link para o repositório de patch notes]">Acesso ao Log de Alterações e Fixes (Público)</a></p>
+        <p><strong>📘 Wiki de Defeitos e Workarounds:</strong> <a href="#">[Wiki de Problemas Conhecidos & CVEs]</a></p>
+    </div>
 
-<section>
-<h2>Dúvidas, Suporte ou Contato</h2>
-<p>
-E-mail oficial: <strong>gbzinstudio@gmail.com</strong>
-</p>
-</section>
+    <hr>
 
-<a class="btn" href="https://gbzstudio.github.io/lithmat-network/">⬅ Voltar ao site principal</a>
+    <p style="text-align: center; font-style: italic; margin-top: 30px; color: #8b949e;">Lithmath - Mantendo a integridade analítica e a segurança do código.</p>
 
-</div>
-
-<!-- ========== FOOTER ========== -->
-<div class="footer">
-    © 2025 GbzStudio • Plataforma LithMat Network • Todos os direitos reservados.
 </div>
 
 </body>
