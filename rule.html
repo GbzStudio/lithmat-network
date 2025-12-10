@@ -1,162 +1,341 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>LithMat Regras — Database Edition</title>
-<style>
-:root{
-  --bg:#0e1118;
-  --panel:#131823;
-  --glass:rgba(255,255,255,0.06);
-  --accent:#00e1ff;
-  --border:rgba(255,255,255,0.12);
-  --text:#e9edf5;
-  --muted:#a2acc0;
-  --radius:16px;
-}
-body{
-  background:var(--bg);
-  color:var(--text);
-  margin:0;
-  font-family:Arial, sans-serif;
-  padding:20px;
-}
-.frame{
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:var(--radius);
-  padding:20px;
-  margin-bottom:20px;
-  box-shadow:0 0 25px rgba(0,0,0,0.4);
-}
-.frame-title{
-  font-size:26px;
-  font-weight:700;
-  margin-bottom:8px;
-}
-input, textarea{
-  width:100%;
-  padding:12px;
-  background:var(--glass);
-  border:1px solid var(--border);
-  border-radius:var(--radius);
-  color:var(--text);
-  margin-bottom:10px;
-}
-button{
-  background:var(--accent);
-  border:none;
-  padding:12px 18px;
-  border-radius:var(--radius);
-  cursor:pointer;
-  font-weight:700;
-  color:#000;
-}
-.rule-card{
-  background:var(--glass);
-  border:1px solid var(--border);
-  padding:16px;
-  border-radius:var(--radius);
-  margin-bottom:12px;
-}
-.rule-title{font-size:20px;font-weight:700;}
-.rule-meta{color:var(--muted);font-size:13px;margin-bottom:8px;}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lithmat - Biblioteca de Regras Comunitárias</title>
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+    <style>
+        /* Estilo Base */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5; /* Fundo cinza claro */
+            margin: 0;
+            padding: 0;
+            color: #1c1e21;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        /* Cartões (Containers de Conteúdo) */
+        .card {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        /* Header (Cabeçalho do "App") */
+        .app-header {
+            background-color: #4CAF50; /* Cor primária do app (verde) */
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .header-title {
+            margin: 0;
+            font-size: 2.5em;
+        }
+
+        .header-subtitle {
+            margin: 5px 0 0 0;
+            font-size: 1.1em;
+        }
+
+        /* Formulário de Postagem */
+        .rule-form input[type="text"],
+        .rule-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box; /* Garante que o padding não aumente a largura total */
+            font-size: 1em;
+        }
+
+        .rule-form textarea {
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: background-color 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
+
+        /* Mensagens de Feedback */
+        .message {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
+        /* Exibição das Regras */
+        .rules-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .rule-card {
+            border: 1px solid #ddd;
+            border-top: 5px solid #2196F3; /* Cor de destaque para a regra */
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #fafafa;
+            position: relative;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .rule-card h3 {
+            margin-top: 0;
+            color: #333;
+            font-size: 1.4em;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+
+        .rule-text {
+            background-color: #eee;
+            padding: 10px;
+            border-radius: 4px;
+            white-space: pre-wrap; /* Preserva espaços e quebras de linha */
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.95em;
+            margin-bottom: 10px;
+            cursor: copy; /* Indica que o texto é copiável */
+        }
+
+        .rule-info {
+            font-size: 0.9em;
+            color: #555;
+            margin-bottom: 5px;
+        }
+
+        .rule-info strong {
+            color: #1c1e21;
+        }
+
+        .copy-btn {
+            background-color: #2196F3; /* Azul */
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            margin-top: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .copy-btn:hover {
+            background-color: #1e87e5;
+        }
+
+        /* Footer */
+        .app-footer {
+            text-align: center;
+            padding: 10px;
+            margin-top: 20px;
+            border-top: 1px solid #ddd;
+            color: #777;
+            font-size: 0.85em;
+        }
+    </style>
 </head>
 <body>
+    <header class="app-header">
+        <h1 class="header-title">Lithmat Regras 📜</h1>
+        <p class="header-subtitle">Compartilhe as regras do seu grupo para a comunidade copiar!</p>
+    </header>
 
-<!-- POSTAGEM -->
-<div class="frame">
-  <div class="frame-title">Postar Regra</div>
-  <input id="titulo" placeholder="Título da regra" />
-  <textarea id="regra" rows="4" placeholder="Regra do grupo"></textarea>
-  <input id="categoria" placeholder="Categoria" />
-  <input id="user" placeholder="Nome do usuário (opcional)" />
-  <input id="linkuser" placeholder="Link do perfil" />
-  <button onclick="postarRegra()">Enviar</button>
-</div>
+    <main class="container">
+        <section class="post-section card">
+            <h2>✍️ Enviar Nova Regra</h2>
+            <form id="ruleForm" class="rule-form">
+                <input type="text" id="ruleTitle" placeholder="Título da Regra (Ex: 'Proibido Spam')" required>
+                <textarea id="groupRule" placeholder="Regra de Grupo (O texto completo para copiar e colar)" rows="4" required></textarea>
+                <input type="text" id="category" placeholder="Categoria (Ex: 'Moderação', 'Geral', 'Conteúdo')">
+                <input type="text" id="user" placeholder="Seu Nome de Usuário (Opcional)">
+                <input type="text" id="idLinkProfile" placeholder="Link/ID do Perfil (Opcional)">
+                <button type="submit" class="submit-btn">Postar Regra</button>
+                <p id="message" class="message"></p>
+            </form>
+        </section>
 
-<!-- FUNÇÕES -->
-<div class="frame">
-  <div class="frame-title">Funções</div>
-  <input id="buscar" placeholder="Buscar regras..." oninput="filtrarBusca()" />
-  <button onclick="ordenarNovas()">Mais novas</button>
-  <button onclick="ordenarAntigas()">Mais antigas</button>
-</div>
+        <section class="display-section">
+            <h2>📚 Regras da Comunidade</h2>
+            <div id="rulesContainer" class="rules-container">
+                <p class="loading-message">Carregando regras...</p>
+            </div>
+        </section>
+    </main>
 
-<!-- LISTA -->
-<div class="frame">
-  <div class="frame-title">Regras Publicadas</div>
-  <div id="rules-container"></div>
-</div>
+    <footer class="app-footer">
+        <p>Projeto de Biblioteca de Regras Comunitárias - Código Aberto</p>
+    </footer>
 
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
-<script>
-const firebaseConfig = {
-  apiKey: "AIzaSyBgU_MiSKWchHcItzu62cF_RySm0EmPKIE",
-  authDomain: "bancodataregrageneral.firebaseapp.com",
-  databaseURL: "https://bancodataregrageneral-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "bancodataregrageneral",
-  storageBucket: "bancodataregrageneral.firebasestorage.app",
-  messagingSenderId: "578599910104",
-  appId: "1:578599910104:web:38e9fdf1aea786376fb5ad"
-};
+    <script>
+        // A sua configuração do Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBgU_MiSKWchHcItzu62cF_RySm0EmPKIE",
+            authDomain: "bancodataregrageneral.firebaseapp.com",
+            databaseURL: "https://bancodataregrageneral-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "bancodataregrageneral",
+            storageBucket: "bancodataregrageneral.firebasestorage.app",
+            messagingSenderId: "578599910104",
+            appId: "1:578599910104:web:38e9fdf1aea786376fb5ad"
+        };
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
-let regras = [];
+        // Inicializa o Firebase
+        firebase.initializeApp(firebaseConfig);
 
-function escapar(t){return t.replace(/[<>]/g,m=>({'<':'&lt;','>':'&gt;'}[m]));}
+        // Referência para o banco de dados (o nó 'rules')
+        const database = firebase.database();
+        const rulesRef = database.ref('rules');
 
-function postarRegra(){
-  const data={
-    titulo:escapar(titulo.value.trim()),
-    regra:escapar(regra.value.trim()),
-    categoria:escapar(categoria.value.trim()),
-    user:escapar(user.value.trim()),
-    link:escapar(linkuser.value.trim()),
-    time:Date.now()
-  };
-  if(!data.titulo||!data.regra){alert("Preencha título e regra!");return;}
-  const id=db.ref("regras").push().key;
-  db.ref("regras/"+id).set(data);
-  titulo.value=""; regra.value=""; categoria.value=""; user.value=""; linkuser.value="";
-}
+        const ruleForm = document.getElementById('ruleForm');
+        const rulesContainer = document.getElementById('rulesContainer');
+        const messageElement = document.getElementById('message');
 
-function carregar(){
-  db.ref("regras").on("value",snap=>{
-    regras=[];
-    snap.forEach(r=>regras.push({...r.val(),id:r.key}));
-    render();
-  });
-}
+        /**
+         * Funções de UI
+         */
 
-function render(lista=regras){
-  const box=document.getElementById("rules-container");
-  box.innerHTML="";
-  lista.forEach(r=>{
-    box.innerHTML+=`
-      <div class='rule-card'>
-        <div class='rule-title'>${r.titulo}</div>
-        <div class='rule-meta'>Categoria: ${r.categoria||"-"} • Usuário: ${r.user||"Anônimo"}</div>
-        <div>${r.regra}</div>
-        <br>
-        ${r.link?`<a href='${r.link}' target='_blank' style='color:var(--accent)'>Perfil</a>`:""}
-      </div>`;
-  });
-}
+        // Cria o elemento HTML para uma regra
+        function createRuleCard(rule) {
+            const card = document.createElement('div');
+            card.className = 'rule-card';
+            
+            // Constrói o conteúdo do card
+            card.innerHTML = `
+                <h3>${rule.title}</h3>
+                <div class="rule-info"><strong>Categoria:</strong> ${rule.category || 'N/A'}</div>
+                <div class="rule-info"><strong>Postado por:</strong> ${rule.user || 'Anônimo'}</div>
+                ${rule.idLinkProfile ? `<div class="rule-info"><strong>Link/ID:</strong> <a href="${rule.idLinkProfile}" target="_blank">${rule.idLinkProfile}</a></div>` : ''}
+                <p><strong>Regra:</strong></p>
+                <div class="rule-text" id="rule-text-${rule.id}">${rule.groupRule}</div>
+                <button class="copy-btn" data-rule-id="${rule.id}">Copiar Regra</button>
+            `;
 
-function filtrarBusca(){
-  const q=buscar.value.toLowerCase();
-  render(regras.filter(r => r.titulo.toLowerCase().includes(q) || r.regra.toLowerCase().includes(q)));
-}
-function ordenarNovas(){render([...regras].sort((a,b)=>b.time-a.time));}
-function ordenarAntigas(){render([...regras].sort((a,b)=>a.time-b.time));}
+            // Adiciona o evento de clique para copiar
+            card.querySelector('.copy-btn').addEventListener('click', (e) => {
+                const ruleId = e.target.dataset.ruleId;
+                const textToCopy = document.getElementById(`rule-text-${ruleId}`).textContent;
+                
+                // Usa a API de Clipboard para copiar
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    e.target.textContent = 'Copiado! ✅';
+                    setTimeout(() => {
+                        e.target.textContent = 'Copiar Regra';
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Falha ao copiar:', err);
+                    alert('Falha ao copiar o texto. Por favor, copie manualmente.');
+                });
+            });
 
-carregar();
-</script>
+            return card;
+        }
 
+        // Limpa e exibe todas as regras
+        function displayRules(rules) {
+            rulesContainer.innerHTML = ''; // Limpa o container
+            
+            const ruleKeys = Object.keys(rules);
+            
+            if (ruleKeys.length === 0) {
+                rulesContainer.innerHTML = '<p class="loading-message">Nenhuma regra postada ainda. Seja o primeiro!</p>';
+                return;
+            }
+
+            // Itera sobre as regras, ordenando do mais recente para o mais antigo (reverse)
+            ruleKeys.reverse().forEach(key => { 
+                const rule = rules[key];
+                rule.id = key; // Adiciona o ID para a função de cópia
+                const card = createRuleCard(rule);
+                rulesContainer.appendChild(card);
+            });
+        }
+
+        /**
+         * Funções de Firebase
+         */
+
+        // 1. Escutador para carregar as regras em tempo real
+        rulesRef.on('value', (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                displayRules(data);
+            } else {
+                rulesContainer.innerHTML = '<p class="loading-message">Nenhuma regra postada ainda. Seja o primeiro!</p>';
+            }
+        }, (error) => {
+            console.error("Erro ao carregar dados do Firebase:", error);
+            rulesContainer.innerHTML = '<p class="loading-message" style="color: red;">Erro ao carregar regras. Verifique a conexão com o banco de dados e as regras de segurança do Firebase.</p>';
+        });
+
+
+        // 2. Lida com o envio do formulário
+        ruleForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Coleta os dados do formulário
+            const newRule = {
+                title: document.getElementById('ruleTitle').value.trim(),
+                groupRule: document.getElementById('groupRule').value.trim(),
+                category: document.getElementById('category').value.trim() || 'Geral',
+                user: document.getElementById('user').value.trim() || 'Anônimo',
+                idLinkProfile: document.getElementById('idLinkProfile').value.trim(),
+                timestamp: firebase.database.ServerValue.TIMESTAMP // Adiciona um timestamp do servidor
+            };
+            
+            // Validação simples
+            if (newRule.title === '' || newRule.groupRule === '') {
+                 messageElement.textContent = 'O título e a regra são campos obrigatórios.';
+                 messageElement.style.color = 'red';
+                 return;
+            }
+            
+            messageElement.textContent = 'Postando...';
+            messageElement.style.color = '#4CAF50';
+
+            // Salva a regra no Firebase
+            rulesRef.push(newRule)
+                .then(() => {
+                    messageElement.textContent = 'Regra postada com sucesso! 🎉';
+                    ruleForm.reset(); // Limpa o formulário
+                    setTimeout(() => {
+                        messageElement.textContent = '';
+                    }, 3000);
+                })
+                .catch((error) => {
+                    messageElement.textContent = `Erro ao postar regra: ${error.message}`;
+                    messageElement.style.color = 'red';
+                    console.error("Erro ao salvar no Firebase:", error);
+                });
+        });
+    </script>
 </body>
 </html>
