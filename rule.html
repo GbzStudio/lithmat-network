@@ -5,121 +5,131 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lithmat - Biblioteca de Regras Comunitárias</title>
     
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
     <style>
-        /* Variáveis de Cores (Tema Dark) */
+        /* =================================================== */
+        /* VARIÁVEIS DE CORES E BASE DE DESIGN (MODERNO DARK) */
+        /* =================================================== */
         :root {
-            --primary-color: #A020F0; /* Roxo/Violeta (Similar ao Litmatch) */
-            --secondary-color: #4CAF50; /* Verde para sucesso/ação */
-            --bg-dark: #121212; /* Fundo principal escuro */
-            --card-dark: #1E1E1E; /* Fundo dos cartões */
+            --primary-color: #BF40BF; /* Roxo/Magenta Vibrante (Mais moderno que violeta puro) */
+            --primary-light: #FF99FF; /* Tonalidade clara do primário para destaques */
+            --secondary-color: #4CAF50; /* Verde (Sucesso/Ação) */
+            --danger-color: #E74C3C; /* Vermelho (Erro) */
+            --bg-dark: #0F0F0F; /* Fundo principal: Preto quase total */
+            --card-dark: #1C1C1C; /* Fundo dos cartões: Cinza escuro */
             --text-light: #F0F0F0; /* Cor principal do texto */
-            --text-muted: #B0B0B0; /* Texto secundário/info */
+            --text-muted: #A0A0A0; /* Texto secundário/info */
             --border-dark: #333333; /* Bordas e separadores */
-            --card-shadow: 0 4px 10px rgba(0, 0, 0, 0.4); /* Sombra escura mais visível */
-            --input-bg: #2C2C2C;
+            --input-bg: #282828;
+            --shadow-subtle: 0 4px 15px rgba(0, 0, 0, 0.5); /* Sombra padrão */
+            --shadow-hover: 0 8px 20px rgba(191, 64, 191, 0.2); /* Sombra de hover roxa */
         }
 
-        /* Estilo Base */
+        /* Base */
         body {
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-dark); 
+            color: var(--text-light);
+            line-height: 1.6;
             margin: 0;
             padding: 0;
-            color: var(--text-light);
+        }
+
+        /* Transições globais para elementos interativos */
+        a, button, input, textarea, .card {
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
         .container {
-            max-width: 960px;
-            margin: 20px auto;
-            padding: 0 20px;
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 25px;
         }
 
-        /* Cartões (Containers de Conteúdo) */
-        .card {
-            background-color: var(--card-dark);
-            border-radius: 16px; /* Mais arredondado */
-            box-shadow: var(--card-shadow);
-            padding: 25px;
-            margin-bottom: 25px;
-            transition: transform 0.2s;
-        }
-        
-        .card:hover {
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6);
-        }
-
-        /* Header (Cabeçalho do "App") */
-        .app-header {
-            background: linear-gradient(135deg, #A020F0, #D8BFD8); /* Gradiente Roxo/Rosa */
-            color: white;
-            padding: 30px 0;
-            text-align: center;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-        }
-
-        .header-title {
-            margin: 0;
-            font-size: 2.8em;
-            font-weight: 700;
-        }
-
-        .header-subtitle {
-            margin: 8px 0 0 0;
-            font-size: 1.2em;
-            opacity: 0.9;
-        }
-
+        /* Headers */
         h2 {
             color: var(--text-light);
             border-bottom: 2px solid var(--border-dark);
-            padding-bottom: 10px;
-            margin-bottom: 20px;
+            padding-bottom: 12px;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+            font-weight: 600;
+        }
+        
+        /* =================================================== */
+        /* LAYOUT E CARTÕES */
+        /* =================================================== */
+        .app-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #D8BFD8 100%); 
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            margin-bottom: 30px;
         }
 
-        /* Formulário de Postagem */
+        .header-title {
+            font-size: 3.2em;
+            font-weight: 800;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .card {
+            background-color: var(--card-dark);
+            border-radius: 20px; 
+            box-shadow: var(--shadow-subtle);
+            padding: 30px;
+            margin-bottom: 30px;
+            transform: translateY(0);
+        }
+        
+        .card:hover {
+            box-shadow: var(--shadow-hover);
+            /* Leve elevação no hover para fluidez */
+            transform: translateY(-2px); 
+        }
+
+        /* =================================================== */
+        /* FORMULÁRIO E INPUTS */
+        /* =================================================== */
         .rule-form input[type="text"],
         .rule-form input[type="url"],
         .rule-form textarea {
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             margin-bottom: 15px;
             border: 1px solid var(--border-dark);
-            border-radius: 8px; 
+            border-radius: 10px; 
             box-sizing: border-box;
             font-size: 1em;
             background-color: var(--input-bg);
             color: var(--text-light);
-            transition: border-color 0.3s, box-shadow 0.3s;
         }
         
         .rule-form input:focus, .rule-form textarea:focus {
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 0.2rem rgba(160, 32, 240, 0.3);
-            outline: none;
-        }
-
-        .rule-form textarea {
-            resize: vertical;
+            box-shadow: 0 0 0 0.2rem rgba(191, 64, 191, 0.4);
         }
 
         .submit-btn {
             background-color: var(--primary-color);
             color: white;
-            padding: 12px 20px;
+            padding: 14px 25px;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
             font-size: 1.1em;
-            font-weight: 600;
-            transition: background-color 0.3s, transform 0.1s;
+            font-weight: 700;
+            transform: scale(1); /* Ponto de início para animação */
         }
 
         .submit-btn:hover {
-            background-color: #8A2BE2; /* Roxo mais escuro */
-            transform: translateY(-1px);
+            background-color: #A333A3; /* Tom ligeiramente mais escuro */
+            transform: scale(1.02); /* Leve aumento de escala */
         }
 
         /* Mensagens de Feedback */
@@ -127,10 +137,12 @@
             margin-top: 15px;
             font-weight: 600;
             font-size: 1.05em;
-            /* Cores ajustadas no JS para o tema dark */
+            /* Cor será definida via JS para sucesso ou erro */
         }
 
-        /* Exibição das Regras */
+        /* =================================================== */
+        /* CARTÕES DE REGRAS (DISPLAY) */
+        /* =================================================== */
         .rules-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -138,116 +150,87 @@
         }
 
         .rule-card {
-            border: 1px solid var(--border-dark);
-            border-top: 5px solid var(--primary-color); /* Destaque roxo */
+            border-left: 6px solid var(--primary-light); /* Destaque lateral */
             padding: 20px;
-            border-radius: 12px;
-            background-color: var(--card-dark);
-            position: relative;
-            box-shadow: var(--card-shadow);
+            border-radius: 15px;
+            /* Remove a borda superior para usar a lateral como destaque */
+            border-top: none; 
         }
 
         .rule-card h3 {
-            margin-top: 0;
-            color: var(--text-light);
-            font-size: 1.5em;
-            padding-bottom: 8px;
-            margin-bottom: 12px;
-            border-bottom: 1px solid var(--border-dark);
+            color: var(--primary-light);
+            font-size: 1.6em;
+            border-bottom: 1px dashed var(--border-dark); /* Linha tracejada */
+            padding-bottom: 5px;
         }
 
-        .rule-text {
-            background-color: var(--input-bg); /* Fundo do código da regra */
-            border: 1px solid #3A3A3A;
-            padding: 15px;
-            border-radius: 8px;
-            white-space: pre-wrap;
-            font-family: 'Consolas', 'Courier New', monospace;
-            font-size: 0.9em;
-            margin-bottom: 15px;
-            cursor: copy;
-            line-height: 1.5;
-            color: #7FFF00; /* Cor de destaque verde limão para o código (estilo terminal) */
-        }
-        
-        /* Melhorando a cor da tag <a> dentro do rule-text, se houver */
-        .rule-text a {
-            color: #ADD8E6; /* Azul claro para links */
-        }
-
-        .rule-info {
-            font-size: 0.9em;
-            color: var(--text-muted);
-            margin-bottom: 8px;
-        }
-
-        .rule-info strong {
-            color: var(--text-light);
-            font-weight: 600;
+        .rule-info i {
+            margin-right: 5px;
+            color: var(--primary-color);
         }
         
         .rule-info a {
-            color: var(--primary-color);
-            text-decoration: none;
-            transition: color 0.2s;
+            color: var(--primary-light);
+        }
+
+        .rule-text {
+            background-color: #121212; /* Fundo mais escuro para o bloco de código */
+            border: 1px solid #444444;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Consolas', monospace;
+            color: #00FF7F; /* Verde Mola (Spring Green) para código */
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
+            cursor: pointer;
         }
         
-        .rule-info a:hover {
-            color: #8A2BE2;
-            text-decoration: underline;
+        .rule-text:hover {
+            box-shadow: inset 0 0 8px rgba(191, 64, 191, 0.4);
         }
 
         .copy-btn {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
+            /* Usando a mesma classe de botão para consistência */
             padding: 10px 15px;
-            border-radius: 8px;
-            cursor: pointer;
             font-size: 1em;
-            font-weight: 500;
-            margin-top: 10px;
-            transition: background-color 0.3s;
+            margin-top: 15px;
         }
-
-        .copy-btn:hover {
-            background-color: #8A2BE2;
-        }
-
-        /* Footer */
+        
+        /* =================================================== */
+        /* FOOTER */
+        /* =================================================== */
         .app-footer {
             text-align: center;
-            padding: 15px;
-            margin-top: 30px;
+            padding: 20px;
+            margin-top: 40px;
             border-top: 1px solid var(--border-dark);
             color: var(--text-muted);
-            font-size: 0.9em;
             background-color: var(--card-dark);
+            border-radius: 20px 20px 0 0; /* Arredondado em cima */
         }
     </style>
 </head>
 <body>
     <header class="app-header">
-        <h1 class="header-title">Lithmat Regras 📜</h1>
+        <h1 class="header-title"><i class="fas fa-scroll"></i> Lithmat Regras ✨</h1>
         <p class="header-subtitle">Compartilhe as regras do seu grupo para a comunidade copiar!</p>
     </header>
 
     <main class="container">
         <section class="post-section card">
-            <h2>✍️ Enviar Nova Regra</h2>
+            <h2><i class="fas fa-feather-alt"></i> Enviar Nova Regra</h2>
             <form id="ruleForm" class="rule-form">
                 <input type="text" id="ruleTitle" placeholder="Título da Regra (Ex: 'Proibido Spam')" required>
                 <textarea id="groupRule" placeholder="Regra de Grupo (O texto completo para copiar e colar)" rows="5" required></textarea>
                 <input type="text" id="category" placeholder="Categoria (Ex: 'Moderação', 'Geral', 'Conteúdo')">
                 <input type="text" id="user" placeholder="Seu Nome de Usuário (Opcional)">
                 <input type="url" id="idLinkProfile" placeholder="Link do Perfil (Ex: https://link.perfil/user) (Opcional)">
-                <button type="submit" class="submit-btn">Postar Regra</button>
+                <button type="submit" class="submit-btn"><i class="fas fa-paper-plane"></i> Postar Regra</button>
                 <p id="message" class="message"></p>
             </form>
         </section>
 
         <section class="display-section">
-            <h2>📚 Regras da Comunidade</h2>
+            <h2><i class="fas fa-book-open"></i> Regras da Comunidade</h2>
             <div id="rulesContainer" class="rules-container">
                 <p class="loading-message">Carregando regras...</p>
             </div>
@@ -255,11 +238,13 @@
     </main>
 
     <footer class="app-footer">
-        <p>Projeto de Biblioteca de Regras Comunitárias - Código Aberto</p>
+        <p>Projeto de Biblioteca de Regras Comunitárias | Feito com <i class="fas fa-heart" style="color: var(--primary-light);"></i> e Firebase</p>
     </footer>
 
     <script>
-        // A sua configuração do Firebase
+        // A sua configuração do Firebase (MANTIDA NO HTML PARA SIMPLICIDADE)
+        // NOTA: Para ocultar do GitHub, este bloco deve ser movido para um arquivo 'config.js'
+        // e 'config.js' adicionado ao .gitignore, conforme recomendado na resposta anterior.
         const firebaseConfig = {
             apiKey: "AIzaSyBgU_MiSKWchHcItzu62cF_RySm0EmPKIE",
             authDomain: "bancodataregrageneral.firebaseapp.com",
@@ -285,7 +270,6 @@
          * Funções Auxiliares
          */
         
-        // Formata o timestamp para um formato legível
         function formatTimestamp(timestamp) {
             if (!timestamp) return 'Data Desconhecida';
             const date = new Date(timestamp);
@@ -297,65 +281,71 @@
          * Funções de UI
          */
 
-        // Cria o elemento HTML para uma regra (usando Template Literals)
+        // Cria o elemento HTML para uma regra
         function createRuleCard(rule) {
             const card = document.createElement('div');
-            card.className = 'rule-card';
+            card.className = 'rule-card card'; // Adiciona 'card' para estilos base e hover
             
             const formattedDate = formatTimestamp(rule.timestamp);
             const linkText = rule.idLinkProfile ? (rule.idLinkProfile.length > 30 ? rule.idLinkProfile.substring(0, 30) + '...' : rule.idLinkProfile) : '';
             
-            // Constrói o conteúdo do card
             card.innerHTML = `
                 <h3>${rule.title}</h3>
-                <div class="rule-info"><strong>Categoria:</strong> ${rule.category || 'N/A'}</div>
-                <div class="rule-info"><strong>Postado por:</strong> ${rule.user || 'Anônimo'}</div>
+                <div class="rule-info"><i class="fas fa-tag"></i> <strong>Categoria:</strong> ${rule.category || 'N/A'}</div>
+                <div class="rule-info"><i class="fas fa-user"></i> <strong>Postado por:</strong> ${rule.user || 'Anônimo'}</div>
                 ${rule.idLinkProfile ? 
-                    `<div class="rule-info"><strong>Link:</strong> <a href="${rule.idLinkProfile}" target="_blank" rel="noopener noreferrer">${linkText}</a></div>` 
+                    `<div class="rule-info"><i class="fas fa-link"></i> <strong>Link:</strong> <a href="${rule.idLinkProfile}" target="_blank" rel="noopener noreferrer">${linkText}</a></div>` 
                     : ''}
-                <div class="rule-info"><strong>Data:</strong> ${formattedDate}</div>
-                <p><strong>Regra Completa:</strong></p>
+                <div class="rule-info"><i class="fas fa-clock"></i> <strong>Data:</strong> ${formattedDate}</div>
+                <p style="margin-top: 20px;"><strong>Regra Completa (Clique para Copiar):</strong></p>
                 <div class="rule-text" id="rule-text-${rule.id}">${rule.groupRule}</div>
-                <button class="copy-btn" data-rule-id="${rule.id}">Copiar Regra</button>
+                <button class="copy-btn submit-btn" data-rule-id="${rule.id}"><i class="fas fa-copy"></i> Copiar Regra</button>
             `;
 
-            // Adiciona o evento de clique para copiar
-            card.querySelector('.copy-btn').addEventListener('click', (e) => {
-                const ruleId = e.target.dataset.ruleId;
+            // Adiciona evento de clique para copiar tanto no botão quanto no bloco de texto
+            const copyHandler = (e) => {
+                // Se o clique veio do botão, usa o dataset do botão. Se veio do texto, usa o ID do texto.
+                const ruleId = e.target.closest('.rule-card').querySelector('.copy-btn').dataset.ruleId;
                 const textToCopy = document.getElementById(`rule-text-${ruleId}`).textContent;
+                const button = card.querySelector('.copy-btn');
                 
-                // Usa a API de Clipboard para copiar
                 navigator.clipboard.writeText(textToCopy).then(() => {
-                    e.target.textContent = 'Copiado! ✅';
-                    e.target.style.backgroundColor = 'var(--secondary-color)'; // Verde de sucesso
+                    button.innerHTML = '<i class="fas fa-check"></i> Copiado!';
+                    button.style.backgroundColor = 'var(--secondary-color)'; 
+                    
                     setTimeout(() => {
-                        e.target.textContent = 'Copiar Regra';
-                        e.target.style.backgroundColor = 'var(--primary-color)'; // Volta ao roxo
+                        button.innerHTML = '<i class="fas fa-copy"></i> Copiar Regra';
+                        button.style.backgroundColor = 'var(--primary-color)'; 
                     }, 2000);
                 }).catch(err => {
                     console.error('Falha ao copiar:', err);
                     alert('Falha ao copiar o texto. Por favor, copie manualmente.');
                 });
-            });
+            };
+            
+            card.querySelector('.copy-btn').addEventListener('click', copyHandler);
+            card.querySelector('.rule-text').addEventListener('click', copyHandler);
+
 
             return card;
         }
 
         // Limpa e exibe todas as regras
         function displayRules(rules) {
-            rulesContainer.innerHTML = ''; // Limpa o container
+            rulesContainer.innerHTML = ''; 
             
             const ruleKeys = Object.keys(rules);
             
             if (ruleKeys.length === 0) {
-                rulesContainer.innerHTML = '<p class="loading-message" style="color: var(--text-muted);">Nenhuma regra postada ainda. Seja o primeiro!</p>';
+                rulesContainer.innerHTML = '<p class="loading-message" style="color: var(--text-muted);">Nenhuma regra postada ainda. Seja o primeiro! 💖</p>';
                 return;
             }
 
-            // Itera sobre as regras, ordenando do mais recente para o mais antigo (reverse)
-            ruleKeys.reverse().forEach(key => { 
-                const rule = rules[key];
-                rule.id = key; // Adiciona o ID para a função de cópia
+            // Mapeia e inverte a ordem para mostrar o mais recente primeiro
+            const rulesArray = ruleKeys.map(key => ({ ...rules[key], id: key }));
+            rulesArray.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+
+            rulesArray.forEach(rule => {
                 const card = createRuleCard(rule);
                 rulesContainer.appendChild(card);
             });
@@ -371,11 +361,11 @@
             if (data) {
                 displayRules(data);
             } else {
-                rulesContainer.innerHTML = '<p class="loading-message" style="color: var(--text-muted);">Nenhuma regra postada ainda. Seja o primeiro!</p>';
+                rulesContainer.innerHTML = '<p class="loading-message" style="color: var(--text-muted);">Nenhuma regra postada ainda. Seja o primeiro! 💖</p>';
             }
         }, (error) => {
             console.error("Erro ao carregar dados do Firebase:", error);
-            rulesContainer.innerHTML = '<p class="loading-message" style="color: #FF6347;">Erro ao carregar regras. Verifique a conexão com o banco de dados.</p>';
+            rulesContainer.innerHTML = '<p class="loading-message" style="color: var(--danger-color);">Erro ao carregar regras. Verifique a conexão com o banco de dados.</p>';
         });
 
 
@@ -383,7 +373,6 @@
         ruleForm.addEventListener('submit', (e) => {
             e.preventDefault();
             
-            // Coleta os dados do formulário
             const newRule = {
                 title: document.getElementById('ruleTitle').value.trim(),
                 groupRule: document.getElementById('groupRule').value.trim(),
@@ -393,21 +382,20 @@
                 timestamp: firebase.database.ServerValue.TIMESTAMP 
             };
             
-            // Validação simples
             if (newRule.title === '' || newRule.groupRule === '') {
                  messageElement.textContent = 'O título e a regra são campos obrigatórios.';
-                 messageElement.style.color = '#FF6347'; // Vermelho para erro
+                 messageElement.style.color = 'var(--danger-color)'; 
                  return;
             }
             
             messageElement.textContent = 'Postando...';
-            messageElement.style.color = 'var(--secondary-color)'; // Verde de processamento
+            messageElement.style.color = 'var(--primary-light)'; 
 
             // Salva a regra no Firebase
             rulesRef.push(newRule)
                 .then(() => {
                     messageElement.textContent = 'Regra postada com sucesso! 🎉';
-                    ruleForm.reset(); // Limpa o formulário
+                    ruleForm.reset(); 
                     messageElement.style.color = 'var(--secondary-color)';
                     setTimeout(() => {
                         messageElement.textContent = '';
@@ -415,7 +403,7 @@
                 })
                 .catch((error) => {
                     messageElement.textContent = `Erro ao postar regra: ${error.message}`;
-                    messageElement.style.color = '#FF6347';
+                    messageElement.style.color = 'var(--danger-color)';
                     console.error("Erro ao salvar no Firebase:", error);
                 });
         });
