@@ -1,670 +1,318 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>LithMate PRO — Regras (COMPLETO)</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%238A2BE2'/><text x='50' y='58' font-size='45' text-anchor='middle' fill='white' font-family='Arial'>L</text></svg>">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>LithMat — Central Completa de Regras (Pública)</title>
 
+<!-- ==========================
+     STYLES: limpo, responsivo
+     ========================== -->
 <style>
 :root{
-  --bg:#08020a;
-  --panel:#100418;
-  --panel-2:#16092a;
-  --accent:#8A2BE2;
-  --accent-2:#b077ff;
-  --muted:#9aa7bf;
-  --card:#0f0a14;
-  --radius:14px;
-  --glass:rgba(255,255,255,0.03);
-  --shadow:0 10px 30px rgba(0,0,0,0.6);
+  --bg:#071027; --card:#0f1630; --glass:rgba(255,255,255,0.03);
+  --accent1:#53a8ff; --accent2:#7b4aff; --muted:#9fb1d1; --txt:#e6eef8;
+  --radius:14px; --shadow:0 10px 30px rgba(2,6,23,0.6);
 }
 *{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:Inter, "Segoe UI", Arial;
-  background:linear-gradient(180deg,#05030a 0%,var(--bg) 100%);
-  color:#eaf4ff;
-  -webkit-font-smoothing:antialiased;
-}
-.top{
-  position:fixed; inset:0 0 auto 0; height:78px; display:flex; align-items:center; gap:14px;
-  padding:12px 22px; background:linear-gradient(180deg, rgba(13,6,22,0.6), rgba(8,2,12,0.6));
-  backdrop-filter: blur(6px); z-index:80; border-bottom:1px solid rgba(255,255,255,0.02);
-}
-.logoWrap{display:flex;align-items:center;gap:12px}
-.logoSVG{width:54px;height:54px;flex-shrink:0}
-.brand{font-weight:900;color:var(--accent);letter-spacing:-0.6px}
+html,body{height:100%;margin:0;font-family:Inter,system-ui,Arial;color:var(--txt);background:radial-gradient(circle at 10% 10%,#07142a,#020612 60%)}
+.container{max-width:1100px;margin:28px auto;padding:18px}
+.header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+.brand{display:flex;gap:12px;align-items:center}
+.logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent1),var(--accent2));display:flex;align-items:center;justify-content:center;font-weight:800}
+.title{font-size:20px;font-weight:800}
+.subtitle{color:var(--muted);font-size:13px}
+
+.grid{display:grid;grid-template-columns:360px 1fr;gap:18px}
+@media(max-width:960px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border-radius:12px;padding:16px;border:1px solid rgba(255,255,255,0.03);box-shadow:var(--shadow)}
+.section-title{font-weight:700;margin:0 0 8px 0}
+.input,textarea,select{width:100%;padding:12px;border-radius:10px;background:rgba(0,0,0,0.25);border:1px solid rgba(255,255,255,0.03);color:var(--txt);margin-bottom:10px}
+.btn{display:inline-block;padding:12px 14px;border-radius:12px;border:0;background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#000;font-weight:800;cursor:pointer}
+.btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--txt)}
 .small{font-size:13px;color:var(--muted)}
-nav{margin-left:14px;display:flex;gap:8px;align-items:center}
-.navBtn{background:transparent;border:0;padding:8px 12px;border-radius:10px;color:var(--muted);cursor:pointer;font-weight:700}
-.navBtn.active{color:var(--accent); background:linear-gradient(90deg, rgba(138,43,226,0.06), rgba(176,119,255,0.02)); border:1px solid rgba(138,43,226,0.06)}
 
-.page{max-width:1180px;margin:110px auto 80px;padding:18px}
-.grid{display:grid;grid-template-columns:1fr 360px;gap:20px}
-@media (max-width:980px){ .grid{grid-template-columns:1fr} .top{padding:10px} .page{margin-top:120px} }
+/* list */
+.controls{display:flex;gap:8px;align-items:center;margin-bottom:12px}
+.search{flex:1}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{padding:8px 10px;border-radius:999px;background:var(--glass);cursor:pointer;border:1px solid rgba(255,255,255,0.02)}
+.rule{padding:14px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent);border:1px solid rgba(255,255,255,0.03);margin-bottom:12px}
+.rule h3{margin:0 0 6px 0}
+.meta{font-size:12px;color:var(--muted);margin-bottom:8px}
+.actions{display:flex;gap:8px}
+.action{padding:8px 10px;border-radius:10px;border:0;cursor:pointer}
+.action.copy{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#000}
+.action.report{background:#1f2a42;color:var(--txt)}
+.action.share{background:#18324a;color:var(--txt)}
 
-.panel{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:18px;border-radius:14px;border:1px solid rgba(255,255,255,0.02); box-shadow:var(--shadow)}
-.h1{font-size:20px;color:var(--accent);font-weight:800;margin:0 0 8px}
-.sub{color:var(--muted);font-size:13px;margin-bottom:10px}
+/* footer */
+.footer{margin-top:18px;text-align:center;color:var(--muted);font-size:13px}
 
-.searchBar{display:flex;gap:10px;align-items:center;margin-bottom:12px}
-.searchBar input{flex:1;padding:12px;border-radius:12px;background:transparent;border:1px solid rgba(255,255,255,0.03);color:#eaf4ff}
-.select{padding:10px;border-radius:10px;background:transparent;border:1px solid rgba(255,255,255,0.03);color:#eaf4ff}
+/* stats panel */
+.stats{display:flex;gap:12px;flex-wrap:wrap}
+.stat{background:rgba(255,255,255,0.02);padding:10px;border-radius:10px;min-width:120px}
 
-.chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 14px}
-.chip{padding:8px 12px;border-radius:999px;background:transparent;border:1px solid rgba(255,255,255,0.02);color:var(--muted);cursor:pointer;font-weight:700}
-.chip.active{background:linear-gradient(90deg, rgba(138,43,226,0.06), rgba(176,119,255,0.03)); color:var(--accent)}
+/* simple transitions */
+.fade{transition:all .22s ease}
 
-.list{display:flex;flex-direction:column;gap:12px}
-.rule{padding:14px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));border:1px solid rgba(255,255,255,0.02);display:flex;justify-content:space-between;gap:12px;cursor:pointer}
-.rule:hover{transform:translateY(-4px);transition:all .16s}
-.title{font-weight:800;color:#f3f9ff}
-.meta{font-size:13px;color:var(--muted);margin-top:6px}
-.tag{display:inline-block;padding:6px 10px;border-radius:999px;border:1px solid rgba(255,255,255,0.02);font-weight:800;font-size:12px;color:var(--accent);background:rgba(138,43,226,0.04)}
-
-.ruleActions{display:flex;flex-direction:column;gap:8px;align-items:flex-end}
-.actRow{display:flex;gap:8px}
-.linkBtn{background:transparent;border:1px solid rgba(255,255,255,0.03);padding:8px 10px;border-radius:10px;color:var(--muted);cursor:pointer}
-
-.modalBg{position:fixed;inset:0;background:rgba(2,3,6,0.72);display:none;justify-content:center;align-items:center;z-index:120}
-.modal{width:92%;max-width:760px;background:linear-gradient(180deg,#0a0513,#080312);border-radius:12px;padding:18px;border:1px solid rgba(255,255,255,0.03)}
-.modal .title{font-size:20px;color:var(--accent);font-weight:800}
-.modal .body{margin-top:10px;color:var(--muted);line-height:1.6}
-.modal .controls{display:flex;gap:8px;justify-content:flex-end;margin-top:12px}
-
-.formRow{display:flex;gap:10px}
-input[type="text"],textarea,select{width:100%;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:#eaf4ff;outline:none}
-textarea{min-height:140px;resize:vertical}
-
-.footerActions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-
-.cardSmall{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:12px;border-radius:12px}
-.smallGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-
-.toast{position:fixed;right:18px;bottom:18px;background:linear-gradient(90deg,#0e1a20,#071217);padding:10px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);color:#cfefff;box-shadow:var(--shadow)}
 </style>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 </head>
 <body>
 
-<!-- TOP -->
-<div class="top">
-  <div class="logoWrap">
-    <!-- Purple animated logo -->
-    <svg class="logoSVG" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <defs>
-        <linearGradient id="lp" x1="0" x2="1">
-          <stop offset="0" stop-color="#8A2BE2"/>
-          <stop offset="1" stop-color="#b077ff"/>
-        </linearGradient>
-      </defs>
-      <circle cx="50" cy="50" r="44" fill="url(#lp)" opacity="0.95"/>
-      <path d="M36 66 L50 28 L64 66 Z" fill="#07040a"/>
-      <animateTransform attributeName="transform" type="rotate" values="0 50 50;5 50 50;0 50 50" dur="7s" repeatCount="indefinite"/>
-    </svg>
-    <div>
-      <div class="brand">LithMate</div>
-      <div class="small">Regras • Versão Completa</div>
-    </div>
-  </div>
-
-  <nav>
-    <button class="navBtn active" data-view="home">Regras</button>
-    <button class="navBtn" data-view="new">Publicar</button>
-    <button class="navBtn" data-view="export">Export/Import</button>
-    <button class="navBtn" data-view="about">Sobre</button>
-  </nav>
-</div>
-
-<!-- PAGE -->
-<div class="page">
-  <div class="grid">
-
-    <!-- LEFT -->
-    <div>
-      <!-- HOME VIEW -->
-      <div class="panel" id="view-home">
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <div>
-            <div class="h1">Regras publicadas</div>
-            <div class="sub">Pesquise, filtre, copie, compartilhe e edite com token.</div>
-          </div>
-          <div class="small" id="stats">—</div>
-        </div>
-
-        <div style="height:12px"></div>
-
-        <div class="searchBar">
-          <input id="searchInput" placeholder="Pesquisar por título ou texto..." />
-          <select id="sortSelect" class="select">
-            <option value="new">Mais recentes</option>
-            <option value="old">Mais antigas</option>
-            <option value="category">Por categoria</option>
-          </select>
-        </div>
-
-        <div class="chips" id="chips"></div>
-
-        <div class="list" id="rulesList"></div>
-
-        <div style="display:flex;gap:10px;justify-content:center;margin-top:14px">
-          <button class="linkBtn" id="prevPage">Anterior</button>
-          <div class="small" id="pageInfo">Página 1</div>
-          <button class="linkBtn" id="nextPage">Próxima</button>
-        </div>
-      </div>
-
-      <!-- NEW VIEW -->
-      <div class="panel" id="view-new" style="display:none">
-        <div class="h1">Publicar nova regra</div>
-        <div class="sub">Ao publicar você recebe um <strong>token</strong> que permite editar/deletar sua regra. Guarde-o!</div>
-
-        <div style="height:12px"></div>
-
-        <label class="small">Título</label>
-        <input id="newTitle" placeholder="Ex: Respeito ao próximo" />
-
-        <label class="small">Categoria</label>
-        <select id="newCategory">
-          <option>Geral</option><option>Comportamento</option><option>Conteúdo</option><option>Banimentos</option><option>Moderação</option>
-        </select>
-
-        <label class="small">Conteúdo</label>
-        <textarea id="newText" placeholder="Detalhe a regra..."></textarea>
-
-        <div style="display:flex;gap:10px;margin-top:10px">
-          <button class="linkBtn" id="publishBtn" style="background:linear-gradient(90deg,var(--accent),var(--accent-2));border:none;color:#04111a;padding:12px 16px;font-weight:800">Publicar regra</button>
-          <button class="linkBtn" id="clearBtn">Limpar</button>
-        </div>
-
-        <div style="height:8px"></div>
-        <div class="small">O token é exibido UMA vez no alerta e também salvo no seu navegador automaticamente.</div>
-      </div>
-
-      <!-- EXPORT VIEW -->
-      <div class="panel" id="view-export" style="display:none">
-        <div class="h1">Exportar / Importar</div>
-        <div style="height:8px"></div>
-
-        <div class="cardSmall">
-          <div class="small">Exportar todas as regras (JSON)</div>
-          <div style="height:8px"></div>
-          <div style="display:flex;gap:8px">
-            <button class="linkBtn" id="exportBtn">Exportar JSON</button>
-            <button class="linkBtn" id="downloadSample">Baixar amostra JSON</button>
-            <label style="margin-left:auto">
-              <input type="file" id="importFile" style="display:none" accept=".json"/>
-              <button class="linkBtn" id="importBtn">Importar JSON</button>
-            </label>
-          </div>
-        </div>
-
-        <div style="height:12px"></div>
-        <div class="small">Importe apenas JSON válido (array de objetos {titulo,texto,categoria}).</div>
-      </div>
-
-      <!-- ABOUT -->
-      <div class="panel" id="view-about" style="display:none">
-        <div class="h1">Sobre</div>
-        <div class="small">LithMate — Sistema de Regras público (versão COMPLETA). Recursos:</div>
-        <ul class="small" style="color:var(--muted)">
-          <li>Publicar regras com token de edição/deleção</li>
-          <li>Pesquisar, filtrar por categoria, favoritos</li>
-          <li>Export/Import JSON, compartilhar link direto</li>
-          <li>Interface responsiva e tema roxo premium</li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- RIGHT -->
-    <div>
-      <div class="panel cardSmall">
-        <div style="display:flex;align-items:center;gap:10px">
-          <div style="width:48px;height:48px;border-radius:10px;background:linear-gradient(90deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;color:#051018;font-weight:900">L</div>
-          <div>
-            <div style="font-weight:900">LithMate</div>
-            <div class="small">Regras • Público</div>
-          </div>
-        </div>
-
-        <div style="height:12px"></div>
-
-        <div style="display:flex;flex-direction:column;gap:8px">
-          <div>
-            <div class="small">Favoritos</div>
-            <div id="favCount" style="font-weight:800">0</div>
-          </div>
-
-          <div style="height:8px"></div>
-          <div class="small">Ações rápidas</div>
-          <div style="display:flex;gap:8px;margin-top:6px">
-            <button class="linkBtn" id="copyPageLink">Copiar link</button>
-            <button class="linkBtn" id="themeToggle">Tema Claro</button>
-          </div>
-
-          <div style="height:10px"></div>
-
-          <div class="small">Suas regras (local)</div>
-          <div id="ownRulesList" style="display:flex;flex-direction:column;gap:8px;margin-top:8px"></div>
-        </div>
-
-        <div style="height:12px"></div>
-        <div class="small">Status do Firebase</div>
-        <div id="fbStatus" class="small" style="color:var(--muted)">Conectando...</div>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<!-- MODAL -->
-<div class="modalBg" id="modalBg">
-  <div class="modal" role="dialog" aria-modal="true">
-    <div style="display:flex;justify-content:space-between;align-items:center">
+<div class="container">
+  <div class="header">
+    <div class="brand">
+      <div class="logo">LM</div>
       <div>
-        <div class="title" id="modalTitle"></div>
-        <div class="small" id="modalMeta"></div>
+        <div class="title">LithMat — Central de Regras (Pública)</div>
+        <div class="subtitle">Poste, copie, compartilhe — tudo sem login. Moderation básica incluída.</div>
       </div>
-      <div style="cursor:pointer;color:var(--muted)" id="modalClose">✖</div>
     </div>
-    <div class="body" id="modalBody"></div>
-    <div class="controls" style="margin-top:12px">
-      <button class="linkBtn" id="modalCopy">Copiar</button>
-      <button class="linkBtn" id="modalShare">Compartilhar</button>
-      <button class="linkBtn" id="modalFav">Favoritar</button>
-      <button class="linkBtn" id="modalEdit">Editar (token)</button>
-      <button class="linkBtn" id="modalDelete" style="background:linear-gradient(90deg,#ff6b6b,#ff8c6b);border:none;color:#041018">Deletar</button>
+    <div style="display:flex;gap:8px;align-items:center">
+      <button class="btn" id="exportJson">Exportar JSON</button>
+      <button class="btn ghost" id="exportCsv">Exportar CSV</button>
     </div>
   </div>
+
+  <div class="grid">
+    <!-- SIDEBAR: form + stats -->
+    <aside class="card">
+      <h3 class="section-title">Publicar Regra</h3>
+      <div class="small">Estrutura: título, texto, categoria, usuário (opcional), id e link de perfil.</div>
+      <input id="titulo" class="input" placeholder="Título da regra" />
+      <textarea id="regra" class="input" rows="4" placeholder="Conteúdo da regra"></textarea>
+      <select id="categoria" class="input">
+        <option value="geral">Geral</option>
+        <option value="whatsapp">WhatsApp</option>
+        <option value="discord">Discord</option>
+        <option value="telegram">Telegram</option>
+        <option value="conteudo">Conteúdo</option>
+        <option value="outros">Outros</option>
+      </select>
+      <input id="user" class="input" placeholder="Autor (opcional)" />
+      <input id="link" class="input" placeholder="Link do perfil (opcional)" />
+      <div style="display:flex;gap:8px">
+        <button class="btn" id="btnPost">Publicar</button>
+        <button class="btn ghost" id="btnClear">Limpar</button>
+      </div>
+
+      <hr style="margin:14px 0;border:none;border-top:1px solid rgba(255,255,255,0.03)" />
+
+      <h4 class="section-title">Estatísticas</h4>
+      <div class="stats" id="statsPanel">
+        <div class="stat">Total: <b id="statTotal">0</b></div>
+        <div class="stat">Categorias: <b id="statCats">0</b></div>
+        <div class="stat">Mais recente: <b id="statRecent">—</b></div>
+      </div>
+
+    </aside>
+
+    <!-- MAIN: busca, filtros, lista -->
+    <main>
+      <div class="card">
+        <div class="controls">
+          <div class="search"><input id="search" class="input" placeholder="Pesquisar título, texto ou autor" oninput="applyFilters()" /></div>
+          <div class="chips" id="chipList">
+            <div class="chip" data-cat="all">Todas</div>
+            <div class="chip" data-cat="geral">Geral</div>
+            <div class="chip" data-cat="whatsapp">WhatsApp</div>
+            <div class="chip" data-cat="discord">Discord</div>
+            <div class="chip" data-cat="telegram">Telegram</div>
+            <div class="chip" data-cat="conteudo">Conteúdo</div>
+          </div>
+          <div style="margin-left:auto;display:flex;gap:8px">
+            <select id="sortBy" class="input" style="width:170px" onchange="applyFilters()">
+              <option value="new">Mais novas</option>
+              <option value="old">Mais antigas</option>
+              <option value="az">Título A→Z</option>
+              <option value="za">Título Z→A</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="list" style="margin-top:12px"></div>
+
+        <div style="text-align:center;margin-top:10px">
+          <button class="btn ghost" id="loadMore">Carregar mais</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h4 class="section-title">Relatórios / Denúncias</h4>
+        <div class="small">Os usuários podem enviar denúncias que serão salvas no banco em /reports. Sem moderação automática.</div>
+        <div style="margin-top:10px">
+          <input id="reportId" class="input" placeholder="ID da regra a denunciar" />
+          <textarea id="reportMsg" class="input" rows="3" placeholder="Motivo da denúncia"></textarea>
+          <div style="display:flex;gap:8px"><button class="btn" id="btnReport">Enviar denúncia</button></div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <div class="footer">Feito com ♥ — Sem login. Se quiser adicionar moderação, auth ou filtros anti-abuso, posso integrar.</div>
 </div>
 
-<!-- TOAST CONTAINER -->
-<div id="toastRoot" aria-hidden="true"></div>
+<!-- =====================
+     SCRIPTS: LÓGICA E FIREBASE
+     ===================== -->
+<script>
+// Firebase config (do usuário)
+const firebaseConfig = {
+  apiKey: "AIzaSyBgU_MiSKWchHcItzu62cF_RySm0EmPKIE",
+  authDomain: "bancodataregrageneral.firebaseapp.com",
+  databaseURL: "https://bancodataregrageneral-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "bancodataregrageneral",
+  storageBucket: "bancodataregrageneral.firebasestorage.app",
+  messagingSenderId: "578599910104",
+  appId: "1:578599910104:web:38e9fdf1aea786376fb5ad"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
 
-<!-- FIREBASE (modular) -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-  import { getDatabase, ref, push, set, onValue, get, child, remove, update } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+// App state
+let cache = []; // todas as regras
+let view = []; // regras filtradas
+let page = 0; const perPage = 8;
+let currentCat = 'all';
 
-  // ==== SUA CONFIGURAÇÃO FIREBASE (mantive a que você enviou) ====
-  const firebaseConfig = {
-    apiKey: "AIzaSyBgU_MiSKWchHcItzu62cF_RySm0EmPKIE",
-    authDomain: "bancodataregrageneral.firebaseapp.com",
-    databaseURL: "https://bancodataregrageneral-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "bancodataregrageneral",
-    storageBucket: "bancodataregrageneral.firebasestorage.app",
-    messagingSenderId: "578599910104",
-    appId: "1:578599910104:web:38e9fdf1aea786376fb5ad"
+// Helpers
+const $ = id => document.getElementById(id);
+const escape = s => s==null? '': String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+
+// Load realtime
+const regrasRef = db.ref('regras');
+regrasRef.on('value', snap => {
+  cache = [];
+  snap.forEach(child => cache.push({...child.val(), key: child.key}));
+  // newest first by time or key
+  cache.sort((a,b)=> (b.time||0) - (a.time||0));
+  resetView();
+  updateStats();
+});
+
+// Publish
+$('btnPost').addEventListener('click', ()=>{
+  const titulo = $('titulo').value.trim();
+  const regra = $('regra').value.trim();
+  if(!titulo || !regra) return alert('Preencha título e regra');
+  const data = {
+    titulo: escape(titulo),
+    regra: escape(regra),
+    categoria: $('categoria').value||'geral',
+    user: escape($('user').value.trim()),
+    link: escape($('link').value.trim()),
+    time: Date.now(),
+    likes: 0
   };
+  const id = db.ref('regras').push().key;
+  db.ref('regras/'+id).set(data).then(()=>{
+    $('titulo').value='';$('regra').value='';$('user').value='';$('link').value='';
+    alert('Regra publicada!');
+  }).catch(e=>alert('Erro: '+e.message));
+});
+$('btnClear').addEventListener('click', ()=>{ $('titulo').value='';$('regra').value='';$('user').value='';$('link').value=''; });
 
-  // Inicializa
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
-  const rootRef = ref(db, 'regras');
+// Reports
+$('btnReport').addEventListener('click', ()=>{
+  const id = $('reportId').value.trim(); const msg = $('reportMsg').value.trim();
+  if(!id || !msg) return alert('Informe ID e motivo');
+  const rref = db.ref('reports').push();
+  rref.set({ruleId: id, msg: escape(msg), time: Date.now()}).then(()=>{ alert('Denúncia enviada'); $('reportId').value='';$('reportMsg').value=''; });
+});
 
-  // STATE
-  let allRules = [];
-  let filtered = [];
-  let page = 1;
-  const PAGE_SIZE = 7;
-  let activeChip = 'Todas';
-  let favorites = JSON.parse(localStorage.getItem('lm_favs')||'[]');
-  let tokens = JSON.parse(localStorage.getItem('lm_tokens')||'{}'); // { ruleId: token }
-  let ownRules = JSON.parse(localStorage.getItem('lm_own')||'[]');
+// Filters + render
+function resetView(){ page=0; applyFilters(); }
+function applyFilters(){
+  const q = ($('search').value||'').trim().toLowerCase();
+  const sort = $('sortBy').value || 'new';
+  // category chip
+  view = cache.filter(r => currentCat==='all' ? true : (r.categoria===currentCat));
+  if(q) view = view.filter(r => (r.titulo||'').toLowerCase().includes(q) || (r.regra||'').toLowerCase().includes(q) || (r.user||'').toLowerCase().includes(q));
+  // sort
+  if(sort==='new') view.sort((a,b)=> (b.time||0)-(a.time||0));
+  if(sort==='old') view.sort((a,b)=> (a.time||0)-(b.time||0));
+  if(sort==='az') view.sort((a,b)=> (a.titulo||'').localeCompare(b.titulo||''));
+  if(sort==='za') view.sort((a,b)=> (b.titulo||'').localeCompare(a.titulo||''));
 
-  // DOM
-  const rulesList = document.getElementById('rulesList');
-  const searchInput = document.getElementById('searchInput');
-  const chipsWrap = document.getElementById('chips');
-  const stats = document.getElementById('stats');
-  const pageInfo = document.getElementById('pageInfo');
-  const prevPage = document.getElementById('prevPage');
-  const nextPage = document.getElementById('nextPage');
-  const favCount = document.getElementById('favCount');
-  const ownRulesList = document.getElementById('ownRulesList');
-  const fbStatus = document.getElementById('fbStatus');
+  renderPage(true);
+}
 
-  // NAV
-  document.querySelectorAll('.navBtn').forEach(b=>{
-    b.onclick = () => {
-      document.querySelectorAll('.navBtn').forEach(x=>x.classList.remove('active'));
-      b.classList.add('active');
-      document.querySelectorAll('#view-home,#view-new,#view-export,#view-about').forEach(v=>v.style.display='none');
-      document.getElementById('view-'+b.dataset.view).style.display = 'block';
-    };
-  });
-
-  // THEME
-  const themeToggle = document.getElementById('themeToggle');
-  let light = false;
-  themeToggle.onclick = ()=>{
-    light = !light;
-    if(light){
-      document.documentElement.style.setProperty('--bg','#f6fbff');
-      document.documentElement.style.setProperty('--card','#ffffff');
-      document.documentElement.style.setProperty('--muted','#475569');
-      document.body.style.color='#0a1b24';
-      themeToggle.textContent='Tema Escuro';
-    } else {
-      document.documentElement.style.setProperty('--bg','#08020a');
-      document.documentElement.style.setProperty('--card','#0f0a14');
-      document.documentElement.style.setProperty('--muted','#9aa7bf');
-      document.body.style.color='#eaf4ff';
-      themeToggle.textContent='Tema Claro';
-    }
-  };
-
-  // CATEGORIES
-  const CATS = ['Todas','Geral','Comportamento','Conteúdo','Banimentos','Moderação'];
-  function renderChips(){
-    chipsWrap.innerHTML = '';
-    CATS.forEach(c=>{
-      const el = document.createElement('div'); el.className='chip'+(c===activeChip?' active':''); el.textContent=c;
-      el.onclick = ()=>{ activeChip=c; page=1; render(); renderChips(); };
-      chipsWrap.appendChild(el);
-    });
-  }
-  renderChips();
-
-  // PAGE NAV
-  prevPage.onclick = ()=>{ if(page>1){ page--; render(); } };
-  nextPage.onclick = ()=>{ page++; render(); };
-
-  // FIREBASE: realtime
-  function markFB(status,color){
-    fbStatus.textContent = status;
-    fbStatus.style.color = color || 'var(--muted)';
-  }
-  markFB('Conectando...', '#9aa7bf');
-
-  onValue(rootRef, snapshot=>{
-    const data = snapshot.val() || {};
-    allRules = Object.keys(data).map(k=>({ id:k, ...data[k] }));
-    // sort by _ts desc if exists
-    allRules.sort((a,b)=> (b._ts||0) - (a._ts||0));
-    markFB('Conectado • '+allRules.length+' regras', '#9aa7bf');
-    page = 1;
-    render();
-    renderOwnList();
-    checkHash(); // open rule if link used
-  }, (err)=>{
-    markFB('Erro Firebase', '#ff8b8b');
-    console.error(err);
-  });
-
-  // RENDER function
-  function render(){
-    const q = (searchInput.value||'').trim().toLowerCase();
-    filtered = allRules.filter(r=>{
-      const matchCat = (activeChip==='Todas') ? true : (r.categoria === activeChip);
-      const matchText = (r.titulo + ' ' + r.texto).toLowerCase().includes(q);
-      return matchCat && matchText;
-    });
-
-    const sort = document.getElementById('sortSelect').value;
-    if(sort==='new') filtered.sort((a,b)=> (b._ts||0)-(a._ts||0));
-    if(sort==='old') filtered.sort((a,b)=> (a._ts||0)-(b._ts||0));
-    if(sort==='category') filtered.sort((a,b)=> (a.categoria||'').localeCompare(b.categoria||''));
-
-    const total = filtered.length;
-    const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
-    if(page>pages) page=pages;
-    const start = (page-1)*PAGE_SIZE;
-    const pageItems = filtered.slice(start, start+PAGE_SIZE);
-
-    rulesList.innerHTML = '';
-    pageItems.forEach(r=>{
-      const el = document.createElement('div'); el.className='rule';
-      const left = document.createElement('div'); left.style.flex='1';
-      left.innerHTML = `<div class="title">${escapeHtml(r.titulo)}</div>
-                        <div class="meta">${escapeHtml(r.texto.split('\\n').slice(0,3).join(' '))}</div>
-                        <div style="margin-top:8px"><span class="tag">${r.categoria||'Geral'}</span></div>`;
-      el.appendChild(left);
-
-      const right = document.createElement('div'); right.className='ruleActions';
-      const age = new Date((r._ts||Date.now())).toLocaleString('pt-BR');
-      right.innerHTML = `<div class="small">${age}</div>
-                         <div class="actRow">
-                           <button class="linkBtn" data-id="${r.id}" data-act="view">Ver</button>
-                           <button class="linkBtn" data-id="${r.id}" data-act="copy">Copiar</button>
-                           <button class="linkBtn" data-id="${r.id}" data-act="share">Link</button>
-                           <button class="linkBtn" data-id="${r.id}" data-act="fav">${favorites.includes(r.id)?'★':'☆'}</button>
-                         </div>`;
-      el.appendChild(right);
-
-      // actions
-      right.querySelectorAll('button').forEach(btn=>{
-        btn.onclick = (ev)=>{
-          ev.stopPropagation();
-          const act = btn.dataset.act;
-          const id = btn.dataset.id;
-          const rule = allRules.find(x=>x.id===id);
-          if(act==='view') openModal(rule);
-          if(act==='copy') { navigator.clipboard.writeText(rule.titulo+'\\n\\n'+rule.texto); toast('Copiado para área de transferência'); }
-          if(act==='share') { copyToClipboard(window.location.href.split('#')[0] + '#rule=' + id); toast('Link copiado'); }
-          if(act==='fav') { toggleFav(id); btn.textContent = favorites.includes(id)?'★':'☆'; }
-        };
-      });
-
-      el.onclick = ()=> openModal(allRules.find(x=>x.id===r.id));
-      rulesList.appendChild(el);
-    });
-
-    stats.textContent = `${total} regras • mostrando ${start+1}-${Math.min(start+pageItems.length,total)}`;
-    pageInfo.textContent = `Página ${page} / ${pages}`;
-    favCount.textContent = favorites.length;
-  }
-
-  // escape HTML
-  function escapeHtml(s){ if(!s) return ''; return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
-  // toast
-  function toast(txt){ const el=document.createElement('div'); el.className='toast'; el.textContent=txt; document.getElementById('toastRoot').appendChild(el); setTimeout(()=>el.style.opacity='0',2000); setTimeout(()=>el.remove(),2600); }
-
-  // favorites
-  function toggleFav(id){
-    if(favorites.includes(id)) favorites = favorites.filter(x=>x!==id);
-    else favorites.push(id);
-    localStorage.setItem('lm_favs', JSON.stringify(favorites));
-    render();
-    renderOwnList();
-  }
-  document.getElementById('copyPageLink').onclick = ()=>{ copyToClipboard(window.location.href); toast('Link copiado'); };
-
-  document.getElementById('clearBtn').onclick = ()=>{ if(confirm('Limpar campos?')){ document.getElementById('newTitle').value=''; document.getElementById('newText').value=''; } };
-
-  // modal
-  const modalBg = document.getElementById('modalBg');
-  const modalTitle = document.getElementById('modalTitle');
-  const modalMeta = document.getElementById('modalMeta');
-  const modalBody = document.getElementById('modalBody');
-  function openModal(rule){
-    modalTitle.textContent = rule.titulo;
-    modalMeta.textContent = (rule.categoria || 'Geral') + ' • ' + new Date((rule._ts||Date.now())).toLocaleString('pt-BR');
-    modalBody.innerHTML = '<pre style="white-space:pre-wrap;font-family:inherit;color:var(--muted);">'+escapeHtml(rule.texto)+'</pre>';
-    modalBg.style.display = 'flex';
-
-    document.getElementById('modalCopy').onclick = ()=>{ navigator.clipboard.writeText(rule.titulo + '\\n\\n' + rule.texto); toast('Copiado'); };
-    document.getElementById('modalShare').onclick = ()=>{ copyToClipboard(window.location.href.split('#')[0] + '#rule=' + rule.id); toast('Link copiado'); };
-    document.getElementById('modalFav').onclick = ()=>{ toggleFav(rule.id); toast('Favorito atualizado'); };
-    document.getElementById('modalEdit').onclick = ()=> startEditFlow(rule);
-    document.getElementById('modalDelete').onclick = ()=> startDeleteFlow(rule);
-  }
-  document.getElementById('modalClose').onclick = ()=> modalBg.style.display='none';
-  modalBg.onclick = e => { if(e.target === modalBg) modalBg.style.display='none'; };
-
-  // edit flow (token)
-  async function startEditFlow(rule){
-    const saved = tokens[rule.id];
-    let token = saved || prompt('Insira o token de edição para essa regra (ou pressione OK para usar token salvo no navegador)');
-    if(!token && saved) token = saved;
-    if(!token){ alert('Token necessário para editar'); return; }
-    try{
-      const snap = await get(child(ref(db), 'regras/'+rule.id));
-      if(!snap.exists()){ alert('Regra não encontrada'); return; }
-      const data = snap.val();
-      if(data.token !== token){ alert('Token inválido'); return; }
-      // edit UI prompts
-      const newTitle = prompt('Novo título:', data.titulo);
-      if(newTitle === null) return;
-      const newText = prompt('Novo texto:', data.texto);
-      if(newText === null) return;
-      const newCat = prompt('Nova categoria:', data.categoria||'Geral');
-      await update(ref(db,'regras/'+rule.id), { titulo: newTitle, texto: newText, categoria: newCat, _edited: Date.now() });
-      // save token locally for convenience
-      tokens[rule.id] = token; localStorage.setItem('lm_tokens', JSON.stringify(tokens));
-      toast('Regra atualizada');
-      modalBg.style.display='none';
-    } catch(e){ console.error(e); alert('Erro ao verificar token'); }
-  }
-
-  // delete flow (token)
-  async function startDeleteFlow(rule){
-    const saved = tokens[rule.id];
-    let token = saved || prompt('Insira o token de edição para deletar essa regra');
-    if(!token && saved) token = saved;
-    if(!token){ alert('Token necessário'); return; }
-    if(!confirm('Confirmar exclusão desta regra? A ação não pode ser revertida.')) return;
-    try{
-      const snap = await get(child(ref(db), 'regras/'+rule.id));
-      if(!snap.exists()){ alert('Regra não encontrada'); return; }
-      const data = snap.val();
-      if(data.token !== token){ alert('Token inválido'); return; }
-      await remove(ref(db,'regras/'+rule.id));
-      delete tokens[rule.id]; localStorage.setItem('lm_tokens', JSON.stringify(tokens));
-      ownRules = ownRules.filter(x=>x!==rule.id); localStorage.setItem('lm_own', JSON.stringify(ownRules));
-      favorites = favorites.filter(x=>x!==rule.id); localStorage.setItem('lm_favs', JSON.stringify(favorites));
-      toast('Regra deletada');
-      modalBg.style.display='none';
-    } catch(e){ console.error(e); alert('Erro ao deletar'); }
-  }
-
-  // publish new rule
-  document.getElementById('publishBtn').onclick = async ()=>{
-    const titulo = (document.getElementById('newTitle').value||'').trim();
-    const texto = (document.getElementById('newText').value||'').trim();
-    const categoria = (document.getElementById('newCategory').value||'Geral');
-    if(!titulo || !texto){ alert('Preencha título e conteúdo'); return; }
-    const token = randomToken(18);
-    const payload = { titulo, texto, categoria, token, _ts: Date.now() };
-    try{
-      const newRef = push(rootRef);
-      await set(newRef, payload);
-      // save token locally and own list
-      tokens[newRef.key] = token; localStorage.setItem('lm_tokens', JSON.stringify(tokens));
-      ownRules.push(newRef.key); localStorage.setItem('lm_own', JSON.stringify(ownRules));
-      toast('Regra publicada — token salvo localmente');
-      alert('Regra publicada! Seu token de edição (guarde com segurança):\n\n' + token);
-      document.getElementById('newTitle').value=''; document.getElementById('newText').value='';
-      // switch to home
-      document.querySelectorAll('.navBtn').forEach(x=>x.classList.remove('active'));
-      document.querySelector('.navBtn[data-view="home"]').classList.add('active');
-      document.querySelectorAll('#view-home,#view-new,#view-export,#view-about').forEach(v=>v.style.display='none');
-      document.getElementById('view-home').style.display='block';
-    } catch(e){ console.error(e); alert('Erro ao publicar'); }
-  };
-
-  // random token helper
-  function randomToken(len=12){ const chars='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; let s=''; for(let i=0;i<len;i++) s+=chars[Math.floor(Math.random()*chars.length)]; return s; }
-
-  // export/import
-  document.getElementById('exportBtn').onclick = async ()=>{
-    const snap = await get(rootRef);
-    const data = snap.val() || {};
-    const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a'); a.href=url; a.download='lithmate_regras_export.json'; a.click(); URL.revokeObjectURL(url);
-    toast('Exportado JSON');
-  };
-  document.getElementById('downloadSample').onclick = ()=>{
-    const sample = [{titulo:'Regra Exemplo','texto':'Texto da regra','categoria':'Geral'}];
-    const blob = new Blob([JSON.stringify(sample, null, 2)], {type:'application/json'});
-    const u = URL.createObjectURL(blob); const a=document.createElement('a'); a.href=u; a.download='sample_regras.json'; a.click(); URL.revokeObjectURL(u);
-  };
-  document.getElementById('importBtn').onclick = ()=> document.getElementById('importFile').click();
-  document.getElementById('importFile').onchange = async (e)=>{
-    const file = e.target.files[0]; if(!file) return;
-    try{
-      const text = await file.text(); const json = JSON.parse(text);
-      if(!Array.isArray(json)){ alert('JSON precisa ser um array de regras'); return; }
-      for(const r of json){
-        const payload = { titulo:r.titulo||'Sem título', texto:r.texto||'', categoria:r.categoria||'Geral', token:randomToken(12), _ts: Date.now() };
-        const nr = push(rootRef); await set(nr, payload);
-      }
-      toast('Import concluído');
-      e.target.value = '';
-    } catch(er){ console.error(er); alert('Erro ao importar: '+er.message); }
-  };
-
-  // search debounce
-  let sd;
-  searchInput.oninput = ()=>{ clearTimeout(sd); sd = setTimeout(()=>{ page=1; render(); }, 220); };
-  document.getElementById('sortSelect').onchange = ()=>{ page=1; render(); };
-
-  // helper: copy to clipboard
-  function copyToClipboard(txt){ navigator.clipboard.writeText(txt); }
-
-  // own rules list UI
-  function renderOwnList(){
-    ownRulesList.innerHTML = '';
-    ownRules.forEach(id=>{
-      const r = allRules.find(x=>x.id===id);
-      const el = document.createElement('div'); el.style.display='flex'; el.style.justifyContent='space-between'; el.style.alignItems='center';
-      el.innerHTML = `<div style="font-weight:700">${r?escapeHtml(r.titulo):'(removida)'}</div><div style="display:flex;gap:6px">
-        <button class="linkBtn" data-id="${id}" data-act="goto">Ir</button>
-        <button class="linkBtn" data-id="${id}" data-act="copy">Copiar</button>
+// render page
+function renderPage(reset=false){
+  const list = $('list');
+  if(reset) list.innerHTML='';
+  const start = page*perPage; const end = start+perPage;
+  const slice = view.slice(start,end);
+  slice.forEach(r=>{
+    const div = document.createElement('div'); div.className='rule fade';
+    div.innerHTML = `
+      <h3>${r.titulo}</h3>
+      <div class='meta'>Categoria: ${r.categoria||'geral'} • ID: ${r.key} • ${r.user? 'Autor: '+r.user : 'Autor: —'}</div>
+      <div>${r.regra}</div>
+      <div class='actions'>
+        <button class='action copy' onclick='copyRule("${r.key}")'>Copiar</button>
+        <button class='action share' onclick='shareRule("${r.key}")'>Compartilhar</button>
+        <button class='action report' onclick='quickReport("${r.key}")'>Denunciar</button>
+        <button class='action' onclick='likeRule("${r.key}")'>👍 <span id="likes_${r.key}">${r.likes||0}</span></button>
+        <button class='action ghost' onclick='openRule("${r.key}")'>Abrir</button>
       </div>`;
-      el.querySelectorAll('button').forEach(b=>{
-        b.onclick = ()=>{
-          const act=b.dataset.act;
-          const id=b.dataset.id;
-          const rr = allRules.find(x=>x.id===id);
-          if(act==='goto'){ if(rr) openModal(rr); else alert('Regra removida'); }
-          if(act==='copy'){ if(rr){ navigator.clipboard.writeText(rr.titulo+'\n\n'+rr.texto); toast('Copiado'); } else alert('Regra removida'); }
-        };
-      });
-      ownRulesList.appendChild(el);
-    });
-    favCount.textContent = favorites.length;
-  }
+    list.appendChild(div);
+  });
+  page++;
+}
 
-  // check URL hash
-  function checkHash(){
-    const h = location.hash;
-    if(h && h.startsWith('#rule=')){
-      const id = h.split('=')[1];
-      if(id){
-        setTimeout(()=>{ const r = allRules.find(x=>x.id===id); if(r) openModal(r); else toast('Regra não encontrada'); }, 700);
-      }
-    }
-  }
-  window.addEventListener('hashchange', checkHash);
+$('loadMore').addEventListener('click', ()=>{ renderPage(); });
 
-  // initial load of local state
-  (function loadLocal(){
-    const t = localStorage.getItem('lm_tokens'); if(t) tokens = JSON.parse(t);
-    const o = localStorage.getItem('lm_own'); if(o) ownRules = JSON.parse(o);
-    const f = localStorage.getItem('lm_favs'); if(f) favorites = JSON.parse(f);
-    renderOwnList(); favCount.textContent = favorites.length;
-  })();
+// chips
+document.getElementById('chipList').addEventListener('click', e=>{
+  const chip = e.target.closest('.chip'); if(!chip) return;
+  currentCat = chip.dataset.cat||'all';
+  // highlight
+  Array.from(document.querySelectorAll('.chip')).forEach(c=> c.style.outline='');
+  chip.style.outline='2px solid rgba(120,150,255,0.12)';
+  resetView();
+});
 
-  // small auto-seed if DB empty
-  (async ()=>{
-    const snap = await get(rootRef);
-    if(!snap.exists()){
-      const sample = [
-        { titulo:'Respeito mútuo', texto:'Trate todos com respeito. Insultos e ofensas são proibidos.', categoria:'Geral', token:randomToken(12), _ts:Date.now() - 1000*60*60*24 },
-        { titulo:'Proibido conteúdo adulto', texto:'Não enviar nudez explícita ou links pornográficos.', categoria:'Conteúdo', token:randomToken(12), _ts:Date.now() - 1000*60*60*23 }
-      ];
-      for(const s of sample){ const n = push(rootRef); await set(n, s); }
-    }
-  })();
+// quick actions
+function copyRule(key){ const item = cache.find(x=>x.key===key); if(!item) return alert('Não encontrado'); navigator.clipboard.writeText((item.titulo+'
 
-  // small helper to show toast and cleanup every so often already done
+'+item.regra)); alert('Copiado'); }
+function shareRule(key){ const url = location.href.split('#')[0] + '#rule='+encodeURIComponent(key); if(navigator.share){ navigator.share({title:'Regra: '+key, text:'Veja essa regra', url}).catch(()=>{}); } else { navigator.clipboard.writeText(url); alert('Link copiado: '+url); } }
+function quickReport(key){ const motivo = prompt('Motivo da denúncia (spam/abuso/outro)'); if(!motivo) return; db.ref('reports').push({ruleId:key,msg:escape(motivo),time:Date.now()}).then(()=>alert('Denúncia enviada.')); }
+function likeRule(key){ const r = db.ref('regras/'+key+'/likes'); r.transaction(v=> (v||0)+1 ); }
+function openRule(key){ location.hash='rule='+encodeURIComponent(key); // optional: could render modal
+  // highlight after slight delay
+  setTimeout(()=>{ const el = document.querySelector(`[onclick*="${key}"]`); if(el) el.scrollIntoView({behavior:'smooth',block:'center'}); },600);
+}
 
-  // route nav initial display
-  document.querySelectorAll('[data-view]').forEach(b=>{ if(b.classList.contains('active')){ document.getElementById('view-'+b.dataset.view).style.display='block'; }});
+// reports export, stats, export data
+function updateStats(){ $('statTotal').textContent = cache.length; const cats = Array.from(new Set(cache.map(r=>r.categoria||'geral'))).length; $('statCats').textContent = cats; $('statRecent').textContent = cache[0]? new Date(cache[0].time).toLocaleString() : '—'; }
+
+$('exportJson').addEventListener('click', ()=>{
+  const data = JSON.stringify(cache, null, 2);
+  const blob = new Blob([data],{type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href=url; a.download='lithmat_regras.json'; a.click(); URL.revokeObjectURL(url);
+});
+$('exportCsv').addEventListener('click', ()=>{
+  if(!cache.length) return alert('Sem dados');
+  const keys = ['key','titulo','regra','categoria','user','link','time','likes'];
+  const rows = [keys.join(',')].concat(cache.map(r=>keys.map(k=>'"'+(r[k]||'')+'"').join(',')));
+  const blob = new Blob([rows.join('
+')],{type:'text/csv'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='lithmat_regras.csv'; a.click(); URL.revokeObjectURL(url);
+});
+
+// initialize view on load
+window.addEventListener('load', ()=>{ applyFilters(); // check hash for rule
+  const h = location.hash.replace('#',''); if(h.startsWith('rule=')){ const key = decodeURIComponent(h.split('=')[1]); setTimeout(()=>{ const el = document.querySelector(`[onclick*="${key}"]`); if(el) el.scrollIntoView({behavior:'smooth'}); },900); }
+});
+
 </script>
-
 </body>
 </html>
