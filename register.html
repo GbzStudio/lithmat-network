@@ -1,80 +1,84 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Afiliados GbzStudio</title>
-
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Cadastro de Afiliado — Seguro</title>
 <style>
-body{
-    margin:0;
-    background:#0d0d0d;
-    color:white;
-    font-family:Arial, sans-serif;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-}
-.container{
-    width:360px;
-    background:#141414;
-    padding:25px;
-    border-radius:15px;
-    box-shadow:0 0 30px #000;
-}
-h2{
-    text-align:center;
-    margin-bottom:15px;
-}
-input{
-    width:100%;
-    padding:12px;
-    margin-top:10px;
-    border:none;
-    background:#1f1f1f;
-    color:white;
-    border-radius:8px;
-}
-button{
-    width:100%;
-    padding:12px;
-    margin-top:20px;
-    background:#6a3dff;
-    border:none;
-    border-radius:8px;
-    color:white;
-    font-size:16px;
-    cursor:pointer;
-}
-button:hover{
-    background:#825eff;
-}
-#status{
-    margin-top:15px;
-    text-align:center;
-}
+  :root{
+    --bg:#07121a; --card:#0e161b; --accent:#3dd8c4; --muted:#9fb0bd; --text:#e6f6f3;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;background:linear-gradient(180deg,#041018,#08151b);color:var(--text);font-family:Inter,system-ui,Arial;display:flex;align-items:center;justify-content:center;padding:24px}
+  .card{width:100%;max-width:520px;background:var(--card);padding:20px;border-radius:12px;box-shadow:0 10px 30px rgba(2,6,23,0.7);border:1px solid rgba(255,255,255,0.03)}
+  h1{margin:0 0 6px;font-size:20px}
+  p.lead{margin:0 0 16px;color:var(--muted)}
+  .row{display:flex;gap:12px}
+  label{display:block;font-size:13px;color:var(--muted);margin-top:10px}
+  input{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:var(--text);font-size:14px;margin-top:6px}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  button{margin-top:14px;padding:11px;border-radius:10px;border:0;background:linear-gradient(90deg,var(--accent),#34cbb7);color:#022;font-weight:700;cursor:pointer}
+  button[disabled]{opacity:.6;cursor:not-allowed}
+  .status{margin-top:12px;font-size:14px}
+  .success{background:#09311a;color:#bff3d6;padding:10px;border-radius:8px;margin-top:10px}
+  .small{font-size:13px;color:var(--muted)}
+  .linkRow{display:flex;gap:8px;margin-top:8px}
+  .copyBtn{padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--text);cursor:pointer}
+  @media (max-width:520px){.two{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
+  <div class="card" role="main" aria-labelledby="title">
+    <h1 id="title">Cadastro de Afiliado</h1>
+    <p class="lead">Preencha os dados abaixo. O sistema gera automaticamente seu código de afiliado único.</p>
 
-<div class="container">
-    <h2>Registro de Afiliado</h2>
+    <label for="nome">Nome</label>
+    <input id="nome" autocomplete="given-name" placeholder="Nome" />
 
-    <input id="nome" type="text" placeholder="Nome">
-    <input id="sobrenome" type="text" placeholder="Sobrenome">
-    <input id="idade" type="number" placeholder="Idade">
-    <input id="email" type="email" placeholder="Email">
-    <input id="pix" type="text" placeholder="Chave Pix">
+    <label for="sobrenome">Sobrenome</label>
+    <input id="sobrenome" autocomplete="family-name" placeholder="Sobrenome" />
 
-    <button onclick="finalizar()">Finalizar Cadastro</button>
+    <div class="two">
+      <div>
+        <label for="idade">Idade</label>
+        <input id="idade" type="number" min="14" max="120" placeholder="Ex: 18" />
+      </div>
+      <div>
+        <label for="email">E-mail</label>
+        <input id="email" type="email" autocomplete="email" placeholder="seu@exemplo.com" />
+      </div>
+    </div>
 
-    <div id="status"></div>
-</div>
+    <label for="pix">Chave PIX</label>
+    <input id="pix" placeholder="CPF / e-mail / telefone" />
+
+    <button id="btnSubmit" aria-live="polite">Finalizar e Gerar Código</button>
+
+    <div id="status" class="status" role="status" aria-atomic="true"></div>
+
+    <div id="result" style="display:none" class="success" aria-hidden="true"></div>
+
+    <div id="share" style="display:none" aria-hidden="true">
+      <div class="small" style="margin-top:10px">Link rápido para divulgar (copiado automáticamente se disponível):</div>
+      <div class="linkRow">
+        <input id="shareLink" readonly style="flex:1;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);background:#071418;color:var(--text)" />
+        <button id="copyLink" class="copyBtn">Copiar</button>
+      </div>
+    </div>
+  </div>
 
 <script type="module">
+/*
+  afilado-register-safe.html
+  Regras importantes:
+  - Usa multi-path update para salvar /afiliados/{id}, /afiliadosByCode/{code} e /afiliadosByEmail/{emailKey}
+  - Evita duplicação de email e duplicação de código
+  - Limita tentativas de gerar código
+  - Tratamento de erros e feedback ao usuário
+*/
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+import { getDatabase, ref, get, child, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyD6UyxqTZAlPLjcadS45YYj2HUEK6fTV80",
@@ -89,70 +93,190 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// -------- GERADOR DE CÓDIGO --------
-function gerarCodigoAfiliado() {
-    const caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    let codigo = "";
-    for (let i = 0; i < 8; i++) {
-        codigo += caracteres[Math.floor(Math.random() * caracteres.length)];
-    }
-    return codigo;
+// DOM
+const nomeEl = document.getElementById('nome');
+const sobrenomeEl = document.getElementById('sobrenome');
+const idadeEl = document.getElementById('idade');
+const emailEl = document.getElementById('email');
+const pixEl = document.getElementById('pix');
+const btn = document.getElementById('btnSubmit');
+const status = document.getElementById('status');
+const resultBox = document.getElementById('result');
+const shareWrap = document.getElementById('share');
+const shareLink = document.getElementById('shareLink');
+const copyLinkBtn = document.getElementById('copyLink');
+
+const LS_KEY = 'gbz_affiliate_v2';
+
+// helpers
+function sanitizeEmailKey(email){
+  // lower + replace chars not allowed in DB keys (dot) -> use comma as safe replacement
+  return email.toLowerCase().replace(/\./g, ',');
 }
 
-// -------- FUNÇÃO FINALIZAR --------
-async function finalizar() {
-    const nome = document.getElementById("nome").value.trim();
-    const sobrenome = document.getElementById("sobrenome").value.trim();
-    const idade = document.getElementById("idade").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const pix = document.getElementById("pix").value.trim();
-    const status = document.getElementById("status");
-
-    if (!nome || !sobrenome || !idade || !email || !pix) {
-        status.innerHTML = "Preencha todos os campos!";
-        status.style.color = "red";
-        return;
-    }
-
-    let codigo = gerarCodigoAfiliado();
-
-    const dbRef = ref(db);
-    const snap = await get(child(dbRef, "afiliados"));
-
-    if (snap.exists()) {
-        const data = snap.val();
-        let repetido = true;
-
-        while (repetido) {
-            repetido = false;
-            for (let id in data) {
-                if (data[id].codigo === codigo) {
-                    repetido = true;
-                    codigo = gerarCodigoAfiliado();
-                }
-            }
-        }
-    }
-
-    const id = Date.now();
-
-    await set(ref(db, "afiliados/" + id), {
-        nome,
-        sobrenome,
-        idade,
-        email,
-        pix,
-        codigo,
-        criadoEm: new Date().toISOString(),
-        totalVendas: 0,
-        totalGanhos: 0
-    });
-
-    status.innerHTML = 
-        "Cadastro concluído!<br>Seu código de afiliado é:<br><b>" + codigo + "</b>";
-    status.style.color = "lightgreen";
+function generateCode(seed='AF'){
+  // 8-char strong code: letters + digits (avoids ambiguous chars)
+  const chars = "ABCDEFGHJKMNPQRSTUVWXYZ23456789"; // avoid I,O,1,0
+  let s = (seed||'AF').toString().replace(/\s+/g,'').toUpperCase().slice(0,3);
+  let code = '';
+  for(let i=0;i<5;i++) code += chars[Math.floor(Math.random()*chars.length)];
+  return (s + code).slice(0,8);
 }
+
+function setStatus(msg, color='') { status.textContent = msg; status.style.color = color || 'var(--muted)'; }
+
+async function checkEmailExists(emailKey){
+  try{
+    const snap = await get(child(ref(db), `afiliadosByEmail/${emailKey}`));
+    return snap.exists();
+  }catch(e){ throw e; }
+}
+
+async function checkCodeExists(code){
+  try{
+    const snap = await get(child(ref(db), `afiliadosByCode/${code}`));
+    return snap.exists();
+  }catch(e){ throw e; }
+}
+
+async function submitAffiliate(data){
+  // atomic multi-path update:
+  // /afiliados/{id} = data
+  // /afiliadosByCode/{code} = { id, nome, email }
+  // /afiliadosByEmail/{emailKey} = { id, nome }
+  const id = data.id;
+  const updates = {};
+  updates[`/afiliados/${id}`] = data;
+  updates[`/afiliadosByCode/${data.codigo}`] = { id, nome: data.nome + ' ' + data.sobrenome, email: data.email };
+  updates[`/afiliadosByEmail/${sanitizeEmailKey(data.email)}`] = { id, nome: data.nome + ' ' + data.sobrenome };
+  await update(ref(db), updates);
+  return id;
+}
+
+btn.addEventListener('click', async ()=>{
+  btn.disabled = true;
+  setStatus('Validando dados...');
+  resultBox.style.display = 'none';
+  shareWrap.style.display = 'none';
+
+  try{
+    // collect
+    const nome = nomeEl.value.trim();
+    const sobrenome = sobrenomeEl.value.trim();
+    const idade = Number(idadeEl.value);
+    const email = emailEl.value.trim();
+    const pix = pixEl.value.trim();
+
+    // validations
+    if(!nome || !sobrenome || !idade || !email || !pix){
+      setStatus('Preencha todos os campos.', 'red'); btn.disabled=false; return;
+    }
+    if(!Number.isInteger(idade) || idade < 14 || idade > 120){
+      setStatus('Idade inválida. Min 14 anos.', 'red'); btn.disabled=false; return;
+    }
+    // basic email validation (robust enough for client)
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if(!emailPattern.test(email)){
+      setStatus('E-mail inválido.', 'red'); btn.disabled=false; return;
+    }
+
+    const emailKey = sanitizeEmailKey(email);
+    setStatus('Verificando se o e-mail já existe...');
+    const existsEmail = await checkEmailExists(emailKey);
+    if(existsEmail){
+      setStatus('E-mail já cadastrado. Use outro ou recupere o seu código (local).', 'red');
+      btn.disabled=false; return;
+    }
+
+    // generate unique code with limited attempts
+    setStatus('Gerando código único...');
+    let codigo = generateCode(nome);
+    let attempts = 0;
+    while(await checkCodeExists(codigo) && attempts < 8){
+      attempts++;
+      codigo = generateCode(nome + attempts);
+    }
+    if(await checkCodeExists(codigo)){
+      setStatus('Erro ao gerar código único. Tente novamente.', 'red'); btn.disabled=false; return;
+    }
+
+    // prepare data
+    const id = 'AFI_' + Date.now().toString();
+    const payload = {
+      id,
+      nome,
+      sobrenome,
+      idade,
+      email: email.toLowerCase(),
+      pix,
+      codigo,
+      criadoEm: new Date().toISOString(),
+      totalVendas: 0,
+      totalGanhos: 0,
+      status: 'ativo'
+    };
+
+    setStatus('Salvando no banco...');
+    await submitAffiliate(payload);
+
+    // save local copy
+    try { localStorage.setItem(LS_KEY, JSON.stringify(payload)); } catch(_) {}
+
+    // success
+    resultBox.style.display = 'block';
+    resultBox.setAttribute('aria-hidden','false');
+    resultBox.innerHTML = `✅ Cadastro concluído!<br>Seu código: <b style="font-size:18px">${codigo}</b>`;
+    setStatus('', '');
+
+    // prepare share link
+    const base = location.origin + location.pathname.replace(/[^/]*$/, '') + 'produto.html'; // assume produto.html lives same folder; helpful default
+    const link = `${location.origin}${location.pathname}?ref=${encodeURIComponent(codigo)}`;
+    // show share link for convenience (use page base link)
+    shareLink.value = `${location.origin}/?ref=${encodeURIComponent(codigo)}`;
+    shareWrap.style.display = 'block';
+    copyLinkBtn.focus();
+
+    // optionally copy automatically (try/catch)
+    try { await navigator.clipboard.writeText(shareLink.value); } catch(e){ /* ignore copy errors */ }
+
+  }catch(err){
+    console.error('Erro no cadastro:', err);
+    setStatus('Ocorreu um erro. Abra o console para detalhes ou tente novamente mais tarde.', 'red');
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+copyLinkBtn.addEventListener('click', async ()=>{
+  try{
+    await navigator.clipboard.writeText(shareLink.value);
+    copyLinkBtn.textContent = 'Copiado';
+    setTimeout(()=> copyLinkBtn.textContent = 'Copiar', 1200);
+  }catch(e){
+    alert('Não foi possível copiar automaticamente. Seleciona o texto e copie manualmente.');
+  }
+});
+
+// Auto-load local data if exists (helpful)
+(function loadLocal(){
+  try{
+    const local = JSON.parse(localStorage.getItem(LS_KEY) || 'null');
+    if(local){
+      nomeEl.value = local.nome || '';
+      sobrenomeEl.value = local.sobrenome || '';
+      idadeEl.value = local.idade || '';
+      emailEl.value = local.email || '';
+      pixEl.value = local.pix || '';
+      // show current code if exists
+      if(local.codigo){
+        resultBox.style.display='block';
+        resultBox.innerHTML = `Dados locais encontrados.<br>Seu código: <b>${local.codigo}</b>`;
+        shareLink.value = `${location.origin}/?ref=${encodeURIComponent(local.codigo)}`;
+        shareWrap.style.display='block';
+      }
+    }
+  }catch(e){}
+})();
 </script>
-
 </body>
 </html>
