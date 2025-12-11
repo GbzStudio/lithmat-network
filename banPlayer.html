@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Cadastro para Banir — Painel Flutuante</title>
+<style>
+  :root{
+    --bg:#0f1724; --card:#0b1220; --accent:#7c3aed; --glass: rgba(255,255,255,0.03);
+    --text:#e6eef8; --muted:#9fb3d3;
+  }
+  html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial; background:linear-gradient(180deg,#071025 0%, #08162a 100%); color:var(--text);}
+  .overlay{position:fixed; inset:0; display:flex; align-items:flex-start; justify-content:center; pointer-events:none;}
+  .panel{
+    pointer-events:all; margin-top:6vh; width:360px;
+    border-radius:14px; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.18));
+    border:1px solid rgba(255,255,255,0.04); box-shadow:0 8px 30px rgba(2,6,23,0.6);
+    overflow:hidden; transform:translateZ(0); user-select:none;
+  }
+  .header{display:flex; align-items:center; gap:10px; padding:12px 14px; cursor:grab;
+    background:linear-gradient(90deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+    border-bottom:1px solid rgba(255,255,255,0.02);
+  }
+  .grab-dot{width:10px;height:10px;border-radius:50%;background:var(--accent); box-shadow:0 2px 8px rgba(124,58,237,0.18);}
+  .title{font-weight:600;font-size:15px}
+  .sub{font-size:12px;color:var(--muted); margin-left:auto}
+  .content{padding:14px}
+  label{display:block;font-size:13px;color:var(--muted); margin-bottom:6px}
+  input[type="text"], textarea{
+    width:100%; padding:10px 12px; border-radius:10px; border:1px solid rgba(255,255,255,0.03);
+    background:var(--glass); color:var(--text); outline:none; font-size:14px;
+  }
+  textarea{min-height:80px}
+  .time-options{display:flex; flex-direction:column; gap:8px; margin-top:6px}
+  .time-item{display:flex; align-items:center; gap:8px}
+  .time-item input[type="radio"]{transform:scale(1.1)}
+  .price-label{
+    background:rgba(255,255,255,0.06); padding:6px 10px; border-radius:8px;
+    font-size:13px; color:var(--text); border:1px solid rgba(255,255,255,0.05)
+  }
+  .foot{display:flex; gap:8px; margin-top:12px; align-items:center}
+  .btn{
+    flex:1; padding:10px 12px; border-radius:10px; font-weight:600; cursor:pointer; border:0;
+    background:linear-gradient(90deg,var(--accent), #4f46e5); color:white;
+    box-shadow:0 6px 18px rgba(72,61,139,0.18)
+  }
+  .btn.secondary{background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.03); box-shadow:none}
+  .hint{font-size:12px;color:var(--muted); margin-top:8px}
+</style>
+</head>
+<body>
+  <div class="overlay">
+    <div id="floatingPanel" class="panel">
+      <div id="dragHeader" class="header">
+        <div class="grab-dot"></div>
+        <div>
+          <div class="title">Formulário de Banimento</div>
+          <div style="font-size:12px;color:var(--muted)">Preencha e envie no WhatsApp</div>
+        </div>
+        <div class="sub">Gbz Studio</div>
+      </div>
+
+      <div class="content">
+        <form id="banForm" autocomplete="off">
+
+          <!-- Nome -->
+          <label>Seu Nome Completo *</label>
+          <input id="fullName" type="text" required placeholder="Ex: João da Silva">
+
+          <!-- Tempo -->
+          <label style="margin-top:12px">Tempo / Valor *</label>
+          <div class="time-options">
+
+            <label class="time-item">
+              <input type="radio" name="tempo" value="24H" required>
+              <span style="flex:1">24 Horas</span>
+              <span class="price-label">R$ 5,99</span>
+            </label>
+
+            <label class="time-item">
+              <input type="radio" name="tempo" value="10 dias">
+              <span style="flex:1">10 Dias</span>
+              <span class="price-label">R$ 15,99</span>
+            </label>
+
+            <label class="time-item">
+              <input type="radio" name="tempo" value="Permanente">
+              <span style="flex:1">Permanente</span>
+              <span class="price-label">R$ 25,99</span>
+            </label>
+
+          </div>
+
+          <!-- ID alvo -->
+          <label style="margin-top:12px">ID da pessoa a ser banida *</label>
+          <input id="targetId" type="text" required placeholder="Ex: 123456789">
+
+          <!-- Mensagem -->
+          <label style="margin-top:12px">Mensagem (Opcional)</label>
+          <textarea id="message" placeholder="Alguma observação extra..."></textarea>
+
+          <!-- Botões -->
+          <div class="foot">
+            <button type="submit" class="btn">Enviar para WhatsApp</button>
+            <button type="button" id="clearBtn" class="btn secondary">Limpar</button>
+          </div>
+
+          <div class="hint">Será aberta uma conversa no WhatsApp com todos os dados preenchidos.</div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+
+<script>
+const WHATSAPP_NUMBER = "5515996228860";
+
+/* Painel arrastável */
+(function(){
+  const panel = document.getElementById('floatingPanel');
+  const header = document.getElementById('dragHeader');
+  let ox=0, oy=0, dragging=false;
+
+  header.addEventListener('pointerdown', e=>{
+    dragging=true; header.setPointerCapture(e.pointerId);
+    const r = panel.getBoundingClientRect();
+    ox = e.clientX - r.left; oy = e.clientY - r.top;
+  });
+  window.addEventListener('pointermove', e=>{
+    if(!dragging) return;
+    let l = e.clientX - ox, t = e.clientY - oy;
+    const pad=8, w=panel.offsetWidth, h=panel.offsetHeight;
+    l = Math.max(pad, Math.min(window.innerWidth-w-pad, l));
+    t = Math.max(pad, Math.min(window.innerHeight-h-pad, t));
+    panel.style.position='fixed'; panel.style.left=l+'px'; panel.style.top=t+'px';
+  });
+  window.addEventListener('pointerup', ()=> dragging=false);
+})();
+
+/* Envio WhatsApp */
+document.getElementById('banForm').addEventListener('submit', e=>{
+  e.preventDefault();
+
+  const full = fullName.value.trim();
+  const id = targetId.value.trim();
+  const msg = message.value.trim();
+  const tempo = document.querySelector("input[name='tempo']:checked");
+
+  if(!tempo){ alert("Selecione o tempo."); return;}
+
+  let valor =
+    tempo.value === "24H" ? "R$ 5,99" :
+    tempo.value === "10 dias" ? "R$ 15,99" :
+    "R$ 25,99";
+
+  const text =
+`*PEDIDO DE BANIMENTO*
+• Nome: ${full}
+• ID do alvo: ${id}
+• Tempo: ${tempo.value}
+• Valor: ${valor}
+${msg ? "• Mensagem: " + msg : ""}
+[Formulário automático]`;
+
+  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`,"_blank");
+});
+
+/* Limpar */
+document.getElementById('clearBtn').addEventListener('click',()=>{
+  document.getElementById('banForm').reset();
+});
+</script>
+
+</body>
+</html>
