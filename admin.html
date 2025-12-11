@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Afiliados</title>
+
+<style>
+body {
+    margin: 0;
+    background: #0d0d0d;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+header {
+    background: #1a1a1a;
+    padding: 15px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+    box-shadow: 0 0 10px #000;
+}
+
+#loginBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+}
+
+button {
+    padding: 14px 20px;
+    background: #6a3cff;
+    border: none;
+    border-radius: 10px;
+    font-size: 17px;
+    cursor: pointer;
+    color: white;
+    transition: 0.25s;
+}
+
+button:hover {
+    background: #875aff;
+}
+
+#painel {
+    display: none;
+    padding: 20px;
+}
+
+.table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+
+.table th, .table td {
+    padding: 10px;
+    border-bottom: 1px solid #333;
+}
+
+.table th {
+    background: #222;
+}
+</style>
+</head>
+
+<body>
+
+<header>Painel Administrativo — GbzStudio</header>
+
+<div id="loginBox">
+    <button id="loginBtn">Entrar com Google</button>
+</div>
+
+<div id="painel">
+    <h2>Afiliados Registrados</h2>
+
+    <table class="table" id="tabelaAfiliados">
+        <tr>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Código</th>
+            <th>Idade</th>
+            <th>Pix</th>
+            <th>Vendas</th>
+        </tr>
+    </table>
+</div>
+
+<script type="module">
+    // Import Firebase
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+    // Firebase Config
+    const firebaseConfig = {
+      apiKey: "AIzaSyD6UyxqTZAlPLjcadS45YYj2HUEK6fTV80",
+      authDomain: "bancdataofc.firebaseapp.com",
+      databaseURL: "https://bancdataofc-default-rtdb.firebaseio.com",
+      projectId: "bancdataofc",
+      storageBucket: "bancdataofc.firebasestorage.app",
+      messagingSenderId: "1032596370698",
+      appId: "1:1032596370698:web:26c710d196fb2b59e876f3"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+
+    const provider = new GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: "select_account" });
+
+    const loginBtn = document.getElementById("loginBtn");
+    const loginBox = document.getElementById("loginBox");
+    const painel = document.getElementById("painel");
+
+    const adminEmail = "gabrielcordeirosilva2010@gmail.com"; // seu email
+
+    loginBtn.onclick = async () => {
+        try {
+            const result = await signInWithPopup(auth, provider);
+            const user = result.user;
+
+            if (user.email !== adminEmail) {
+                alert("Acesso negado. Este email não é administrador.");
+                return;
+            }
+
+            // Login aceito
+            loginBox.style.display = "none";
+            painel.style.display = "block";
+
+            carregarAfiliados();
+
+        } catch (error) {
+            alert("Erro no login: " + error.message);
+        }
+    };
+
+    async function carregarAfiliados() {
+        const tabela = document.getElementById("tabelaAfiliados");
+
+        const snap = await get(ref(db, "afiliados"));
+
+        if (!snap.exists()) {
+            let tr = document.createElement("tr");
+            tr.innerHTML = `<td colspan="6">Nenhum afiliado encontrado.</td>`;
+            tabela.appendChild(tr);
+            return;
+        }
+
+        const dados = snap.val();
+
+        Object.values(dados).forEach(a => {
+            let tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td>${a.nome} ${a.sobrenome}</td>
+                <td>${a.email}</td>
+                <td>${a.codigo}</td>
+                <td>${a.idade}</td>
+                <td>${a.pix}</td>
+                <td>${a.totalVendas}</td>
+            `;
+            tabela.appendChild(tr);
+        });
+    }
+</script>
+
+</body>
+</html>
