@@ -1,349 +1,177 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Painel PRO de Banimento — Gbz Studio</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%234acbff'/></svg>">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Banimentos — Painel Premium</title>
+
 <style>
-  :root{
-    --bg:#07101a; --card:#071827; --glass: rgba(255,255,255,0.03);
-    --muted:#9fb3c8; --accent:#4acbff; --accent-2:#7dd7ff; --danger:#ff6d6d;
-    --glass-2: rgba(255,255,255,0.02);
-    --shadow: 0 10px 40px rgba(2,6,23,0.6);
-  }
-  /* Light theme vars (toggle via body.light) */
-  body.light { --bg:#f4f7fb; --card:#ffffff; --glass: rgba(0,0,0,0.03); --muted:#566171; --accent:#2563eb; --accent-2:#60a5fa; --shadow: 0 8px 30px rgba(20,25,30,0.06); color: #07101a; }
+    body{
+        margin:0;
+        padding:0;
+        background:#050505;
+        font-family:Arial, sans-serif;
+        color:white;
+        overflow:hidden;
+    }
 
-  html,body{height:100%; margin:0; font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial; background:linear-gradient(180deg,var(--bg) 0%, #041023 100%); color: #e6eef8; -webkit-font-smoothing:antialiased;}
-  .wrap{min-height:100vh; display:flex; align-items:center; justify-content:center; padding:40px;}
-  /* Panel */
-  .panel {
-    width:400px; max-width:96vw; border-radius:16px; padding:18px; position:relative;
-    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.12));
-    border:1px solid rgba(255,255,255,0.04);
-    box-shadow:var(--shadow); backdrop-filter: blur(8px); transition: transform .26s ease, box-shadow .26s;
-  }
-  body.light .panel { background: linear-gradient(180deg, rgba(0,0,0,0.01), rgba(255,255,255,0.9)); border:1px solid rgba(20,30,60,0.04); }
-  .panel:hover{ transform: translateY(-6px); }
+    /* Fundo com efeito de desfoque + transparência */
+    .overlay{
+        position:fixed;
+        top:0; left:0;
+        width:100%; height:100%;
+        backdrop-filter:blur(10px);
+        background:rgba(0,0,0,0.45);
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        animation:bgFade 0.6s ease;
+    }
 
-  /* Header */
-  .hdr{display:flex; gap:10px; align-items:center; margin-bottom:8px;}
-  .logo { width:44px; height:44px; border-radius:10px; background:linear-gradient(135deg,var(--accent),var(--accent-2)); box-shadow:0 6px 18px rgba(74,203,255,0.14); display:flex; align-items:center; justify-content:center; font-weight:700; color:#012; }
-  .title{flex:1}
-  .title h1{margin:0; font-size:16px; letter-spacing:0.2px; color:var(--accent); }
-  .title p{margin:0; font-size:12px; color:var(--muted); margin-top:2px;}
+    @keyframes bgFade{
+        from{opacity:0;}
+        to{opacity:1;}
+    }
 
-  /* Controls layout */
-  .grid{display:grid; grid-template-columns:1fr; gap:10px; margin-top:10px;}
-  label{font-size:13px; color:var(--muted); margin-bottom:6px; display:block;}
-  .input, textarea, select{width:100%; padding:10px 12px; border-radius:10px; background:var(--glass); border:1px solid rgba(255,255,255,0.03); color:inherit; font-size:14px; outline:none; box-sizing:border-box;}
-  textarea{min-height:80px; resize:vertical;}
-  .input:focus, textarea:focus { box-shadow:0 6px 22px rgba(74,203,255,0.06); border-color:var(--accent); }
+    /* Painel flutuante estilo vidro neon */
+    .frame{
+        width:370px;
+        padding:25px;
+        border-radius:20px;
+        background:rgba(20,20,20,0.75);
+        border:1.6px solid rgba(0,140,255,0.4);
+        box-shadow:
+            0 0 12px rgba(0,140,255,0.35),
+            inset 0 0 15px rgba(0,0,0,0.5);
+        animation:popup 0.45s ease-out;
+    }
 
-  /* Time cards */
-  .cards{display:flex; gap:8px; margin-top:6px}
-  .card{flex:1; padding:12px; border-radius:12px; background:var(--glass-2); text-align:center; cursor:pointer; border:1px solid rgba(255,255,255,0.03); transition:transform .16s ease, box-shadow .16s ease; user-select:none;}
-  .card h3{margin:0; font-size:14px; color:var(--muted)}
-  .card p{margin:6px 0 0 0; font-weight:700; font-size:15px; color:var(--accent);}
-  .card.active{ transform: translateY(-6px); box-shadow: 0 12px 30px rgba(74,203,255,0.12); border-color: rgba(74,203,255,0.18); background: linear-gradient(180deg, rgba(74,203,255,0.04), rgba(0,0,0,0.04)); }
-  body.light .card{ background: rgba(2,6,23,0.02); border:1px solid rgba(2,6,23,0.04); }
+    @keyframes popup{
+        from{opacity:0; transform:scale(0.85);}
+        to{opacity:1; transform:scale(1);}
+    }
 
-  /* preview box */
-  .preview{
-    margin-top:8px; padding:12px; border-radius:10px; background:linear-gradient(180deg, rgba(0,0,0,0.06), rgba(255,255,255,0.01)); font-size:13px; color:var(--muted);
-    border:1px solid rgba(255,255,255,0.03);
-  }
-  .preview b{color:var(--accent);}
+    h2{
+        text-align:center;
+        margin-bottom:20px;
+        font-size:22px;
+        font-weight:900;
+        color:#00aaff;
+        text-shadow:0 0 7px rgba(0,170,255,0.7);
+        letter-spacing:1px;
+    }
 
-  /* actions */
-  .actions{display:flex; gap:8px; margin-top:12px; align-items:center;}
-  .btn{flex:1; padding:12px; border-radius:10px; cursor:pointer; font-weight:700; border:0; background:linear-gradient(90deg,var(--accent),var(--accent-2)); color:#001; display:inline-flex; justify-content:center; align-items:center; gap:8px;}
-  .btn.secondary{background:transparent; border:1px solid rgba(255,255,255,0.06); color:var(--muted); font-weight:600;}
-  .btn:active{ transform:translateY(1px); }
+    label{
+        display:block;
+        margin-bottom:6px;
+        font-size:14px;
+        opacity:0.9;
+    }
 
-  /* small helpers */
-  .muted{font-size:12px; color:var(--muted)}
-  .err{color:var(--danger); font-size:12px; margin-top:6px; display:none;}
-  .small-row{display:flex; gap:8px; align-items:center;}
-  .info-chip {padding:6px 8px; border-radius:8px; background:rgba(255,255,255,0.02); font-size:13px; color:var(--muted);}
+    input, select, textarea{
+        width:100%;
+        padding:12px;
+        margin-bottom:14px;
+        border-radius:10px;
+        border:1px solid rgba(0,140,255,0.3);
+        background:rgba(0,0,0,0.55);
+        color:white;
+        font-size:14px;
+        transition:0.25s;
+        outline:none;
+    }
 
-  /* modal confirm */
-  .modal-backdrop{position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:linear-gradient(180deg, rgba(2,6,23,0.6), rgba(2,6,23,0.8)); z-index:60;}
-  .modal{width:420px; max-width:94vw; background:var(--card); border-radius:14px; padding:18px; box-shadow:var(--shadow); border:1px solid rgba(255,255,255,0.04);}
-  .modal h3{margin:0 0 8px 0; color:var(--accent);}
-  .modal .row{display:flex; gap:8px; margin-top:8px;}
-  .modal .meta{font-size:13px; color:var(--muted);}
+    input:focus, select:focus, textarea:focus{
+        border-color:#00aaff;
+        box-shadow:0 0 12px #0095e8;
+        background:rgba(0,0,0,0.75);
+    }
 
-  /* spinner */
-  .spinner{width:18px;height:18px;border-radius:50%;border:3px solid rgba(0,0,0,0.12); border-top-color:rgba(255,255,255,0.9); animation:spin .9s linear infinite; display:inline-block;}
-  @keyframes spin{to {transform:rotate(360deg);} }
+    textarea{height:75px; resize:none;}
 
-  /* toast */
-  .toast{position:fixed; right:20px; bottom:20px; display:none; background:linear-gradient(90deg,var(--accent),var(--accent-2)); color:#001; padding:10px 14px; border-radius:10px; box-shadow:0 8px 30px rgba(0,0,0,0.5); font-weight:700; z-index:80;}
+    .btn{
+        width:100%;
+        padding:14px;
+        font-size:16px;
+        font-weight:bold;
+        border:none;
+        border-radius:12px;
+        cursor:pointer;
+        margin-top:10px;
+        transition:0.3s;
+        background:linear-gradient(90deg,#007bff,#00c3ff);
+        color:white;
+        box-shadow:0 0 12px rgba(0,140,255,0.7);
+    }
 
-  /* small/mobile tweaks */
-  @media(max-width:420px){
-    .panel{padding:14px}
-    .hdr .title h1{font-size:14px}
-    .card p{font-size:13px}
-  }
+    .btn:hover{
+        background:linear-gradient(90deg,#0095ff,#14d7ff);
+        box-shadow:0 0 15px rgba(0,160,255,0.9);
+        transform:scale(1.03);
+    }
 </style>
 </head>
+
 <body>
-  <div class="wrap">
-    <div class="panel" role="region" aria-label="Painel de Banimento PRO">
-      <div class="hdr">
-        <div class="logo">Gbz</div>
-        <div class="title">
-          <h1>Painel PRO de Banimento</h1>
-          <p class="muted">Envie pedidos formatados diretamente para o WhatsApp</p>
-        </div>
-        <div style="display:flex; gap:6px; align-items:center;">
-          <button id="themeToggle" class="btn secondary" title="Alterar tema" style="padding:8px 10px; font-size:13px;">🌓</button>
-        </div>
-      </div>
 
-      <div class="grid">
-        <div>
-          <label for="nome">Seu Nome Completo *</label>
-          <input id="nome" class="input" placeholder="Ex: João da Silva" aria-required="true" />
-          <div id="errNome" class="err">Nome inválido (mínimo 3 caracteres).</div>
-        </div>
+<div class="overlay">
+    <div class="frame">
 
-        <div>
-          <label>Escolha o Tempo (preço ajusta automaticamente)</label>
-          <div class="cards" role="tablist" aria-label="Opções de tempo">
-            <div class="card" data-val="1" tabindex="0">
-              <h3>24 Horas</h3>
-              <p>R$ 5,99</p>
-            </div>
-            <div class="card" data-val="2" tabindex="0">
-              <h3>10 Dias</h3>
-              <p>R$ 15,99</p>
-            </div>
-            <div class="card" data-val="3" tabindex="0">
-              <h3>Permanente</h3>
-              <p>R$ 25,99</p>
-            </div>
-          </div>
-        </div>
+        <h2>Cadastro de Banimento</h2>
 
-        <div>
-          <label>Valor Selecionado</label>
-          <div class="small-row">
-            <div id="valor" class="info-chip">R$ 5,99</div>
-            <div style="flex:1"></div>
-            <div class="muted" id="val-id">Opção 1</div>
-          </div>
-        </div>
+        <label>Seu Nome Completo</label>
+        <input id="nome" type="text" placeholder="Ex: Gabriel Souza">
 
-        <div>
-          <label for="mensagem">Mensagem (Opcional)</label>
-          <textarea id="mensagem" class="input" placeholder="Observações..."></textarea>
-        </div>
+        <label>Tempo do Ban</label>
+        <select id="tempo">
+            <option value="24H">24 Horas — R$ 5,99</option>
+            <option value="10 dias">10 Dias — R$ 15,99</option>
+            <option value="permanente">Permanente — R$ 25,99</option>
+        </select>
 
-        <div>
-          <label for="id">ID da Pessoa (somente números) *</label>
-          <input id="id" class="input" maxlength="14" placeholder="Ex: 123456789" inputmode="numeric" />
-          <div id="errId" class="err">ID inválido — apenas números. (mínimo 3 dígitos)</div>
-        </div>
+        <label>Cupom (Opcional)</label>
+        <input id="cupom" type="text" placeholder="Ex: DESCONTO10">
 
-        <div id="previewBox" class="preview" aria-live="polite" style="display:none"></div>
+        <label>ID da Pessoa (somente números)</label>
+        <input id="idBan" type="text" placeholder="Ex: 12992922">
 
-        <div class="actions">
-          <button id="btnPreview" class="btn secondary">Ver Pré-Visualização</button>
-          <button id="btnSend" class="btn">Enviar para WhatsApp</button>
-        </div>
+        <label>Mensagem Opcional</label>
+        <textarea id="mensagem" placeholder="Motivo do ban..."></textarea>
 
-        <div style="display:flex; justify-content:space-between; margin-top:6px; align-items:center;">
-          <div class="muted">Número destino: <b>+55 15 99622-8860</b></div>
-          <div class="muted">Sem armazenamento externo</div>
-        </div>
-      </div>
+        <button class="btn" onclick="enviarWhatsapp()">Enviar para WhatsApp</button>
+
     </div>
-  </div>
-
-  <!-- Modal -->
-  <div id="modal" class="modal-backdrop" role="dialog" aria-modal="true">
-    <div class="modal" role="document">
-      <h3>Confirmar Envio</h3>
-      <div id="modalContent" class="meta">Carregando...</div>
-      <div style="display:flex; gap:8px; margin-top:14px;">
-        <button id="confirmSend" class="btn">Confirmar e Enviar</button>
-        <button id="cancelSend" class="btn secondary">Cancelar</button>
-      </div>
-    </div>
-  </div>
-
-  <div id="toast" class="toast">Mensagem enviada</div>
+</div>
 
 <script>
-/* =================== CONFIGURAÇÃO =================== */
-const WHATSAPP_NUMBER = "5515996228860"; // internacional sem '+', você pode trocar
-const ID_MIN_LENGTH = 3;
-const ID_MAX_LENGTH = 14;
+function enviarWhatsapp() {
+    const nome = document.getElementById("nome").value.trim();
+    const tempo = document.getElementById("tempo").value;
+    const mensagem = document.getElementById("mensagem").value.trim();
+    const idBan = document.getElementById("idBan").value.trim();
+    const cupom = document.getElementById("cupom").value.trim();
 
-/* =================== UI ELEMENTS =================== */
-const cards = Array.from(document.querySelectorAll('.card'));
-const valorEl = document.getElementById('valor');
-const valIdEl = document.getElementById('val-id');
-const nomeEl = document.getElementById('nome');
-const idEl = document.getElementById('id');
-const msgEl = document.getElementById('mensagem');
-const previewBox = document.getElementById('previewBox');
-const errNome = document.getElementById('errNome');
-const errId = document.getElementById('errId');
-const btnPreview = document.getElementById('btnPreview');
-const btnSend = document.getElementById('btnSend');
-const modal = document.getElementById('modal');
-const modalContent = document.getElementById('modalContent');
-const confirmSend = document.getElementById('confirmSend');
-const cancelSend = document.getElementById('cancelSend');
-const toast = document.getElementById('toast');
-const themeToggle = document.getElementById('themeToggle');
+    if (!nome || !tempo || !idBan){
+        alert("Preencha Nome, Tempo e ID do Usuário!");
+        return;
+    }
 
-/* =================== PREÇOS =================== */
-const PRECO = {
-  1: {text:"R$ 5,99", label:"24H"},
-  2: {text:"R$ 15,99", label:"10 Dias"},
-  3: {text:"R$ 25,99", label:"Permanente"}
-};
-let selected = 1;
+    if(!/^[0-9]+$/.test(idBan)){
+        alert("O ID deve conter somente números!");
+        return;
+    }
 
-/* Initialize */
-function setActiveCard(val) {
-  cards.forEach(c => c.classList.toggle('active', c.dataset.val == val));
-  selected = Number(val);
-  valorEl.textContent = PRECO[selected].text;
-  valIdEl.textContent = `Opção ${selected}`;
-  updatePreviewBox();
+    const texto =
+        "=== NOVO BANIMENTO ===%0A" +
+        "Nome: " + nome + "%0A" +
+        "Tempo: " + tempo + "%0A" +
+        "ID do Usuário: " + idBan + "%0A" +
+        "Cupom: " + (cupom || "Nenhum") + "%0A" +
+        "Mensagem: " + (mensagem || "Nenhuma");
+
+    window.open("https://wa.me/15996228860?text=" + texto, "_blank");
 }
-setActiveCard(1);
-
-/* card click/keyboard */
-cards.forEach(c => {
-  c.addEventListener('click', ()=> setActiveCard(c.dataset.val));
-  c.addEventListener('keydown', (e)=> { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActiveCard(c.dataset.val); } });
-});
-
-/* ID numeric enforcement */
-idEl.addEventListener('input', e => {
-  const old = idEl.value;
-  const cleaned = old.replace(/\D/g,'').slice(0, ID_MAX_LENGTH);
-  if (old !== cleaned) { idEl.value = cleaned; }
-  if (cleaned.length >= ID_MIN_LENGTH) errId.style.display = 'none';
-});
-
-/* Name validation on input */
-nomeEl.addEventListener('input', ()=> {
-  if (nomeEl.value.trim().length >= 3) errNome.style.display = 'none';
-});
-
-/* Build preview content */
-function buildPreviewText() {
-  const nome = nomeEl.value.trim() || '—';
-  const id = idEl.value.trim() || '—';
-  const msg = msgEl.value.trim() || 'Nenhuma';
-  const tempo = PRECO[selected].label;
-  const preco = PRECO[selected].text;
-  return {
-    plain: `*PEDIDO DE BANIMENTO*\n• Enviado por: ${nome}\n• ID alvo: ${id}\n• Tempo: ${tempo}\n• Valor: ${preco}\n• Mensagem: ${msg}`,
-    html: `<div><b>Pré-visualização</b><br><br>
-           <b>Nome:</b> ${escapeHtml(nome)}<br>
-           <b>ID:</b> ${escapeHtml(id)}<br>
-           <b>Tempo:</b> ${escapeHtml(tempo)}<br>
-           <b>Valor:</b> ${escapeHtml(preco)}<br>
-           <b>Mensagem:</b> ${escapeHtml(msg)}</div>`
-  };
-}
-
-/* escape for HTML preview */
-function escapeHtml(s){
-  return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'})[m]);
-}
-
-/* Update preview box */
-function updatePreviewBox(){
-  const data = buildPreviewText();
-  previewBox.innerHTML = data.html;
-  previewBox.style.display = 'block';
-}
-
-/* Preview button */
-btnPreview.addEventListener('click', ()=> {
-  updatePreviewBox();
-  // gentle pulse
-  previewBox.animate([{transform:'translateY(0)'},{transform:'translateY(-6px)'},{transform:'translateY(0)'}], {duration:420, easing:'ease-out'});
-});
-
-/* Validation */
-function validateAll() {
-  let ok = true;
-  const nome = nomeEl.value.trim();
-  const id = idEl.value.trim();
-
-  if (nome.length < 3) { errNome.style.display = 'block'; ok = false; } else { errNome.style.display = 'none'; }
-  if (!/^[0-9]+$/.test(id) || id.length < ID_MIN_LENGTH) { errId.style.display = 'block'; ok = false; } else { errId.style.display = 'none'; }
-  return ok;
-}
-
-/* Send button opens modal confirmation */
-btnSend.addEventListener('click', ()=> {
-  if (!validateAll()) return;
-  const data = buildPreviewText();
-  modalContent.innerHTML = data.html + `<div style="margin-top:8px; color:var(--muted)">Enviar para: <b>+55 15 99622-8860</b></div>`;
-  modal.style.display = 'flex';
-});
-
-/* Cancel modal */
-cancelSend.addEventListener('click', ()=> { modal.style.display = 'none'; });
-
-/* Confirm send: animate button, open wa.me */
-confirmSend.addEventListener('click', async ()=> {
-  confirmSend.disabled = true;
-  confirmSend.innerHTML = `<span class="spinner" style="margin-right:8px"></span>Aguarde...`;
-  // small delay to show animation (simulate processing)
-  await new Promise(r=>setTimeout(r, 700));
-
-  const data = buildPreviewText();
-  const encoded = encodeURIComponent(data.plain);
-  const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encoded}`;
-
-  // open WhatsApp in new tab
-  window.open(url, '_blank');
-
-  // close modal and show toast
-  modal.style.display = 'none';
-  showToast('Abrindo WhatsApp — finalize o envio no app.');
-  confirmSend.disabled = false;
-  confirmSend.innerHTML = 'Confirmar e Enviar';
-});
-
-/* Toast function */
-function showToast(text){
-  toast.textContent = text;
-  toast.style.display = 'block';
-  toast.animate([{opacity:0, transform:'translateY(8px)'},{opacity:1, transform:'translateY(0)'}], {duration:220});
-  setTimeout(()=> {
-    toast.animate([{opacity:1, transform:'translateY(0)'},{opacity:0, transform:'translateY(8px)'}], {duration:220});
-    setTimeout(()=> toast.style.display = 'none', 220);
-  }, 2600);
-}
-
-/* Theme toggle */
-themeToggle.addEventListener('click', ()=> {
-  document.body.classList.toggle('light');
-});
-
-/* Accessibility: Enter on send */
-document.addEventListener('keydown', (e)=> {
-  if (e.key === 'Enter' && (document.activeElement === idEl || document.activeElement === nomeEl || document.activeElement === msgEl)) {
-    e.preventDefault();
-    btnPreview.click();
-  }
-});
-
 </script>
+
 </body>
 </html>
