@@ -1,0 +1,692 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Área do Afiliado — Painel Completo</title>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+<style>
+:root{
+  --bg: #07121a; --panel:#0f1720; --muted:#9fb0bd; --accent:#29d0b6; --accent-2:#34cbb7; --text:#e6f3f1;
+  --danger:#ff6b6b; --success:#16a34a;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,Arial;background:linear-gradient(180deg,var(--bg),#021019);color:var(--text);min-height:100vh}
+.header{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:rgba(0,0,0,0.25);backdrop-filter:blur(6px)}
+.logo{font-weight:800}
+.container{max-width:1200px;margin:18px auto;padding:12px}
+.grid{display:grid;grid-template-columns:1fr 420px;gap:16px}
+@media(max-width:980px){.grid{grid-template-columns:1fr}}
+.card{background:var(--panel);padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.04)}
+.controls{display:flex;gap:8px;align-items:center}
+.input,textarea,select{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--text)}
+.row{display:flex;gap:8px}
+.btn{padding:10px 12px;border-radius:8px;border:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#012;cursor:pointer;font-weight:700}
+.btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--text)}
+.small{font-size:13px;color:var(--muted)}
+.kpis{display:flex;gap:10px}
+.kpi{flex:1;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:12px;border-radius:10px}
+.products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.product{background:#0b1316;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.03)}
+.product img{width:100%;height:140px;object-fit:cover;border-radius:8px;margin-bottom:8px}
+.center{text-align:center}
+.badge{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.03);font-weight:700}
+.logbox{height:160px;overflow:auto;background:rgba(0,0,0,0.2);padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.03)}
+.footer{margin-top:14px;color:var(--muted);font-size:13px}
+.modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.6);z-index:200}
+.modal .box{width:720px;max-width:95%;background:var(--panel);padding:16px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
+.link{word-break:break-all;background:#071418;padding:8px;border-radius:8px}
+.copySmall{padding:6px 8px;border-radius:8px;border:0;background:rgba(255,255,255,0.04);color:var(--text);cursor:pointer}
+</style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">GbzStudio — Área do Afiliado</div>
+    <div id="topRight" class="small">Não autenticado</div>
+  </div>
+
+  <main class="container">
+    <!-- LOGIN CARD -->
+    <div id="loginCard" class="card" style="max-width:520px;margin:0 auto 16px auto;">
+      <h2>Entrar — Afiliado</h2>
+      <p class="small">Use seu email e código de afiliado para acessar seu painel.</p>
+      <div style="margin-top:10px">
+        <input id="loginEmail" class="input" type="email" placeholder="seu@exemplo.com" />
+        <div style="height:8px"></div>
+        <input id="loginCode" class="input" placeholder="Código do afiliado (ex: AF123XYZ)" />
+        <div style="height:10px"></div>
+        <div style="display:flex;gap:8px">
+          <button id="btnLogin" class="btn">Entrar</button>
+          <button id="btnGuest" class="btn ghost">Continuar como visitante</button>
+        </div>
+        <div id="loginMsg" class="small" style="margin-top:8px;color:#ffb4b4"></div>
+      </div>
+      <div class="footer">Sessão mantida localmente. Para sair use "Sair" no painel.</div>
+    </div>
+
+    <!-- MAIN GRID -->
+    <div id="app" style="display:none">
+      <div class="grid">
+        <!-- LEFT: Products & Actions -->
+        <div>
+          <div class="card">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <h3 id="welcomeTitle">Olá, Afiliado</h3>
+              <div>
+                <button id="btnLogout" class="btn ghost">Sair</button>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:10px;margin-top:10px;align-items:center">
+              <input id="affiliateCodeInput" class="input" style="max-width:200px" readonly />
+              <button id="btnCopyCode" class="copySmall">Copiar Código</button>
+              <button id="btnMyLink" class="btn ghost">Meu Link</button>
+            </div>
+
+            <div style="margin-top:12px;display:flex;gap:8px;align-items:center">
+              <input id="searchProducts" class="input" placeholder="Buscar produtos..." />
+              <select id="filterPrice" class="input" style="max-width:160px">
+                <option value="all">Todos preços</option>
+                <option value="50">Até R$50</option>
+                <option value="100">Até R$100</option>
+                <option value="200">Até R$200</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top:12px">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <h3>Produtos</h3>
+              <div class="small">Total: <span id="totalProducts">0</span></div>
+            </div>
+
+            <div id="productsGrid" class="products-grid" style="margin-top:12px">
+              <!-- product cards -->
+              <div class="small">Carregando...</div>
+            </div>
+
+            <div style="display:flex;gap:8px;justify-content:center;margin-top:12px">
+              <button id="prevPage" class="btn ghost">« Anterior</button>
+              <div id="pageInfo" class="small" style="align-self:center">1 / 1</div>
+              <button id="nextPage" class="btn ghost">Próximo »</button>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top:12px">
+            <h3>Registrar Venda (teste)</h3>
+            <p class="small">Simule uma venda para testar a contagem de comissões e o dashboard.</p>
+            <div style="display:flex;gap:8px;align-items:center;margin-top:8px">
+              <select id="saleProduct" class="input" style="flex:1"></select>
+              <input id="saleAmount" class="input" placeholder="Valor (R$)" style="max-width:140px"/>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:8px">
+              <button id="btnRegisterSale" class="btn">Registrar Venda</button>
+              <button id="btnExportSales" class="btn ghost">Exportar Sales CSV</button>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top:12px">
+            <h3>Atividade / Cliques</h3>
+            <div class="small">Registrar cliques ao abrir links ou testar manualmente.</div>
+            <div style="display:flex;gap:8px; margin-top:8px">
+              <select id="clickProduct" class="input" style="flex:1"></select>
+              <button id="btnTestClick" class="btn">Testar Clique</button>
+            </div>
+            <div style="margin-top:10px">
+              <button id="btnExportClicks" class="btn ghost">Exportar Clicks CSV</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: KPIs, Chart, Logs -->
+        <aside>
+          <div class="card">
+            <h4>KPIs</h4>
+            <div class="kpis" style="margin-top:10px">
+              <div class="kpi">
+                <div class="small">Vendas</div>
+                <div style="font-size:20px;font-weight:800" id="kpiSales">0</div>
+              </div>
+              <div class="kpi">
+                <div class="small">Cliques</div>
+                <div style="font-size:20px;font-weight:800" id="kpiClicks">0</div>
+              </div>
+              <div class="kpi">
+                <div class="small">Ganhos (R$)</div>
+                <div style="font-size:20px;font-weight:800" id="kpiEarnings">0</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top:12px">
+            <h4>Vendas (últimos 30 dias)</h4>
+            <canvas id="salesChart" style="width:100%;height:220px"></canvas>
+          </div>
+
+          <div class="card" style="margin-top:12px">
+            <h4>Logs</h4>
+            <div id="logBox" class="logbox small">Nenhuma ação ainda.</div>
+            <div style="margin-top:8px;display:flex;gap:8px">
+              <button id="btnExportLogs" class="btn ghost">Exportar Logs</button>
+              <button id="btnClearLogs" class="btn ghost">Limpar Logs locais</button>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <!-- MODAL: LINK PREVIEW -->
+    <div id="modalLink" class="modal" style="display:none" aria-hidden="true">
+      <div class="box">
+        <h3>Seu link de afiliado</h3>
+        <div style="margin-top:8px" class="link" id="modalLinkText"></div>
+        <div style="display:flex;gap:8px;margin-top:12px">
+          <button id="btnModalCopy" class="btn">Copiar</button>
+          <button id="btnModalOpen" class="btn ghost">Abrir em nova aba</button>
+          <button id="btnModalClose" class="btn ghost">Fechar</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+<script type="module">
+/* ===========================================================
+   Afiliado Area — Complexo & Funcional
+   - login email + code
+   - product listing + pagination + filters
+   - generate link, record clicks
+   - simulate/register sale -> updates affiliate totals
+   - chart by day (Chart.js)
+   - logs + CSV export
+   - uses same Firebase Realtime DB config you provided
+   =========================================================== */
+
+/* ---------- Firebase modular imports ---------- */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import {
+  getDatabase, ref, get, set, push, update, onValue, child, remove
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+/* ---------- CONFIG (SEU DB) ---------- */
+const firebaseConfig = {
+  apiKey: "AIzaSyD6UyxqTZAlPLjcadS45YYj2HUEK6fTV80",
+  authDomain: "bancdataofc.firebaseapp.com",
+  databaseURL: "https://bancdataofc-default-rtdb.firebaseio.com",
+  projectId: "bancdataofc",
+  storageBucket: "bancdataofc.firebasestorage.app",
+  messagingSenderId: "1032596370698",
+  appId: "1:1032596370698:web:26c710d196fb2b59e876f3"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+/* ---------- DOM Refs ---------- */
+const loginCard = document.getElementById('loginCard');
+const loginEmail = document.getElementById('loginEmail');
+const loginCode = document.getElementById('loginCode');
+const btnLogin = document.getElementById('btnLogin');
+const btnGuest = document.getElementById('btnGuest');
+const loginMsg = document.getElementById('loginMsg');
+
+const appArea = document.getElementById('app');
+const topRight = document.getElementById('topRight');
+const welcomeTitle = document.getElementById('welcomeTitle');
+const affiliateCodeInput = document.getElementById('affiliateCodeInput');
+const btnCopyCode = document.getElementById('btnCopyCode');
+const btnMyLink = document.getElementById('btnMyLink');
+const btnLogout = document.getElementById('btnLogout');
+
+const searchProducts = document.getElementById('searchProducts');
+const filterPrice = document.getElementById('filterPrice');
+const productsGrid = document.getElementById('productsGrid');
+const totalProducts = document.getElementById('totalProducts');
+const pageInfo = document.getElementById('pageInfo');
+const prevPage = document.getElementById('prevPage');
+const nextPage = document.getElementById('nextPage');
+
+const saleProduct = document.getElementById('saleProduct');
+const saleAmount = document.getElementById('saleAmount');
+const btnRegisterSale = document.getElementById('btnRegisterSale');
+const btnExportSales = document.getElementById('btnExportSales');
+
+const clickProduct = document.getElementById('clickProduct');
+const btnTestClick = document.getElementById('btnTestClick');
+const btnExportClicks = document.getElementById('btnExportClicks');
+
+const kpiSales = document.getElementById('kpiSales');
+const kpiClicks = document.getElementById('kpiClicks');
+const kpiEarnings = document.getElementById('kpiEarnings');
+const logBox = document.getElementById('logBox');
+
+const salesChartEl = document.getElementById('salesChart').getContext('2d');
+const modalLink = document.getElementById('modalLink');
+const modalLinkText = document.getElementById('modalLinkText');
+const btnModalCopy = document.getElementById('btnModalCopy');
+const btnModalOpen = document.getElementById('btnModalOpen');
+const btnModalClose = document.getElementById('btnModalClose');
+
+const btnExportLogs = document.getElementById('btnExportLogs');
+const btnClearLogs = document.getElementById('btnClearLogs');
+
+/* ---------- State ---------- */
+let session = null;          // { id, nome, email, codigo, ... }
+let products = [];           // array de produtos
+let page = 1;
+const perPage = 8;
+
+/* ---------- Utilities ---------- */
+function sanitizeEmailKey(email){ return email.toLowerCase().replace(/\./g, ','); }
+function nowTs(){ return Date.now(); }
+function fmtDate(ts){ return new Date(ts).toLocaleString(); }
+function pushLogLocal(txt){
+  const line = `[${(new Date()).toLocaleTimeString()}] ${txt}`;
+  const div = document.createElement('div'); div.textContent = line;
+  logBox.prepend(div);
+  // also save to DB logs under affiliateLogs/{session.id}/{timestamp}
+  if(session && session.id){
+    const lgRef = ref(db, `affiliateLogs/${session.id}/${nowTs()}`);
+    set(lgRef, { ts: nowTs(), text: txt, actor: session.email }).catch(()=>{});
+  }
+}
+function downloadCSV(filename, rows){
+  const csv = rows.map(r=> r.map(c=> `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = filename; a.click(); URL.revokeObjectURL(url);
+}
+
+/* ---------- Auth (e-mail + code) ---------- */
+async function loginWithEmailCode(email, code){
+  const emailKey = sanitizeEmailKey(email);
+  const byEmailSnap = await get(ref(db, `afiliadosByEmail/${emailKey}`));
+  if(!byEmailSnap.exists()) throw new Error('E-mail não encontrado.');
+
+  const { id } = byEmailSnap.val();
+  const affSnap = await get(ref(db, `afiliados/${id}`));
+  if(!affSnap.exists()) throw new Error('Afiliado não encontrado.');
+
+  const aff = affSnap.val();
+  if(String(aff.codigo) !== String(code)) throw new Error('Código incorreto para esse e-mail.');
+  return aff;
+}
+
+btnLogin.addEventListener('click', async ()=>{
+  btnLogin.disabled = true;
+  loginMsg.textContent = 'Validando...';
+  try{
+    const email = loginEmail.value.trim().toLowerCase();
+    const code = loginCode.value.trim();
+    if(!email || !code) { loginMsg.textContent = 'Preencha email e código.'; btnLogin.disabled = false; return; }
+
+    const aff = await loginWithEmailCode(email, code);
+    startSession(aff);
+    loginMsg.textContent = '';
+  }catch(err){
+    loginMsg.textContent = err.message || 'Erro no login';
+  }finally{ btnLogin.disabled = false; }
+});
+
+btnGuest.addEventListener('click', ()=>{
+  // guest access (no affiliate features)
+  startSession(null, true);
+});
+
+/* ---------- Start session ---------- */
+function startSession(aff, guest=false){
+  if(guest){
+    session = null;
+    localStorage.removeItem('affiliate_session');
+    topRight.textContent = 'Visitante';
+    welcomeTitle.textContent = 'Bem-vindo';
+    affiliateCodeInput.value = '';
+  } else {
+    session = aff;
+    localStorage.setItem('affiliate_session', JSON.stringify(session));
+    topRight.textContent = `${session.nome} (${session.email})`;
+    welcomeTitle.textContent = `Olá, ${session.nome}`;
+    affiliateCodeInput.value = session.codigo || '';
+  }
+
+  loginCard.style.display = 'none';
+  appArea.style.display = 'block';
+  loadProductsOnce();
+  loadKpisAndCharts();
+  pushLogLocal('Login efetuado' + (guest ? ' como visitante' : `: ${session.email}`));
+}
+
+/* ---------- Logout ---------- */
+btnLogout.addEventListener('click', ()=>{
+  localStorage.removeItem('affiliate_session');
+  session = null;
+  location.reload();
+});
+
+/* ---------- Load products once + real time ---------- */
+async function loadProductsOnce(){
+  // real-time listener
+  const prodRef = ref(db, 'produtos');
+  onValue(prodRef, (snap)=>{
+    products = [];
+    if(!snap.exists()){
+      productsGrid.innerHTML = '<div class="small">Nenhum produto disponível.</div>';
+      totalProducts.textContent = '0';
+      return;
+    }
+    snap.forEach(child=>{
+      const p = child.val(); p.id = child.key;
+      // ensure numeric price
+      p.preco = Number(p.preco) || 0;
+      products.push(p);
+    });
+    totalProducts.textContent = products.length;
+    populateProductSelects();
+    renderProducts();
+    loadKpisAndCharts();
+  });
+}
+
+/* ---------- Populate selects (saleProduct / clickProduct) ---------- */
+function populateProductSelects(){
+  saleProduct.innerHTML = ''; clickProduct.innerHTML = '';
+  products.forEach(p=>{
+    const opt = document.createElement('option'); opt.value = p.id; opt.textContent = `${p.nome} — R$ ${p.preco}`;
+    saleProduct.appendChild(opt);
+    const o2 = opt.cloneNode(true);
+    clickProduct.appendChild(o2);
+  });
+}
+
+/* ---------- Pagination & render ---------- */
+function renderProducts(){
+  const q = (searchProducts.value || '').toLowerCase();
+  const priceFilter = filterPrice.value;
+  let filtered = products.filter(p => (p.nome||'').toLowerCase().includes(q) || (p.descricao||'').toLowerCase().includes(q));
+  if(priceFilter !== 'all') filtered = filtered.filter(p => Number(p.preco) <= Number(priceFilter));
+  const total = filtered.length;
+  const pages = Math.max(1, Math.ceil(total / perPage));
+  if(page > pages) page = pages;
+  const start = (page - 1) * perPage;
+  const slice = filtered.slice(start, start + perPage);
+
+  productsGrid.innerHTML = '';
+  if(slice.length === 0){ productsGrid.innerHTML = '<div class="small">Nenhum produto nesta página.</div>'; }
+  slice.forEach(p=>{
+    const div = document.createElement('div'); div.className = 'product';
+    div.innerHTML = `
+      ${p.imagem ? `<img src="${p.imagem}" alt="${escapeHtml(p.nome)}">` : ''}
+      <h4>${escapeHtml(p.nome)}</h4>
+      <p class="small" style="opacity:.9">${escapeHtml(p.descricao || '')}</p>
+      <div style="display:flex;gap:8px;margin-top:10px;">
+        <button class="btn" data-id="${p.id}" data-action="link">Gerar link</button>
+        <button class="btn ghost" data-id="${p.id}" data-action="open">Abrir (registrar clique)</button>
+      </div>
+      <div style="margin-top:8px" class="small">Preço: R$ ${Number(p.preco).toFixed(2)}</div>
+    `;
+    productsGrid.appendChild(div);
+
+    // listeners
+    div.querySelector('[data-action="link"]').addEventListener('click', ()=> openLinkModal(p));
+    div.querySelector('[data-action="open"]').addEventListener('click', ()=> openProductAndRecordClick(p));
+  });
+
+  pageInfo.textContent = `${page} / ${pages}`;
+  prevPage.disabled = page <= 1;
+  nextPage.disabled = page >= pages;
+}
+
+/* ---------- Helpers ---------- */
+function escapeHtml(s){ if(s==null) return ''; return String(s).replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+/* ---------- Pagination buttons ---------- */
+prevPage.addEventListener('click', ()=>{ if(page>1) page--; renderProducts(); });
+nextPage.addEventListener('click', ()=>{ page++; renderProducts(); });
+
+searchProducts.addEventListener('input', ()=>{ page = 1; renderProducts(); });
+filterPrice.addEventListener('change', ()=>{ page = 1; renderProducts(); });
+
+/* ---------- Link modal ---------- */
+function buildAffiliateLink(productId){
+  const code = session ? session.codigo : '';
+  const url = new URL(location.href);
+  // Use produto.html path if exists — use current origin + /produto.html
+  const productPage = `${location.origin}${location.pathname.replace(/[^/]*$/,'')}produto.html`;
+  return `${productPage}?id=${encodeURIComponent(productId)}&ref=${encodeURIComponent(code)}`;
+}
+
+function openLinkModal(product){
+  const url = buildAffiliateLink(product.id);
+  modalLinkText.textContent = url;
+  btnModalOpen.onclick = ()=> window.open(url, '_blank');
+  btnModalCopy.onclick = async ()=>{
+    try{ await navigator.clipboard.writeText(url); pushLogLocal('Link copiado'); btnModalCopy.textContent = 'Copiado'; setTimeout(()=>btnModalCopy.textContent='Copiar',1200);}catch(e){ alert('Falha ao copiar'); }
+  };
+  btnModalClose.onclick = ()=> { modalLink.style.display = 'none'; modalLink.setAttribute('aria-hidden','true'); };
+  modalLink.style.display = 'flex'; modalLink.setAttribute('aria-hidden','false');
+}
+
+/* ---------- Open product page & record click ---------- */
+async function openProductAndRecordClick(product){
+  // record click under clicks/{ref}/{ts} = { productId, ts, ip? }
+  if(!session || !session.codigo){
+    // If guest, still create a generic hit under clicks/guest/{ts}
+    const targetRef = session ? session.codigo : 'guest';
+    const ts = nowTs();
+    await set(ref(db, `clicks/${targetRef}/${ts}`), { productId: product.id, ts });
+    pushLogLocal(`Clique registrado (guest or no code): product ${product.id}`);
+    // open product page with no ref
+    const url = `${location.origin}${location.pathname.replace(/[^/]*$/,'')}produto.html?id=${product.id}`;
+    window.open(url, '_blank');
+    return;
+  }
+
+  const code = session.codigo;
+  const ts = nowTs();
+  await set(ref(db, `clicks/${code}/${ts}`), { productId: product.id, ts });
+  pushLogLocal(`Clique registrado: product ${product.id}, ref ${code}`);
+
+  // open product page with ref
+  const url = buildAffiliateLink(product.id);
+  window.open(url, '_blank');
+}
+
+/* ---------- Test click button ---------- */
+btnTestClick.addEventListener('click', async ()=>{
+  const pid = clickProduct.value;
+  if(!pid){ alert('Escolha um produto'); return; }
+  const p = products.find(x=>x.id===pid);
+  if(!p){ alert('Produto não encontrado'); return; }
+  await openProductAndRecordClick(p);
+});
+
+/* ---------- Register sale (simulate real purchase) ---------- */
+btnRegisterSale.addEventListener('click', async ()=>{
+  btnRegisterSale.disabled = true;
+  try{
+    const pid = saleProduct.value;
+    const amount = parseFloat((saleAmount.value||'').replace(',', '.')) || null;
+    if(!pid){ alert('Escolha produto'); btnRegisterSale.disabled = false; return; }
+    const product = products.find(x=>x.id === pid);
+    if(!product){ alert('Produto não encontrado'); btnRegisterSale.disabled = false; return; }
+
+    // compute amount default to product preco
+    const finalAmount = amount !== null ? amount : Number(product.preco || 0);
+
+    // create sale id
+    const saleId = `SALE_${nowTs()}`;
+    const payload = {
+      id: saleId,
+      productId: pid,
+      createdAt: nowTs(),
+      amount: finalAmount,
+      ref: session ? session.codigo : null,
+      buyer: session ? session.nome : 'guest'
+    };
+
+    // write sale
+    await set(ref(db, `sales/${saleId}`), payload);
+
+    // if affiliate present, update their totals
+    if(session && session.id){
+      // commission percent defaults to product.commissionPercent or 10%
+      const commissionPercent = Number(product.commissionPercent || product.commission || 10);
+      const commission = (finalAmount * (commissionPercent/100));
+
+      // get affiliate fresh data
+      const affSnap = await get(ref(db, `afiliados/${session.id}`));
+      if(affSnap.exists()){
+        const a = affSnap.val();
+        const newSales = (Number(a.totalSales || a.totalVendas || 0) + 1);
+        const newEarnings = (Number(a.totalEarnings || a.totalGanhos || 0) + commission);
+        // atomic-ish update
+        await update(ref(db, `afiliados/${session.id}`), { totalSales: newSales, totalEarnings: Number(newEarnings.toFixed(2)) });
+      }
+    }
+
+    pushLogLocal(`Venda registrada: produto ${pid} R$${finalAmount} ref ${payload.ref||'none'}`);
+    saleAmount.value = '';
+    alert('Venda registrada com sucesso.');
+    loadKpisAndCharts(); // refresh KPIs
+  }catch(e){ console.error(e); alert('Erro ao registrar venda'); }
+  finally{ btnRegisterSale.disabled = false; }
+});
+
+/* ---------- Export sales CSV ---------- */
+btnExportSales.addEventListener('click', async ()=>{
+  const snap = await get(ref(db, 'sales'));
+  if(!snap.exists()){ alert('Nenhuma venda'); return; }
+  const rows = [['id','productId','createdAt','amount','ref','buyer']];
+  Object.values(snap.val()).forEach(s => rows.push([s.id||'', s.productId||'', s.createdAt||'', s.amount||'', s.ref||'', s.buyer||'']));
+  downloadCSV('sales_export.csv', rows);
+});
+
+/* ---------- Export clicks CSV ---------- */
+btnExportClicks.addEventListener('click', async ()=>{
+  const snap = await get(ref(db, 'clicks'));
+  if(!snap.exists()){ alert('Nenhum click registrado'); return; }
+  const rows = [['ref','ts','productId']];
+  const obj = snap.val();
+  Object.entries(obj).forEach(([refCode, recs])=>{
+    Object.entries(recs||{}).forEach(([k,v])=> rows.push([refCode, v.ts||k, v.productId||'']));
+  });
+  downloadCSV('clicks_export.csv', rows);
+});
+
+/* ---------- Logs export / clear ---------- */
+btnExportLogs.addEventListener('click', async ()=>{
+  // get affiliate logs for this session if exists
+  if(!session || !session.id){ alert('Sem logs de afiliado.'); return; }
+  const snap = await get(ref(db, `affiliateLogs/${session.id}`));
+  if(!snap.exists()){ alert('Nenhum log.'); return; }
+  const rows = [['ts','text','actor']];
+  Object.values(snap.val()).forEach(l=> rows.push([l.ts || '', l.text || '', l.actor || '']));
+  downloadCSV('affiliate_logs.csv', rows);
+});
+btnClearLogs.addEventListener('click', ()=>{
+  if(!confirm('Limpar logs locais visíveis? Isso não apagará os logs salvos no banco.')) return;
+  logBox.innerHTML = '';
+});
+
+/* ---------- KPI & Charts ---------- */
+let salesChart = null;
+async function loadKpisAndCharts(){
+  // load sales and clicks counts for this affiliate (if session) or totals for guest
+  let salesCount = 0, clicksCount = 0, earnings = 0;
+
+  if(session && session.codigo){
+    // sales where ref === session.codigo
+    const salesSnap = await get(ref(db, 'sales'));
+    if(salesSnap.exists()){
+      const arr = Object.values(salesSnap.val()).filter(s => s.ref && String(s.ref) === String(session.codigo));
+      salesCount = arr.length;
+      earnings = arr.reduce((acc, s)=>{
+        // approximate: commission was added to affiliate when sale created; but here we sum amounts*commission% if product known
+        return acc + Number(s.amount || 0);
+      }, 0);
+    }
+    // clicks count
+    const clicksSnap = await get(ref(db, `clicks/${session.codigo}`));
+    clicksCount = clicksSnap.exists() ? Object.keys(clicksSnap.val()).length : 0;
+    // earnings better taken from affiliate totals
+    const aSnap = await get(ref(db, `afiliados/${session.id}`));
+    if(aSnap.exists()) earnings = Number(aSnap.val().totalEarnings || aSnap.val().totalGanhos || 0);
+  } else {
+    // totals across DB
+    const salesSnap = await get(ref(db, 'sales'));
+    salesCount = salesSnap.exists() ? Object.keys(salesSnap.val()).length : 0;
+    const clicksSnap = await get(ref(db, 'clicks'));
+    // count nested clicks
+    clicksCount = 0;
+    if(clicksSnap.exists()){
+      Object.values(clicksSnap.val()).forEach(sub=> clicksCount += Object.keys(sub || {}).length);
+    }
+  }
+
+  kpiSales.textContent = salesCount;
+  kpiClicks.textContent = clicksCount;
+  kpiEarnings.textContent = Number(earnings).toFixed(2);
+
+  // chart: sales per day last 30 days for this affiliate
+  const startTs = Date.now() - 1000 * 60 * 60 * 24 * 30;
+  const salesSnap2 = await get(ref(db, 'sales'));
+  const arr = salesSnap2.exists() ? Object.values(salesSnap2.val()) : [];
+  const mapDays = {};
+  for(let i=0;i<30;i++){
+    const d = new Date(); d.setDate(d.getDate() - (29 - i));
+    const key = d.toISOString().slice(0,10);
+    mapDays[key] = 0;
+  }
+  arr.forEach(s => {
+    const created = Number(s.createdAt || s.ts || 0);
+    if(created >= startTs){
+      const day = new Date(created).toISOString().slice(0,10);
+      // if affiliate filter
+      if(session && session.codigo){
+        if(String(s.ref) === String(session.codigo)) mapDays[day] = (mapDays[day]||0) + 1;
+      } else {
+        mapDays[day] = (mapDays[day]||0) + 1;
+      }
+    }
+  });
+
+  const labels = Object.keys(mapDays);
+  const data = Object.values(mapDays);
+
+  if(salesChart) { salesChart.data.labels = labels; salesChart.data.datasets[0].data = data; salesChart.update(); }
+  else {
+    salesChart = new Chart(salesChartEl, {
+      type: 'bar',
+      data: { labels, datasets: [{ label: 'Vendas por dia', data, backgroundColor: 'rgba(45,190,150,0.9)' }] },
+      options: { responsive:true, plugins:{legend:{display:false}} }
+    });
+  }
+}
+
+/* ---------- Load session from localStorage ---------- */
+(function init(){
+  const cached = localStorage.getItem('affiliate_session');
+  if(cached){
+    try{
+      const aff = JSON.parse(cached);
+      startSession(aff);
+    }catch(e){
+      console.warn('Sessao malformada', e);
+      loginCard.style.display = 'block';
+    }
+  } else {
+    loginCard.style.display = 'block';
+  }
+})();
+
+/* ---------- Export local DB snapshots if needed ---------- */
+/* (already implemented for sales/clicks/logs above) */
+
+/* ---------- Misc helpers: escapeHtml already defined ---------- */
+
+</script>
+</body>
+</html>
