@@ -1,213 +1,232 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin — Painel GbzStudio</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Admin Final — GbzStudio</title>
+
+<!-- Chart.js para gráficos -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
 <style>
-/* ====== ESTILO GERAL ====== */
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #0c0c0c;
-    color: white;
+:root{
+  --bg:#07121a; --panel:#0f1720; --accent:#29d0b6; --muted:#9fb0bd; --text:#e6f3f1;
+  --danger:#ff6b6b; --success:#16a34a;
 }
-
-/* HEADER */
-header {
-    background: #151515;
-    padding: 15px 20px;
-    font-size: 22px;
-    font-weight: bold;
-    box-shadow: 0 0 15px #000;
-}
-
-/* CONTAINER DO PAINEL */
-#painel {
-    display: none;
-    padding: 20px;
-}
-
-/* ABA SUPERIOR */
-.nav {
-    display: flex;
-    gap: 20px;
-    margin-bottom: 25px;
-}
-
-.nav button {
-    background: #333;
-    padding: 12px 20px;
-    border: none;
-    color: white;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: .2s;
-}
-
-.nav button:hover {
-    background: #555;
-}
-
-.nav button.active {
-    background: #6a3cff;
-}
-
-/* CARDS DO DASHBOARD */
-.cards {
-    display: flex;
-    gap: 20px;
-}
-
-.card {
-    background: #1a1a1a;
-    padding: 20px;
-    border-radius: 12px;
-    width: 260px;
-    box-shadow: 0 0 8px #000;
-    transition: .2s;
-}
-
-.card:hover {
-    transform: scale(1.02);
-}
-
-/* TABELAS */
-.table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-.table th, .table td {
-    padding: 12px;
-    border-bottom: 1px solid #2a2a2a;
-}
-
-.table th {
-    background: #222;
-}
-
-/* FORMULÁRIOS */
-input, textarea {
-    width: 100%;
-    padding: 12px;
-    background: #111;
-    color: white;
-    border: 1px solid #444;
-    border-radius: 8px;
-    margin-top: 10px;
-    margin-bottom: 15px;
-}
-
-button.action {
-    background: #6a3cff;
-    padding: 14px;
-    border: none;
-    border-radius: 10px;
-    color: white;
-    cursor: pointer;
-    width: 100%;
-    margin-top: 10px;
-}
-
-button.action:hover {
-    background: #875aff;
-}
-
-#loginBox {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 80vh;
-}
-
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,Arial;background:linear-gradient(180deg,#041018,#071a22);color:var(--text)}
+header{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;background:linear-gradient(90deg,#071a22,#0b2027);box-shadow:0 8px 24px rgba(0,0,0,0.6)}
+.header-left{display:flex;gap:12px;align-items:center}
+.logo{font-weight:700}
+.header-right{display:flex;gap:12px;align-items:center}
+.small{font-size:13px;color:var(--muted)}
+.container{max-width:1200px;margin:18px auto;padding:12px}
+.card{background:var(--panel);padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);box-shadow:0 8px 30px rgba(0,0,0,0.5)}
+.tabs{display:flex;gap:8px;margin-bottom:12px}
+.tab{padding:8px 12px;border-radius:8px;background:rgba(255,255,255,0.02);cursor:pointer}
+.tab.active{background:linear-gradient(90deg,var(--accent),#33cbb2);color:#022;font-weight:700}
+.controls{display:flex;gap:10px;align-items:center}
+input,select,textarea{padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:var(--text)}
+button{padding:8px 12px;border-radius:8px;border:0;background:var(--accent);color:#022;cursor:pointer}
+button.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--text)}
+table{width:100%;border-collapse:collapse;margin-top:12px}
+th,td{padding:10px;border-bottom:1px solid rgba(255,255,255,0.03);text-align:left;font-size:14px}
+th{background:rgba(255,255,255,0.02)}
+.grid{display:grid;grid-template-columns:1fr 420px;gap:12px}
+@media(max-width:980px){.grid{grid-template-columns:1fr}}
+.placeholder{color:var(--muted);padding:18px;text-align:center}
+.badge{padding:6px 8px;border-radius:8px;background:rgba(255,255,255,0.03)}
+.danger{background:var(--danger);color:white}
+.success{background:var(--success);color:white}
+.spinner{width:16px;height:16px;border-radius:50%;border:2px solid rgba(255,255,255,0.08);border-top-color:var(--accent);animation:spin 1s linear infinite;display:inline-block;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+.modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.6);z-index:60}
+.modal .box{width:760px;max-width:95%;background:var(--panel);padding:18px;border-radius:12px}
+.footer{margin-top:18px;color:var(--muted);font-size:13px}
 </style>
 </head>
 <body>
 
-<header>Painel Administrativo — GbzStudio</header>
+<header>
+  <div class="header-left">
+    <div class="logo">GbzStudio — Admin</div>
+    <div id="statusAuth" class="small">Não autenticado</div>
+  </div>
+  <div class="header-right">
+    <div id="userEmail" class="small"></div>
+    <button id="btnLogin" class="ghost">Entrar com Google</button>
+    <button id="btnLogout" class="ghost" style="display:none">Sair</button>
+  </div>
+</header>
 
-<!-- LOGIN GOOGLE -->
-<div id="loginBox">
-    <button class="action" style="width:auto;" id="loginBtn">Entrar com Google</button>
-</div>
+<main class="container">
+  <div class="card">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <div class="tabs" role="tablist">
+        <div role="tab" id="tabDashboard" class="tab active">Dashboard</div>
+        <div role="tab" id="tabAffiliates" class="tab">Afiliados</div>
+        <div role="tab" id="tabProducts" class="tab">Produtos</div>
+        <div role="tab" id="tabActivity" class="tab">Atividade</div>
+        <div role="tab" id="tabLogs" class="tab">Logs</div>
+      </div>
 
-<!-- PAINEL -->
-<div id="painel">
-
-    <!-- NAVEGAÇÃO -->
-    <div class="nav">
-        <button class="active" onclick="mostrarAba('dashboard')">📊 Dashboard</button>
-        <button onclick="mostrarAba('afiliados')">👥 Afiliados</button>
-        <button onclick="mostrarAba('produtos')">📦 Produtos</button>
+      <div class="controls">
+        <input id="globalSearch" placeholder="Buscar nome / email / código" style="min-width:240px">
+        <button id="btnExport" class="ghost">Exportar Afiliados CSV</button>
+      </div>
     </div>
 
-    <!-- DASHBOARD -->
-    <div id="dashboard" class="aba">
-        <h2>Visão Geral</h2>
-        <div class="cards">
-            <div class="card">
-                <h3>Afiliados Registrados</h3>
-                <p id="countAfiliados">0</p>
+    <div id="views" style="margin-top:12px">
+      <!-- DASHBOARD -->
+      <section id="viewDashboard">
+        <div class="grid">
+          <div class="card">
+            <h3>Visão Geral</h3>
+            <div style="display:flex;gap:12px;margin-top:12px">
+              <div style="flex:1">
+                <div class="small">Afiliados</div>
+                <div style="font-size:28px;font-weight:700" id="dashAffCount">—</div>
+              </div>
+              <div style="flex:1">
+                <div class="small">Produtos</div>
+                <div style="font-size:28px;font-weight:700" id="dashProdCount">—</div>
+              </div>
+              <div style="flex:1">
+                <div class="small">Vendas (tot)</div>
+                <div style="font-size:28px;font-weight:700" id="dashSalesCount">—</div>
+              </div>
             </div>
-            <div class="card">
-                <h3>Produtos Cadastrados</h3>
-                <p id="countProdutos">0</p>
+
+            <div style="margin-top:18px;">
+              <canvas id="chartTopAff" height="120"></canvas>
             </div>
+          </div>
+
+          <div class="card">
+            <h3>Últimas Ações</h3>
+            <div id="lastActions" style="margin-top:10px" class="small muted">Carregando...</div>
+            <div class="footer">Use a aba Atividade para lista completa.</div>
+          </div>
         </div>
+      </section>
+
+      <!-- AFFILIATES -->
+      <section id="viewAffiliates" style="display:none">
+        <div class="card">
+          <h3>Afiliados</h3>
+          <div style="display:flex;gap:12px;align-items:center;margin-top:8px">
+            <input id="searchAff" placeholder="Pesquisar (nome/email/código)">
+            <button id="btnReloadAff" class="ghost">Recarregar</button>
+            <button id="btnExportAff" class="ghost">Exportar CSV</button>
+          </div>
+
+          <table id="tableAff" class="table" style="margin-top:12px">
+            <thead><tr><th>Nome</th><th>Email</th><th>Código</th><th>Idade</th><th>Vendas</th><th>Ações</th></tr></thead>
+            <tbody id="tbodyAff"><tr><td colspan="6" class="placeholder">Carregando...</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- PRODUCTS -->
+      <section id="viewProducts" style="display:none">
+        <div class="grid">
+          <div class="card">
+            <h3>Produtos</h3>
+            <div style="display:flex;gap:8px;align-items:center;margin-top:8px">
+              <input id="filterProd" placeholder="Filtrar por nome">
+              <button id="btnReloadProd" class="ghost">Recarregar</button>
+            </div>
+
+            <table id="tableProd" class="table" style="margin-top:12px">
+              <thead><tr><th>Imagem</th><th>Nome</th><th>Preço</th><th>Comissão</th><th>Ações</th></tr></thead>
+              <tbody id="tbodyProd"><tr><td colspan="5" class="placeholder">Carregando...</td></tr></tbody>
+            </table>
+          </div>
+
+          <div class="card">
+            <h3>Cadastrar / Editar Produto</h3>
+            <label class="small">Nome</label>
+            <input id="prodName" placeholder="Título do produto">
+            <label class="small">Preço (numérico)</label>
+            <input id="prodPrice" placeholder="49.90">
+            <label class="small">% Comissão (ex: 10)</label>
+            <input id="prodCommission" placeholder="10">
+            <label class="small">Descrição</label>
+            <textarea id="prodDesc" rows="4"></textarea>
+            <label class="small">URL Imagem</label>
+            <input id="prodImage" placeholder="https://...">
+            <div style="display:flex;gap:8px;margin-top:10px">
+              <button id="btnSaveProd">Salvar</button>
+              <button id="btnClearProd" class="ghost">Limpar</button>
+            </div>
+            <div id="prodMsg" class="small muted" style="margin-top:8px"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ACTIVITY -->
+      <section id="viewActivity" style="display:none">
+        <div class="card">
+          <h3>Atividade</h3>
+          <div style="display:flex;gap:8px;align-items:center;margin-top:8px">
+            <input id="filterActivityRef" placeholder="Filtrar por código do afiliado">
+            <button id="btnReloadAct" class="ghost">Recarregar</button>
+            <button id="btnExportAct" class="ghost">Exportar CSV</button>
+          </div>
+          <div id="activityList" style="margin-top:12px" class="small muted">Carregando...</div>
+        </div>
+      </section>
+
+      <!-- LOGS -->
+      <section id="viewLogs" style="display:none">
+        <div class="card">
+          <h3>Logs / Auditoria</h3>
+          <div style="display:flex;gap:8px;margin-top:8px;align-items:center">
+            <input id="filterLog" placeholder="Buscar logs...">
+            <button id="btnReloadLog" class="ghost">Recarregar</button>
+            <button id="btnExportLog" class="ghost">Exportar CSV</button>
+          </div>
+          <div id="logList" style="margin-top:12px" class="small muted">Carregando...</div>
+        </div>
+      </section>
+
     </div>
 
-    <!-- LISTA AFILIADOS -->
-    <div id="afiliados" class="aba" style="display:none;">
-        <h2>Afiliados Registrados</h2>
-        <table class="table" id="tabelaAfiliados">
-            <tr>
-                <th>Nome</th>
-                <th>Email</th>
-                <th>Código</th>
-                <th>Idade</th>
-                <th>Pix</th>
-                <th>Vendas</th>
-            </tr>
-        </table>
+  </div>
+
+  <div style="margin-top:12px" class="small muted">Dica: adicione seu domínio nas Authorized domains do Firebase Auth. Não exponha o painel a usuários não autorizados.</div>
+</main>
+
+<!-- EDIT PRODUCT MODAL -->
+<div id="modalEditProd" style="display:none" class="modal" aria-hidden="true">
+  <div class="box card">
+    <h3>Editar Produto</h3>
+    <label class="small">Nome</label><input id="editProdName">
+    <label class="small">Preço</label><input id="editProdPrice">
+    <label class="small">% Comissão</label><input id="editProdCommission">
+    <label class="small">Descrição</label><textarea id="editProdDesc" rows="4"></textarea>
+    <label class="small">URL Imagem</label><input id="editProdImage">
+    <div style="display:flex;gap:8px;margin-top:10px">
+      <button id="btnUpdateProd">Atualizar</button>
+      <button id="btnCloseModal" class="ghost">Fechar</button>
     </div>
-
-    <!-- PRODUTOS -->
-    <div id="produtos" class="aba" style="display:none;">
-        <h2>Lançar Produto</h2>
-
-        <input id="produtoNome" placeholder="Nome do Produto">
-        <textarea id="produtoDesc" placeholder="Descrição"></textarea>
-        <input id="produtoPreco" placeholder="Preço">
-
-        <button class="action" onclick="salvarProduto()">Salvar Produto</button>
-
-        <h2 style="margin-top:40px;">Produtos Cadastrados</h2>
-
-        <table class="table" id="tabelaProdutos">
-            <tr>
-                <th>Nome</th>
-                <th>Preço</th>
-                <th>Gerenciar</th>
-            </tr>
-        </table>
-    </div>
-
+    <div id="editProdMsg" class="small muted" style="margin-top:8px"></div>
+  </div>
 </div>
 
 <script type="module">
-/* ========= IMPORTS FIREBASE ========= */
+/* admin_final.html — versão COMPLETA */
+
+/* ========== Firebase SDKs ========== */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { 
-    getAuth, GoogleAuthProvider, signInWithPopup 
+import {
+  getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { 
-    getDatabase, ref, get, set, remove 
+import {
+  getDatabase, ref, get, set, push, onValue, update, remove, query, orderByChild, limitToLast, child
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-/* ========= CONFIG ========= */
+/* ========== Config (seu DB) ========== */
 const firebaseConfig = {
   apiKey: "AIzaSyD6UyxqTZAlPLjcadS45YYj2HUEK6fTV80",
   authDomain: "bancdataofc.firebaseapp.com",
@@ -217,145 +236,508 @@ const firebaseConfig = {
   messagingSenderId: "1032596370698",
   appId: "1:1032596370698:web:26c710d196fb2b59e876f3"
 };
-
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
 
+/* ========== Admin only ========== */
+const ADMIN_EMAIL = "gabrielcordeirosilva2010@gmail.com";
+
+/* ========== UI Refs ========== */
+const btnLogin = document.getElementById('btnLogin');
+const btnLogout = document.getElementById('btnLogout');
+const userEmail = document.getElementById('userEmail');
+const statusAuth = document.getElementById('statusAuth');
+
+const tabs = {
+  dash: document.getElementById('tabDashboard'),
+  aff: document.getElementById('tabAffiliates'),
+  prod: document.getElementById('tabProducts'),
+  act: document.getElementById('tabActivity'),
+  logs: document.getElementById('tabLogs')
+};
+const views = {
+  dash: document.getElementById('viewDashboard'),
+  aff: document.getElementById('viewAffiliates'),
+  prod: document.getElementById('viewProducts'),
+  act: document.getElementById('viewActivity'),
+  logs: document.getElementById('viewLogs')
+};
+
+const globalSearch = document.getElementById('globalSearch');
+
+/* Dashboard refs */
+const dashAffCount = document.getElementById('dashAffCount');
+const dashProdCount = document.getElementById('dashProdCount');
+const dashSalesCount = document.getElementById('dashSalesCount');
+const lastActions = document.getElementById('lastActions');
+const chartTopAff = document.getElementById('chartTopAff').getContext('2d');
+
+/* Affiliates refs */
+const tbodyAff = document.getElementById('tbodyAff');
+const searchAff = document.getElementById('searchAff');
+const btnReloadAff = document.getElementById('btnReloadAff');
+const btnExportAff = document.getElementById('btnExportAff');
+
+/* Products refs */
+const tbodyProd = document.getElementById('tbodyProd');
+const prodName = document.getElementById('prodName');
+const prodPrice = document.getElementById('prodPrice');
+const prodCommission = document.getElementById('prodCommission');
+const prodDesc = document.getElementById('prodDesc');
+const prodImage = document.getElementById('prodImage');
+const btnSaveProd = document.getElementById('btnSaveProd');
+const btnClearProd = document.getElementById('btnClearProd');
+const prodMsg = document.getElementById('prodMsg');
+const filterProd = document.getElementById('filterProd');
+const btnReloadProd = document.getElementById('btnReloadProd');
+
+/* Activity refs */
+const activityList = document.getElementById('activityList');
+const filterActivityRef = document.getElementById('filterActivityRef');
+const btnReloadAct = document.getElementById('btnReloadAct');
+const btnExportAct = document.getElementById('btnExportAct');
+
+/* Logs refs */
+const logList = document.getElementById('logList');
+const filterLog = document.getElementById('filterLog');
+const btnReloadLog = document.getElementById('btnReloadLog');
+const btnExportLog = document.getElementById('btnExportLog');
+
+/* modal edit product */
+const modalEdit = document.getElementById('modalEditProd');
+const editProdName = document.getElementById('editProdName');
+const editProdPrice = document.getElementById('editProdPrice');
+const editProdCommission = document.getElementById('editProdCommission');
+const editProdDesc = document.getElementById('editProdDesc');
+const editProdImage = document.getElementById('editProdImage');
+const btnUpdateProd = document.getElementById('btnUpdateProd');
+const btnCloseModal = document.getElementById('btnCloseModal');
+const editProdMsg = document.getElementById('editProdMsg');
+
+/* other controls */
+const btnExport = document.getElementById('btnExport');
+const btnExportAffTop = document.getElementById('btnExportAff');
+
+/* state */
+let affiliates = null;
+let products = null;
+let sales = null;
+let clicks = null;
+let adminLogs = null;
+let editingProductId = null;
+let chartInstance = null;
+
+/* ========== Helpers ========== */
+function escapeHtml(s){ if(s==null) return ''; return String(s).replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+function showPlaceholder(el, text){ el.innerHTML = `<tr><td colspan="6" class="placeholder">${text}</td></tr>`; }
+function showToast(text){ lastActions.innerHTML = text; setTimeout(()=> { if(lastActions.innerHTML===text) lastActions.innerHTML=''; }, 4000); }
+function now(){ return Date.now(); }
+async function pushLog(action, detail=''){ const id = 'LOG_'+Date.now(); await set(ref(db, `adminLogs/${id}`), { id, action, detail, actor: auth.currentUser?.email||'unknown', ts: Date.now() }); }
+
+/* ========== Auth ========== */
 const provider = new GoogleAuthProvider();
-provider.setCustomParameters({ prompt: "select_account" });
+provider.setCustomParameters({ prompt: 'select_account' });
 
-/* ========= LOGIN ========= */
-const loginBtn = document.getElementById("loginBtn");
-const loginBox = document.getElementById("loginBox");
-const painel = document.getElementById("painel");
+btnLogin.addEventListener('click', async ()=>{
+  try{
+    const res = await signInWithPopup(auth, provider);
+    // onAuthStateChanged will handle UI
+  }catch(e){ alert('Erro login: '+ e.message); console.error(e); }
+});
+btnLogout.addEventListener('click', async ()=> {
+  await signOut(auth);
+  location.reload();
+});
 
-const adminEmail = "gabrielcordeirosilva2010@gmail.com";
+onAuthStateChanged(auth, user=>{
+  if(user && user.email === ADMIN_EMAIL){
+    userEmail.textContent = user.email;
+    statusAuth.textContent = 'Autenticado';
+    btnLogin.style.display = 'none';
+    btnLogout.style.display = 'inline-block';
+    // init realtime listeners
+    initRealtime();
+  } else {
+    userEmail.textContent = '';
+    statusAuth.textContent = 'Não autenticado';
+    btnLogin.style.display = 'inline-block';
+    btnLogout.style.display = 'none';
+    // hide content (optional)
+    // user must login
+  }
+});
 
-loginBtn.onclick = async () => {
-    try {
-        const result = await signInWithPopup(auth, provider);
-        const user = result.user;
+/* ========== Tabs behavior ========== */
+Object.entries(tabs).forEach(([k,el])=>{
+  el.addEventListener('click', ()=> {
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    el.classList.add('active');
+    Object.values(views).forEach(v=>v.style.display='none');
+    if(k==='dash') views.dash.style.display='block';
+    if(k==='aff') views.aff.style.display='block';
+    if(k==='prod') views.prod.style.display='block';
+    if(k==='act') views.act.style.display='block';
+    if(k==='logs') views.logs.style.display='block';
+  });
+});
 
-        if (user.email !== adminEmail) {
-            alert("Acesso negado — você não é administrador.");
-            return;
-        }
+/* ========== Realtime watchers & loaders ========== */
+function initRealtime(){
+  // avoid multiple initializations
+  if(window._admin_init_done) return;
+  window._admin_init_done = true;
 
-        loginBox.style.display = "none";
-        painel.style.display = "block";
+  // affiliates
+  const affRef = ref(db, 'afiliados');
+  onValue(affRef, snap => {
+    affiliates = snap.exists() ? snap.val() : null;
+    renderAffiliates();
+    renderDashboard();
+    pushLog('listen', 'afiliados updated').catch(()=>{});
+  }, err => { console.error('afiliados listen err', err); });
 
-        carregarDashboard();
-        carregarAfiliados();
-        carregarProdutos();
+  // products
+  const prodRef = ref(db, 'produtos');
+  onValue(prodRef, snap => {
+    products = snap.exists() ? snap.val() : null;
+    renderProducts();
+    renderDashboard();
+    pushLog('listen', 'produtos updated').catch(()=>{});
+  }, err => { console.error('produtos listen err', err); });
 
-    } catch (e) {
-        alert("Erro no login: " + e.message);
+  // sales
+  const salesRef = ref(db, 'sales');
+  onValue(salesRef, snap => {
+    sales = snap.exists() ? snap.val() : null;
+    renderDashboard();
+  }, err => { console.error('sales listen err', err); });
+
+  // clicks
+  const clicksRef = ref(db, 'clicks');
+  onValue(clicksRef, snap => {
+    clicks = snap.exists() ? snap.val() : null;
+  }, err => { console.error('clicks listen err', err); });
+
+  // logs
+  const logsRef = ref(db, 'adminLogs');
+  onValue(logsRef, snap => {
+    adminLogs = snap.exists() ? snap.val() : null;
+    renderLogs();
+  }, err => { console.error('logs listen err', err); });
+
+  // wire controls
+  document.getElementById('globalSearch').addEventListener('input', ()=>{ renderAffiliates(); renderProducts(); });
+  document.getElementById('searchAff').addEventListener('input', renderAffiliates);
+  btnReloadAff.addEventListener('click', ()=> renderAffiliates());
+  btnExportAff.addEventListener('click', exportAffiliatesCSV);
+  document.getElementById('btnExport').addEventListener('click', exportAffiliatesCSV);
+
+  btnSaveProd.addEventListener('click', saveProduct);
+  btnClearProd.addEventListener('click', clearProductForm);
+  btnReloadProd.addEventListener('click', renderProducts);
+
+  btnReloadAct.addEventListener('click', loadActivity);
+  btnExportAct.addEventListener('click', exportActivityCSV);
+
+  btnReloadLog.addEventListener('click', renderLogs);
+  btnExportLog.addEventListener('click', exportLogsCSV);
+
+  document.getElementById('btnSaveProd').addEventListener('click', ()=>{ /* already wired */ });
+
+  // modal
+  btnCloseModal.addEventListener('click', ()=> { modalEdit.style.display='none'; modalEdit.setAttribute('aria-hidden','true'); });
+  btnUpdateProd.addEventListener('click', updateProductFromModal);
+
+  // chart initial
+  chartInstance = new Chart(chartTopAff, { type: 'bar', data: { labels: [], datasets: [{ label: 'Vendas', data: [] }] }, options: { responsive:true, plugins:{legend:{display:false}} } });
+
+  // initial loads
+  loadActivity();
+  renderDashboard();
+}
+
+/* ========== RENDER / ACTIONS ========== */
+
+/* Dashboard */
+function renderDashboard(){
+  const affCount = affiliates ? Object.keys(affiliates).length : 0;
+  const prodCount = products ? Object.keys(products).length : 0;
+  const salesCount = sales ? Object.keys(sales).length : 0;
+  dashAffCount.textContent = affCount;
+  dashProdCount.textContent = prodCount;
+  dashSalesCount.textContent = salesCount;
+
+  // last actions
+  const logs = adminLogs ? Object.values(adminLogs).sort((a,b)=>b.ts - a.ts).slice(0,6) : [];
+  lastActions.innerHTML = logs.length ? logs.map(l=>`${new Date(l.ts).toLocaleString()} — ${escapeHtml(l.action)} (${escapeHtml(l.actor||'')})`).join('<br>') : 'Sem ações recentes';
+
+  // top affiliates chart (by totalSales)
+  if(affiliates){
+    const arr = Object.values(affiliates).map(a => ({ name: `${a.nome} ${a.sobrenome||''}`, sales: (a.totalSales||a.totalVendas||0) }));
+    arr.sort((a,b)=>b.sales - a.sales);
+    const top = arr.slice(0,8);
+    chartInstance.data.labels = top.map(t=>t.name);
+    chartInstance.data.datasets[0].data = top.map(t=>t.sales);
+    chartInstance.update();
+  }
+}
+
+/* Affiliates */
+function renderAffiliates(){
+  if(!affiliates){ tbodyAff.innerHTML = '<tr><td colspan="6" class="placeholder">Nenhum afiliado.</td></tr>'; return; }
+  const list = Object.values(affiliates);
+  const q = (document.getElementById('globalSearch').value || '').toLowerCase();
+  const q2 = (document.getElementById('searchAff').value || '').toLowerCase();
+  const filter = q || q2;
+  const filtered = filter ? list.filter(a => ((a.nome||'') + ' ' + (a.sobrenome||'')).toLowerCase().includes(filter) || (a.email||'').toLowerCase().includes(filter) || (a.codigo||'').toLowerCase().includes(filter)) : list;
+  tbodyAff.innerHTML = '';
+  if(filtered.length===0){ tbodyAff.innerHTML = '<tr><td colspan="6" class="placeholder">Nenhum afiliado encontrado.</td></tr>'; return; }
+  filtered.sort((a,b)=> (b.totalSales||b.totalVendas||0) - (a.totalSales||a.totalVendas||0));
+  filtered.forEach(a => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${escapeHtml(a.nome)} ${escapeHtml(a.sobrenome||'')}</td>
+      <td>${escapeHtml(a.email||'')}</td>
+      <td><span class="badge">${escapeHtml(a.codigo||'')}</span></td>
+      <td>${escapeHtml(a.idade||'')}</td>
+      <td>${escapeHtml(a.totalSales||a.totalVendas||0)}</td>
+      <td>
+        <button class="ghost" data-id="${a.id}" data-action="view">Ver</button>
+        <button class="ghost danger" data-id="${a.id}" data-action="del">Remover</button>
+      </td>`;
+    tbodyAff.appendChild(tr);
+    tr.querySelector('[data-action="view"]').addEventListener('click', ()=> showAffiliateDetail(a));
+    tr.querySelector('[data-action="del"]').addEventListener('click', ()=> removeAffiliate(a));
+  });
+}
+
+/* show affiliate detail — modal-like side update */
+async function showAffiliateDetail(a){
+  // show as alert with options (could be modal)
+  const str = `Afiliado: ${a.nome} ${a.sobrenome||''}\nEmail: ${a.email}\nPIX: ${a.pix||''}\nCódigo: ${a.codigo}\nCriado: ${a.criadoEm||''}\nVendas: ${a.totalSales||a.totalVendas||0}\nGanhos: ${a.totalEarnings||a.totalGanhos||0}`;
+  if(confirm(str + '\n\nDeseja copiar o email (OK) ou cancelar (Cancelar)?')) {
+    await navigator.clipboard.writeText(a.email||'');
+    alert('Email copiado');
+  }
+}
+
+/* remove affiliate */
+async function removeAffiliate(a){
+  if(!confirm(`Remover afiliado ${a.nome} ${a.sobrenome||''} (código ${a.codigo})?`)) return;
+  try{
+    await remove(ref(db, `afiliados/${a.id}`));
+    await remove(ref(db, `afiliadosByCode/${a.codigo}`)).catch(()=>{});
+    const ek = (a.email||'').toLowerCase().replace(/\./g, ',');
+    await remove(ref(db, `afiliadosByEmail/${ek}`)).catch(()=>{});
+    await pushLog(`removeAffiliate`, `id:${a.id}, code:${a.codigo}`);
+    showToast('Afiliado removido');
+  }catch(e){ console.error(e); alert('Erro ao remover afiliado'); }
+}
+
+/* Products */
+function renderProducts(){
+  if(!products){ tbodyProd.innerHTML = '<tr><td colspan="5" class="placeholder">Nenhum produto.</td></tr>'; return; }
+  const list = Object.values(products);
+  const filter = (filterProd.value||'').toLowerCase();
+  const filtered = filter ? list.filter(p => (p.nome||'').toLowerCase().includes(filter)) : list;
+  tbodyProd.innerHTML = '';
+  if(filtered.length===0){ tbodyProd.innerHTML = '<tr><td colspan="5" class="placeholder">Nenhum produto encontrado.</td></tr>'; return; }
+  filtered.forEach(p=>{
+    const imgHtml = p.image ? `<img src="${escapeHtml(p.image)}" alt="" style="width:64px;height:40px;object-fit:cover;border-radius:6px">` : '';
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${imgHtml}</td><td>${escapeHtml(p.nome||'')}</td><td>R$ ${escapeHtml(p.preco||'')}</td><td>${escapeHtml(p.commissionPercent||'')}%</td>
+      <td>
+        <button class="ghost" data-id="${p.id}" data-action="edit">Editar</button>
+        <button class="ghost danger" data-id="${p.id}" data-action="del">Remover</button>
+      </td>`;
+    tbodyProd.appendChild(tr);
+    tr.querySelector('[data-action="edit"]').addEventListener('click', ()=> openEditProduct(p));
+    tr.querySelector('[data-action="del"]').addEventListener('click', ()=> removeProduct(p));
+  });
+}
+
+/* save product */
+async function saveProduct(){
+  const name = (prodName.value||'').trim();
+  const price = parseFloat((prodPrice.value||'').replace(',','.'));
+  const commission = parseFloat((prodCommission.value||'')||10);
+  const desc = (prodDesc.value||'').trim();
+  const image = (prodImage.value||'').trim();
+
+  if(!name || isNaN(price)){ prodMsg.textContent = 'Preencha nome e preço válido'; prodMsg.style.color='red'; return; }
+  const id = 'PROD_' + Date.now();
+  try{
+    await set(ref(db, `produtos/${id}`), { id, nome: name, preco: price, commissionPercent: commission, descricao: desc, image, createdAt: Date.now() });
+    prodMsg.textContent = 'Produto salvo';
+    prodMsg.style.color = 'lightgreen';
+    await pushLog('createProduct', `id:${id}, name:${name}`);
+    prodName.value=''; prodPrice.value=''; prodCommission.value=''; prodDesc.value=''; prodImage.value='';
+  }catch(e){ console.error(e); prodMsg.textContent='Erro ao salvar'; prodMsg.style.color='red'; }
+}
+
+/* clear form */
+function clearProductForm(){ prodName.value=''; prodPrice.value=''; prodCommission.value=''; prodDesc.value=''; prodImage.value=''; prodMsg.textContent=''; }
+
+/* edit product modal */
+function openEditProduct(p){
+  editingProductId = p.id;
+  editProdName.value = p.nome || '';
+  editProdPrice.value = p.preco || '';
+  editProdCommission.value = p.commissionPercent || (p.commissionPercent===0?0:10);
+  editProdDesc.value = p.descricao || '';
+  editProdImage.value = p.image || '';
+  editProdMsg.textContent = '';
+  modalEdit.style.display = 'flex';
+  modalEdit.setAttribute('aria-hidden','false');
+}
+async function updateProductFromModal(){
+  if(!editingProductId) return;
+  const name = (editProdName.value||'').trim();
+  const price = parseFloat((editProdPrice.value||'').replace(',','.'));
+  const commission = parseFloat((editProdCommission.value||'')||10);
+  const desc = (editProdDesc.value||'').trim();
+  const image = (editProdImage.value||'').trim();
+  if(!name || isNaN(price)){ editProdMsg.textContent='Nome e preço válidos são obrigatórios'; editProdMsg.style.color='red'; return; }
+  try{
+    await update(ref(db, `produtos/${editingProductId}`), { nome: name, preco: price, commissionPercent: commission, descricao: desc, image, updatedAt: Date.now() });
+    editProdMsg.textContent = 'Atualizado';
+    editProdMsg.style.color = 'lightgreen';
+    await pushLog('updateProduct', `id:${editingProductId}`);
+    modalEdit.style.display='none';
+    modalEdit.setAttribute('aria-hidden','true');
+  }catch(e){ console.error(e); editProdMsg.textContent='Erro ao atualizar'; editProdMsg.style.color='red'; }
+}
+
+/* remove product */
+async function removeProduct(p){
+  if(!confirm(`Deseja remover o produto "${p.nome}"?`)) return;
+  try{
+    await remove(ref(db, `produtos/${p.id}`));
+    await pushLog('removeProduct', `id:${p.id}, name:${p.nome}`);
+    showToast('Produto removido');
+  }catch(e){ console.error(e); alert('Erro ao remover produto'); }
+}
+
+/* Activity: list last clicks and sales, allow simulate sale */
+async function loadActivity(){
+  activityList.innerHTML = '<div class="placeholder">Carregando...</div>';
+  try{
+    // sales
+    const salesSnap = await get(ref(db, 'sales'));
+    const salesObj = salesSnap.exists() ? salesSnap.val() : {};
+    const salesArr = Object.values(salesObj || {}).map(s => ({ type:'sale', ...s }));
+    // clicks: nested by code / ts
+    const clicksSnap = await get(ref(db, 'clicks'));
+    const clicksObj = clicksSnap.exists() ? clicksSnap.val() : {};
+    let clicksArr = [];
+    Object.entries(clicksObj || {}).forEach(([code,recs])=>{
+      Object.entries(recs || {}).forEach(([k,v])=> clicksArr.push({ type:'click', ref: code, ts: v.ts || Number(k), productId: v.productId||null }));
+    });
+    // merge and sort
+    let events = [...salesArr, ...clicksArr];
+    events.sort((a,b)=> (b.createdAt||b.ts||0) - (a.createdAt||a.ts||0));
+    // filter
+    const filter = (filterActivityRef.value||'').trim().toLowerCase();
+    if(filter) events = events.filter(e => (e.ref||'').toLowerCase().includes(filter) || (e.refCode||'').toLowerCase().includes(filter));
+    if(events.length===0){ activityList.innerHTML = '<div class="placeholder">Nenhuma atividade</div>'; return; }
+    // render
+    activityList.innerHTML = events.slice(0,500).map(ev=>{
+      if(ev.type==='sale'){
+        return `<div style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.03)">${new Date(ev.createdAt).toLocaleString()} — <strong>Venda</strong> produto:${escapeHtml(ev.productId||'')} — ref:${escapeHtml(ev.ref||'')} — R$${escapeHtml(ev.amount||'0')} — por ${escapeHtml(ev.buyer||'')}</div>`;
+      } else {
+        return `<div style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.03)">${new Date(ev.ts||0).toLocaleString()} — <strong>Clique</strong> ref:${escapeHtml(ev.ref||'')} — produto:${escapeHtml(ev.productId||'')}</div>`;
+      }
+    }).join('');
+  }catch(e){ console.error(e); activityList.innerHTML = '<div class="placeholder">Erro ao carregar atividade</div>'; }
+}
+
+/* simulate sale (admin) — credits affiliate with commission automatically */
+async function simulateSale(productId, affiliateCode, buyer='Cliente', amount = null){
+  // product lookup
+  if(!products || !products[productId]) throw new Error('Produto não encontrado');
+  const p = products[productId];
+  const price = (amount !== null) ? Number(amount) : Number(p.preco || 0);
+  const commissionPercent = Number(p.commissionPercent || p.commission || 10);
+  const commission = (price * (commissionPercent/100));
+  // sale payload
+  const saleId = 'SALE_' + Date.now();
+  const payload = { id: saleId, productId, createdAt: Date.now(), ref: affiliateCode || null, amount: price, buyer };
+  await set(ref(db, `sales/${saleId}`), payload);
+  // update affiliate totals
+  if(affiliateCode){
+    const codeSnap = await get(ref(db, `afiliadosByCode/${affiliateCode}`));
+    if(codeSnap.exists()){
+      const { id } = codeSnap.val();
+      const aSnap = await get(ref(db, `afiliados/${id}`));
+      if(aSnap.exists()){
+        const a = aSnap.val();
+        const totalSales = (a.totalSales||a.totalVendas||0) + 1;
+        const totalEarnings = (a.totalEarnings||a.totalGanhos||0) + commission;
+        await update(ref(db, `afiliados/${id}`), { totalSales, totalEarnings });
+      }
     }
-};
-
-/* ========= NAVEGAÇÃO ========= */
-window.mostrarAba = function(aba) {
-    document.querySelectorAll(".aba").forEach(div => div.style.display = "none");
-    document.getElementById(aba).style.display = "block";
-
-    document.querySelectorAll(".nav button").forEach(b => b.classList.remove("active"));
-    event.target.classList.add("active");
-};
-
-/* ========= DASHBOARD ========= */
-async function carregarDashboard() {
-    let afiliadosSnap = await get(ref(db, "afiliados"));
-    let produtosSnap = await get(ref(db, "produtos"));
-
-    document.getElementById("countAfiliados").innerText = afiliadosSnap.exists()
-        ? Object.keys(afiliadosSnap.val()).length
-        : 0;
-
-    document.getElementById("countProdutos").innerText = produtosSnap.exists()
-        ? Object.keys(produtosSnap.val()).length
-        : 0;
+  }
+  // push admin log
+  await pushLog('simulateSale', `product:${productId}, ref:${affiliateCode}, amount:${price}`);
+  showToast('Venda simulada registrada');
 }
 
-/* ========= AFILIADOS ========= */
-async function carregarAfiliados() {
-    const tabela = document.getElementById("tabelaAfiliados");
-
-    const snap = await get(ref(db, "afiliados"));
-
-    if (!snap.exists()) return;
-
-    Object.values(snap.val()).forEach(a => {
-        let tr = document.createElement("tr");
-
-        tr.innerHTML = `
-            <td>${a.nome} ${a.sobrenome}</td>
-            <td>${a.email}</td>
-            <td>${a.codigo}</td>
-            <td>${a.idade}</td>
-            <td>${a.pix}</td>
-            <td>${a.totalVendas}</td>
-        `;
-
-        tabela.appendChild(tr);
-    });
+/* Logs */
+function renderLogs(){
+  if(!adminLogs) { logList.innerHTML = '<div class="placeholder">Sem logs</div>'; return; }
+  const arr = Object.values(adminLogs).sort((a,b)=> b.ts - a.ts);
+  logList.innerHTML = arr.map(l=>`<div style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.03)">${new Date(l.ts).toLocaleString()} — ${escapeHtml(l.actor||'')} — ${escapeHtml(l.action)} — ${escapeHtml(l.detail||'')}</div>`).join('');
 }
 
-/* ========= PRODUTOS ========= */
-async function carregarProdutos() {
-    const tabela = document.getElementById("tabelaProdutos");
-
-    const snap = await get(ref(db, "produtos"));
-    if (!snap.exists()) return;
-
-    const dados = snap.val();
-
-    Object.keys(dados).forEach(id => {
-        const p = dados[id];
-        let tr = document.createElement("tr");
-
-        tr.innerHTML = `
-            <td>${p.nome}</td>
-            <td>R$ ${p.preco}</td>
-            <td>
-                <button onclick="excluirProduto('${id}')" style="background:#ff3b3b;padding:6px;border:none;border-radius:6px;">Excluir</button>
-            </td>
-        `;
-
-        tabela.appendChild(tr);
+/* Export CSV helpers */
+function downloadCSV(filename, rows){
+  const csv = rows.map(r => r.map(cell=>`"${String(cell).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = filename; a.click(); URL.revokeObjectURL(url);
+}
+function exportAffiliatesCSV(){
+  if(!affiliates) return alert('Nenhum afiliado');
+  const rows = [['id','nome','sobrenome','email','pix','codigo','idade','totalSales','totalEarnings','criadoEm']];
+  Object.values(affiliates).forEach(a => rows.push([a.id||'', a.nome||'', a.sobrenome||'', a.email||'', a.pix||'', a.codigo||'', a.idade||'', a.totalSales||a.totalVendas||0, a.totalEarnings||a.totalGanhos||0, a.criadoEm||'']));
+  downloadCSV('afiliados_export.csv', rows);
+}
+function exportActivityCSV(){
+  // flatten sales + clicks
+  const rows = [['type','ts','ref','productId','amount','buyer']];
+  if(sales) Object.values(sales).forEach(s => rows.push(['sale', s.createdAt||'', s.ref||'', s.productId||'', s.amount||'', s.buyer||'']));
+  if(clicks){
+    Object.entries(clicks).forEach(([refCode, recs])=>{
+      Object.entries(recs||{}).forEach(([k,v])=> rows.push(['click', v.ts||k, refCode, v.productId||'', '', '']));
     });
+  }
+  downloadCSV('activity_export.csv', rows);
+}
+function exportLogsCSV(){
+  if(!adminLogs) return alert('Nenhum log');
+  const rows = [['ts','actor','action','detail']];
+  Object.values(adminLogs).forEach(l=> rows.push([l.ts||'', l.actor||'', l.action||'', l.detail||'']));
+  downloadCSV('admin_logs.csv', rows);
 }
 
-window.salvarProduto = async function() {
-    const nome = document.getElementById("produtoNome").value;
-    const desc = document.getElementById("produtoDesc").value;
-    const preco = document.getElementById("produtoPreco").value;
+/* ========== Utility initializers ========== */
+document.getElementById('btnReloadProd').addEventListener('click', renderProducts);
+document.getElementById('btnReloadAct').addEventListener('click', loadActivity);
+document.getElementById('btnReloadLog').addEventListener('click', renderLogs);
+document.getElementById('btnExportAct').addEventListener('click', exportActivityCSV);
+document.getElementById('btnExportLog').addEventListener('click', exportLogsCSV);
 
-    if (!nome || !desc || !preco) {
-        alert("Preencha tudo.");
-        return;
-    }
+/* allow simulate sale quickly via dev console:
+   window.simulateSale(productId, affiliateCode, buyer, amount)
+*/
+window.simulateSale = simulateSale;
 
-    const id = Date.now();
+/* ========== Start ========== */
+console.log('Admin final loaded — aguarde autenticação.');
 
-    await set(ref(db, "produtos/" + id), {
-        nome, desc, preco
-    });
-
-    alert("Produto salvo!");
-    location.reload();
-};
-
-window.excluirProduto = async function(id) {
-    if (!confirm("Deseja mesmo excluir esse produto?")) return;
-
-    await remove(ref(db, "produtos/" + id));
-
-    alert("Produto removido.");
-    location.reload();
-};
+/* Optional: automatically open dashboard view */
+views.dash.style.display='block';
 
 </script>
-
 </body>
 </html>
