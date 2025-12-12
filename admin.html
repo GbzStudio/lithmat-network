@@ -1,166 +1,213 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Admin Complex — GbzStudio</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Painel GbzStudio</title>
+
 <style>
-  :root{
-    --bg:#07121a; --panel:#0f1720; --accent:#29d0b6; --muted:#9fb0bd; --text:#e6f3f1;
-    --danger:#ff6b6b; --success:#16a34a;
-  }
-  *{box-sizing:border-box}
-  body{margin:0;font-family:Inter,system-ui,Roboto,Arial;background:linear-gradient(180deg,#061118,#071a22);color:var(--text);min-height:100vh}
-  header{padding:16px 20px;background:linear-gradient(90deg,#071a22,#0b2027);display:flex;align-items:center;justify-content:space-between;gap:12px}
-  header h1{margin:0;font-size:18px}
-  header .right{display:flex;gap:10px;align-items:center}
-  .container{padding:18px;max-width:1200px;margin:18px auto}
-  .card{background:var(--panel);padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);box-shadow:0 8px 30px rgba(1,6,12,0.6)}
-  .topbar{display:flex;gap:12px;align-items:center;margin-bottom:12px}
-  .tabs{display:flex;gap:8px}
-  .tab{padding:8px 12px;border-radius:8px;background:#07121a;cursor:pointer}
-  .tab.active{background:linear-gradient(90deg,var(--accent),#33cbb2);color:#022;font-weight:700}
-  button{background:var(--accent);border:0;color:#022;padding:8px 12px;border-radius:8px;cursor:pointer}
-  button.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--text)}
-  .grid{display:grid;grid-template-columns:1fr 360px;gap:12px}
-  .controls{display:flex;gap:8px;align-items:center}
-  input,select,textarea{padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--text)}
-  table{width:100%;border-collapse:collapse}
-  th,td{padding:10px;border-bottom:1px solid rgba(255,255,255,0.03);text-align:left;font-size:14px}
-  th{background:rgba(255,255,255,0.02);font-weight:700}
-  .small{font-size:13px;color:var(--muted)}
-  .danger{background:var(--danger);color:white}
-  .success{background:var(--success);color:white}
-  .muted{color:var(--muted)}
-  .pager{display:flex;gap:8px;align-items:center;margin-top:8px}
-  .placeholder{color:var(--muted);padding:18px;text-align:center}
-  .spinner{width:16px;height:16px;border-radius:50%;border:2px solid rgba(255,255,255,0.08);border-top-color:var(--accent);animation:spin 1s linear infinite;display:inline-block;vertical-align:middle}
-  @keyframes spin{to{transform:rotate(360deg)}}
-  /* responsive */
-  @media (max-width:980px){ .grid{grid-template-columns:1fr} .container{padding:12px} .tabs{flex-wrap:wrap} }
+/* ====== ESTILO GERAL ====== */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #0c0c0c;
+    color: white;
+}
+
+/* HEADER */
+header {
+    background: #151515;
+    padding: 15px 20px;
+    font-size: 22px;
+    font-weight: bold;
+    box-shadow: 0 0 15px #000;
+}
+
+/* CONTAINER DO PAINEL */
+#painel {
+    display: none;
+    padding: 20px;
+}
+
+/* ABA SUPERIOR */
+.nav {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.nav button {
+    background: #333;
+    padding: 12px 20px;
+    border: none;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.nav button:hover {
+    background: #555;
+}
+
+.nav button.active {
+    background: #6a3cff;
+}
+
+/* CARDS DO DASHBOARD */
+.cards {
+    display: flex;
+    gap: 20px;
+}
+
+.card {
+    background: #1a1a1a;
+    padding: 20px;
+    border-radius: 12px;
+    width: 260px;
+    box-shadow: 0 0 8px #000;
+    transition: .2s;
+}
+
+.card:hover {
+    transform: scale(1.02);
+}
+
+/* TABELAS */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.table th, .table td {
+    padding: 12px;
+    border-bottom: 1px solid #2a2a2a;
+}
+
+.table th {
+    background: #222;
+}
+
+/* FORMULÁRIOS */
+input, textarea {
+    width: 100%;
+    padding: 12px;
+    background: #111;
+    color: white;
+    border: 1px solid #444;
+    border-radius: 8px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+button.action {
+    background: #6a3cff;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+}
+
+button.action:hover {
+    background: #875aff;
+}
+
+#loginBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+}
+
 </style>
 </head>
 <body>
 
-<header>
-  <h1>Painel Admin — GbzStudio</h1>
-  <div class="right">
-    <div id="userInfo" class="small muted">Não autenticado</div>
-    <button id="btnLogin">Entrar com Google</button>
-    <button id="btnLogout" style="display:none" class="ghost">Sair</button>
-  </div>
-</header>
+<header>Painel Administrativo — GbzStudio</header>
 
-<main class="container">
-  <div class="card">
-    <div class="topbar">
-      <div class="tabs" role="tablist">
-        <div role="tab" id="tabAff" class="tab active" tabindex="0">Afiliados</div>
-        <div role="tab" id="tabProd" class="tab" tabindex="0">Produtos</div>
-        <div role="tab" id="tabAct" class="tab" tabindex="0">Atividade</div>
-      </div>
-      <div style="flex:1"></div>
-      <div class="controls">
-        <input id="globalSearch" placeholder="Buscar nome, email ou código" style="min-width:260px">
-        <button id="btnExportCSV" title="Exportar afiliados CSV">Exportar CSV</button>
-      </div>
+<!-- LOGIN GOOGLE -->
+<div id="loginBox">
+    <button class="action" style="width:auto;" id="loginBtn">Entrar com Google</button>
+</div>
+
+<!-- PAINEL -->
+<div id="painel">
+
+    <!-- NAVEGAÇÃO -->
+    <div class="nav">
+        <button class="active" onclick="mostrarAba('dashboard')">📊 Dashboard</button>
+        <button onclick="mostrarAba('afiliados')">👥 Afiliados</button>
+        <button onclick="mostrarAba('produtos')">📦 Produtos</button>
     </div>
 
-    <div id="content">
-      <!-- Afiliados -->
-      <section id="viewAff">
-        <div class="grid">
-          <div class="card" id="affListCard">
-            <div style="display:flex;justify-content:space-between;align-items:center">
-              <strong>Afiliados</strong>
-              <div class="small muted" id="affCount">—</div>
+    <!-- DASHBOARD -->
+    <div id="dashboard" class="aba">
+        <h2>Visão Geral</h2>
+        <div class="cards">
+            <div class="card">
+                <h3>Afiliados Registrados</h3>
+                <p id="countAfiliados">0</p>
             </div>
-            <div style="margin-top:12px">
-              <table id="tableAff">
-                <thead><tr><th>Nome</th><th>Email</th><th>Código</th><th>Idade</th><th>Vendas</th><th>Ações</th></tr></thead>
-                <tbody id="tbodyAff"><tr><td colspan="6" class="placeholder">Carregando...</td></tr></tbody>
-              </table>
+            <div class="card">
+                <h3>Produtos Cadastrados</h3>
+                <p id="countProdutos">0</p>
             </div>
-            <div class="pager" id="pagerAff"></div>
-          </div>
-
-          <div class="card" id="affDetailCard">
-            <strong>Detalhes do Afiliado</strong>
-            <div id="affDetail" style="margin-top:12px" class="small muted">Selecione um afiliado para ver os detalhes.</div>
-            <div style="margin-top:12px" id="affActions"></div>
-          </div>
         </div>
-      </section>
-
-      <!-- Produtos -->
-      <section id="viewProd" style="display:none">
-        <div class="grid">
-          <div class="card">
-            <strong>Produtos</strong>
-            <div style="margin-top:12px">
-              <table id="tableProd">
-                <thead><tr><th>Nome</th><th>Preço</th><th>Descrição</th><th>Ações</th></tr></thead>
-                <tbody id="tbodyProd"><tr><td colspan="4" class="placeholder">Carregando...</td></tr></tbody>
-              </table>
-            </div>
-            <div class="pager" id="pagerProd"></div>
-          </div>
-
-          <div class="card">
-            <strong>Cadastrar / Editar Produto</strong>
-            <div style="margin-top:12px">
-              <label class="small">Título</label>
-              <input id="prodTitle" placeholder="Nome do produto">
-              <label class="small" style="margin-top:8px">Preço (ex: 49.90)</label>
-              <input id="prodPrice" placeholder="R$">
-              <label class="small" style="margin-top:8px">Descrição</label>
-              <textarea id="prodDesc" rows="4" style="width:100%;border-radius:8px;background:transparent;color:var(--text);padding:8px"></textarea>
-              <label class="small" style="margin-top:8px">URL da Imagem (opcional)</label>
-              <input id="prodImage" placeholder="https://...">
-              <div style="display:flex;gap:8px;margin-top:10px">
-                <button id="btnSaveProd">Salvar</button>
-                <button id="btnClearProd" class="ghost">Limpar</button>
-              </div>
-              <div id="prodStatus" class="small muted" style="margin-top:10px"></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Atividade -->
-      <section id="viewAct" style="display:none">
-        <div class="card">
-          <strong>Atividade recente</strong>
-          <div style="margin-top:12px">
-            <label class="small">Filtrar por código do afiliado (opcional)</label>
-            <input id="filterRef" placeholder="CÓDIGO123">
-            <div style="margin-top:10px" class="small muted">Últimos 200 eventos (cliques e vendas)</div>
-            <div id="activityList" style="margin-top:12px" class="small muted">Carregando...</div>
-          </div>
-        </div>
-      </section>
     </div>
 
-  </div>
-</main>
+    <!-- LISTA AFILIADOS -->
+    <div id="afiliados" class="aba" style="display:none;">
+        <h2>Afiliados Registrados</h2>
+        <table class="table" id="tabelaAfiliados">
+            <tr>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Código</th>
+                <th>Idade</th>
+                <th>Pix</th>
+                <th>Vendas</th>
+            </tr>
+        </table>
+    </div>
+
+    <!-- PRODUTOS -->
+    <div id="produtos" class="aba" style="display:none;">
+        <h2>Lançar Produto</h2>
+
+        <input id="produtoNome" placeholder="Nome do Produto">
+        <textarea id="produtoDesc" placeholder="Descrição"></textarea>
+        <input id="produtoPreco" placeholder="Preço">
+
+        <button class="action" onclick="salvarProduto()">Salvar Produto</button>
+
+        <h2 style="margin-top:40px;">Produtos Cadastrados</h2>
+
+        <table class="table" id="tabelaProdutos">
+            <tr>
+                <th>Nome</th>
+                <th>Preço</th>
+                <th>Gerenciar</th>
+            </tr>
+        </table>
+    </div>
+
+</div>
 
 <script type="module">
-/* Admin complex — single file
-   Features:
-   - Firebase Auth (Google) login (only adminEmail allowed)
-   - Realtime DB: afiliados, produtos, clicks, sales
-   - Afiliados list: search, pagination, view detail, delete, export CSV
-   - Produtos CRUD: add, edit, delete
-   - Activity: list recent clicks and sales (limited)
-   Notes:
-   - Ensure your domain is added to Firebase Auth authorized domains
-   - Uses your firebaseConfig
-*/
-
+/* ========= IMPORTS FIREBASE ========= */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { getDatabase, ref, onValue, get, push, set, remove, update, query, limitToLast, orderByChild } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+import { 
+    getAuth, GoogleAuthProvider, signInWithPopup 
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { 
+    getDatabase, ref, get, set, remove 
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
+/* ========= CONFIG ========= */
 const firebaseConfig = {
   apiKey: "AIzaSyD6UyxqTZAlPLjcadS45YYj2HUEK6fTV80",
   authDomain: "bancdataofc.firebaseapp.com",
@@ -175,385 +222,137 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
 
-const adminEmail = "gabrielcordeirosilva2010@gmail.com"; // allowed admin
-
-// UI refs
-const btnLogin = document.getElementById('btnLogin');
-const btnLogout = document.getElementById('btnLogout');
-const userInfo = document.getElementById('userInfo');
-
-const tabAff = document.getElementById('tabAff');
-const tabProd = document.getElementById('tabProd');
-const tabAct = document.getElementById('tabAct');
-
-const viewAff = document.getElementById('viewAff');
-const viewProd = document.getElementById('viewProd');
-const viewAct = document.getElementById('viewAct');
-
-const tbodyAff = document.getElementById('tbodyAff');
-const affCount = document.getElementById('affCount');
-const affDetail = document.getElementById('affDetail');
-const affActions = document.getElementById('affActions');
-const globalSearch = document.getElementById('globalSearch');
-const btnExportCSV = document.getElementById('btnExportCSV');
-
-const tbodyProd = document.getElementById('tbodyProd');
-const prodTitle = document.getElementById('prodTitle');
-const prodPrice = document.getElementById('prodPrice');
-const prodDesc = document.getElementById('prodDesc');
-const prodImage = document.getElementById('prodImage');
-const btnSaveProd = document.getElementById('btnSaveProd');
-const btnClearProd = document.getElementById('btnClearProd');
-const prodStatus = document.getElementById('prodStatus');
-
-const activityList = document.getElementById('activityList');
-const filterRef = document.getElementById('filterRef');
-
-let productsSnapshot = null;
-let afiliadosSnapshot = null;
-let editingProductId = null;
-
-// small helpers
-const fmtDate = ts => new Date(ts).toLocaleString();
-const showTemporary = (el, text, color='') => { el.textContent = text; el.style.color = color; setTimeout(()=>{ if(el.textContent===text) el.textContent=''; }, 4500); }
-
-// AUTH
 const provider = new GoogleAuthProvider();
-provider.setCustomParameters({ prompt: 'select_account' });
+provider.setCustomParameters({ prompt: "select_account" });
 
-btnLogin.addEventListener('click', async ()=>{
-  try{
-    const result = await signInWithPopup(auth, provider);
-    // onAuthStateChanged will handle UI
-  }catch(e){ alert('Erro no login: ' + e.message); console.error(e); }
-});
+/* ========= LOGIN ========= */
+const loginBtn = document.getElementById("loginBtn");
+const loginBox = document.getElementById("loginBox");
+const painel = document.getElementById("painel");
 
-btnLogout.addEventListener('click', async ()=>{
-  await signOut(auth);
-});
+const adminEmail = "gabrielcordeirosilva2010@gmail.com";
 
-// only show admin UI when authenticated with allowed email
-onAuthStateChanged(auth, user => {
-  if(user && user.email === adminEmail){
-    userInfo.textContent = user.email;
-    btnLogin.style.display = 'none';
-    btnLogout.style.display = 'inline-block';
-    // initialize listeners
-    initRealtime();
-  } else {
-    userInfo.textContent = 'Não autenticado';
-    btnLogin.style.display = 'inline-block';
-    btnLogout.style.display = 'none';
-    // hide views
-    // clear UI
-    tbodyAff.innerHTML = '<tr><td colspan="6" class="placeholder">Conecte-se com sua conta Google autorizada.</td></tr>';
-    tbodyProd.innerHTML = '<tr><td colspan="4" class="placeholder">Conecte-se com sua conta Google autorizada.</td></tr>';
-    activityList.textContent = 'Autenticação necessária.';
-  }
-});
+loginBtn.onclick = async () => {
+    try {
+        const result = await signInWithPopup(auth, provider);
+        const user = result.user;
 
-// TABS
-function setActiveTab(tabElem){
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  tabElem.classList.add('active');
-  viewAff.style.display = tabElem===tabAff ? 'block' : 'none';
-  viewProd.style.display = tabElem===tabProd ? 'block' : 'none';
-  viewAct.style.display = tabElem===tabAct ? 'block' : 'none';
-}
-tabAff.addEventListener('click', ()=> setActiveTab(tabAff));
-tabProd.addEventListener('click', ()=> setActiveTab(tabProd));
-tabAct.addEventListener('click', ()=> setActiveTab(tabAct));
+        if (user.email !== adminEmail) {
+            alert("Acesso negado — você não é administrador.");
+            return;
+        }
 
-// Realtime initialization and listeners (safe, idempotent)
-let inited = false;
-function initRealtime(){
-  if(inited) return;
-  inited = true;
-  watchAfiliados();
-  watchProdutos();
-  loadActivity();
-  // wire controls
-  globalSearch.addEventListener('input', ()=> renderAfiliadosTable());
-  btnExportCSV.addEventListener('click', exportAffiliatesCSV);
-  btnSaveProd.addEventListener('click', saveProduct);
-  btnClearProd.addEventListener('click', clearProductForm);
-  filterRef.addEventListener('input', loadActivity);
-}
+        loginBox.style.display = "none";
+        painel.style.display = "block";
 
-// WATCH Afiliados (onValue for real-time updates)
-function watchAfiliados(){
-  const r = ref(db, 'afiliados');
-  onValue(r, snap=>{
-    afiliadosSnapshot = snap.exists() ? snap.val() : null;
-    renderAfiliadosTable();
-  }, err => {
-    console.error('Erro ao escutar afiliados:', err);
-    tbodyAff.innerHTML = `<tr><td colspan="6" class="placeholder">Erro ao carregar afiliados</td></tr>`;
-  });
-}
+        carregarDashboard();
+        carregarAfiliados();
+        carregarProdutos();
 
-// RENDER Afiliados table with search + pagination (simple client-side paging)
-let affPage = 1, affPerPage = 12;
-function renderAfiliadosTable(){
-  if(!afiliadosSnapshot){ tbodyAff.innerHTML = '<tr><td colspan="6" class="placeholder">Nenhum afiliado.</td></tr>'; affCount.textContent='0'; return; }
-  const list = Object.values(afiliadosSnapshot);
-  const q = (globalSearch.value||'').trim().toLowerCase();
-  const filtered = list.filter(a => {
-    if(!q) return true;
-    return (a.nome + ' ' + (a.sobrenome||'')).toLowerCase().includes(q) ||
-           (a.email||'').toLowerCase().includes(q) ||
-           (a.codigo||'').toLowerCase().includes(q);
-  });
-  affCount.textContent = filtered.length + ' afiliado(s)';
-  // pagination
-  const totalPages = Math.max(1, Math.ceil(filtered.length / affPerPage));
-  if(affPage > totalPages) affPage = totalPages;
-  const start = (affPage - 1) * affPerPage;
-  const pageItems = filtered.slice(start, start + affPerPage);
-
-  // render rows
-  tbodyAff.innerHTML = '';
-  if(pageItems.length === 0){
-    tbodyAff.innerHTML = '<tr><td colspan="6" class="placeholder">Nenhum afiliado nesta página.</td></tr>';
-  } else {
-    for(const a of pageItems){
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${escapeHtml(a.nome||'')} ${escapeHtml(a.sobrenome||'')}</td>
-        <td>${escapeHtml(a.email||'')}</td>
-        <td>${escapeHtml(a.codigo||'')}</td>
-        <td>${escapeHtml(a.idade||'')}</td>
-        <td>${escapeHtml(a.totalVendas||0)}</td>
-        <td>
-          <button class="ghost" data-id="${a.id}" data-action="view">Ver</button>
-          <button class="ghost" data-id="${a.id}" data-action="delete">Remover</button>
-        </td>
-      `;
-      tbodyAff.appendChild(tr);
-      tr.querySelector('[data-action="view"]').addEventListener('click', ()=> showAffiliateDetail(a));
-      tr.querySelector('[data-action="delete"]').addEventListener('click', ()=> deleteAffiliateConfirm(a));
+    } catch (e) {
+        alert("Erro no login: " + e.message);
     }
-  }
-
-  // pager
-  const pager = document.getElementById('pagerAff');
-  pager.innerHTML = '';
-  const btnPrev = document.createElement('button'); btnPrev.textContent = '« Prev'; btnPrev.disabled = affPage===1;
-  btnPrev.addEventListener('click', ()=> { affPage--; renderAfiliadosTable(); });
-  const btnNext = document.createElement('button'); btnNext.textContent = 'Next »'; btnNext.disabled = affPage===totalPages;
-  btnNext.addEventListener('click', ()=> { affPage++; renderAfiliadosTable(); });
-  const pgInfo = document.createElement('div'); pgInfo.className='small muted'; pgInfo.textContent = `Página ${affPage} / ${totalPages}`;
-  pager.appendChild(btnPrev); pager.appendChild(pgInfo); pager.appendChild(btnNext);
-}
-
-// show affiliate details
-function showAffiliateDetail(a){
-  affDetail.innerHTML = `
-    <div><strong>${escapeHtml(a.nome)} ${escapeHtml(a.sobrenome)}</strong></div>
-    <div class="small muted" style="margin-top:6px">Email: ${escapeHtml(a.email)}</div>
-    <div class="small muted">PIX: ${escapeHtml(a.pix)}</div>
-    <div class="small muted">Código: ${escapeHtml(a.codigo)}</div>
-    <div class="small muted">Criado: ${escapeHtml(a.criadoEm||'')}</div>
-    <div style="margin-top:8px">Vendas: <strong>${escapeHtml(a.totalSales||a.totalVendas||0)}</strong> • Ganhos: <strong>${escapeHtml(a.totalEarnings||a.totalGanhos||0)}</strong></div>
-  `;
-  affActions.innerHTML = `
-    <div style="margin-top:10px;display:flex;gap:8px">
-      <button id="btnSendMsg" class="ghost">Copiar E-mail</button>
-      <button id="btnForceReset" class="ghost danger">Remover afiliado</button>
-    </div>
-  `;
-  document.getElementById('btnSendMsg').addEventListener('click', ()=> { navigator.clipboard.writeText(a.email||''); showTemporary(affActions, 'E-mail copiado', 'lightgreen'); });
-  document.getElementById('btnForceReset').addEventListener('click', ()=> deleteAffiliateConfirm(a));
-}
-
-// delete affiliate (confirm)
-async function deleteAffiliateConfirm(a){
-  if(!confirm(`Remover afiliado ${a.nome} ${a.sobrenome} (código ${a.codigo})? Esta ação é irreversível.`)) return;
-  try{
-    await remove(ref(db, `afiliados/${a.id}`));
-    // also clean indexes if exist
-    await remove(ref(db, `afiliadosByCode/${a.codigo}`)).catch(()=>{});
-    const emailKey = (a.email||'').toLowerCase().replace(/\./g, ',');
-    await remove(ref(db, `afiliadosByEmail/${emailKey}`)).catch(()=>{});
-    showTemporary(affDetail, 'Afiliado removido', 'lightgreen');
-  }catch(e){
-    console.error(e);
-    showTemporary(affDetail, 'Erro ao remover', 'red');
-  }
-}
-
-// PRODUCTS
-function watchProdutos(){
-  const r = ref(db, 'produtos');
-  onValue(r, snap => {
-    productsSnapshot = snap.exists() ? snap.val() : null;
-    renderProductsTable();
-  }, err => {
-    console.error('Erro produtos', err);
-    tbodyProd.innerHTML = '<tr><td colspan="4" class="placeholder">Erro ao carregar produtos</td></tr>';
-  });
-}
-
-let prodPage = 1, prodPerPage = 10;
-function renderProductsTable(){
-  if(!productsSnapshot){ tbodyProd.innerHTML = '<tr><td colspan="4" class="placeholder">Nenhum produto cadastrado.</td></tr>'; return; }
-  const list = Object.values(productsSnapshot).sort((a,b)=> (b.createdAt||0) - (a.createdAt||0));
-  const totalPages = Math.max(1, Math.ceil(list.length / prodPerPage));
-  if(prodPage>totalPages) prodPage = totalPages;
-  const start = (prodPage-1)*prodPerPage;
-  const pageItems = list.slice(start, start + prodPerPage);
-  tbodyProd.innerHTML = '';
-  for(const p of pageItems){
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${escapeHtml(p.nome||p.title||'')}</td><td>${escapeHtml(p.preco||p.price||'')}</td><td>${escapeHtml(p.descricao||p.desc||'')}</td>
-      <td>
-        <button class="ghost" data-id="${p.id}" data-action="edit">Editar</button>
-        <button class="ghost danger" data-id="${p.id}" data-action="delete">Remover</button>
-      </td>`;
-    tbodyProd.appendChild(tr);
-    tr.querySelector('[data-action="edit"]').addEventListener('click', ()=> loadProductToForm(p));
-    tr.querySelector('[data-action="delete"]').addEventListener('click', ()=> deleteProductConfirm(p));
-  }
-  // pager
-  const pager = document.getElementById('pagerProd');
-  pager.innerHTML = '';
-  const btnPrev = document.createElement('button'); btnPrev.textContent='« Prev'; btnPrev.disabled = prodPage===1;
-  btnPrev.addEventListener('click', ()=> { prodPage--; renderProductsTable(); });
-  const btnNext = document.createElement('button'); btnNext.textContent='Next »'; btnNext.disabled = prodPage===totalPages;
-  btnNext.addEventListener('click', ()=> { prodPage++; renderProductsTable(); });
-  const pgInfo = document.createElement('div'); pgInfo.className='small muted'; pgInfo.textContent = `Página ${prodPage} / ${totalPages}`;
-  pager.appendChild(btnPrev); pager.appendChild(pgInfo); pager.appendChild(btnNext);
-}
-
-function loadProductToForm(p){
-  editingProductId = p.id;
-  prodTitle.value = p.nome || p.title || '';
-  prodPrice.value = p.preco || p.price || '';
-  prodDesc.value = p.descricao || p.desc || '';
-  prodImage.value = p.image || '';
-  prodStatus.textContent = 'Editando produto: ' + (p.nome||p.title||'');
-}
-
-async function saveProduct(){
-  const title = (prodTitle.value||'').trim();
-  const price = (prodPrice.value||'').trim();
-  const desc = (prodDesc.value||'').trim();
-  const image = (prodImage.value||'').trim();
-  if(!title || !price){ showTemporary(prodStatus, 'Preencha título e preço', 'red'); return; }
-  try{
-    if(editingProductId){
-      // update
-      await update(ref(db, `produtos/${editingProductId}`), { nome:title, preco:price, descricao:desc, image, updatedAt: Date.now() });
-      showTemporary(prodStatus, 'Produto atualizado', 'lightgreen');
-    } else {
-      const id = 'PROD_' + Date.now();
-      await set(ref(db, `produtos/${id}`), { id, nome:title, preco:price, descricao:desc, image, createdAt: Date.now() });
-      showTemporary(prodStatus, 'Produto criado', 'lightgreen');
-    }
-    clearProductForm();
-  }catch(e){ console.error(e); showTemporary(prodStatus, 'Erro ao salvar produto', 'red'); }
-}
-
-function clearProductForm(){
-  editingProductId = null;
-  prodTitle.value=''; prodPrice.value=''; prodDesc.value=''; prodImage.value='';
-  prodStatus.textContent = '';
-}
-
-async function deleteProductConfirm(p){
-  if(!confirm(`Remover produto "${p.nome||p.title}"?`)) return;
-  try{
-    await remove(ref(db, `produtos/${p.id}`));
-    showTemporary(prodStatus, 'Produto removido', 'lightgreen');
-  }catch(e){ console.error(e); showTemporary(prodStatus, 'Erro ao remover', 'red'); }
-}
-
-// ACTIVITY (load latest clicks and sales)
-async function loadActivity(){
-  const maxEvents = 200;
-  activityList.innerHTML = '<div class="small muted"><span class="spinner"></span> carregando...</div>';
-  try{
-    // get recent sales
-    const salesSnap = await get(query(ref(db, 'sales'), orderByChild('createdAt'), limitToLast(200)));
-    const clicksSnap = await get(query(ref(db, 'clicks'), orderByChild('ts'), limitToLast(200)));
-    let events = [];
-    if(salesSnap.exists()){
-      const s = salesSnap.val();
-      Object.entries(s).forEach(([k,v])=> events.push({type:'sale', id:k, ...v}));
-    }
-    if(clicksSnap.exists()){
-      // clicks is organized by code -> timestamps -> obj; flatten last 200 per code is heavy; we'll iterate codes
-      const c = clicksSnap.val();
-      // clicks may be nested; flatten a bit
-      Object.entries(c).forEach(([code, recs])=>{
-        Object.entries(recs||{}).forEach(([ts, obj])=>{
-          events.push({type:'click', ref:code, ts: obj.ts || Number(ts), productId: obj.productId||null});
-        });
-      });
-    }
-    // sort desc
-    events.sort((a,b)=> (b.createdAt||b.ts||0) - (a.createdAt||a.ts||0));
-    // filter by ref if provided
-    const filter = (filterRef.value||'').trim().toLowerCase();
-    if(filter) events = events.filter(ev => (ev.ref||ev.refCode||'').toLowerCase().includes(filter) || (ev.ref_id||'').toLowerCase().includes(filter));
-    // limit
-    events = events.slice(0, maxEvents);
-    if(events.length===0){ activityList.innerHTML = '<div class="placeholder">Sem eventos recentes</div>'; return; }
-    activityList.innerHTML = events.map(ev=>{
-      if(ev.type==='sale'){
-        return `<div style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.03)">${fmtDate(ev.createdAt||ev.ts)} — <strong>Venda</strong> produto:${escapeHtml(ev.productId||'')} — ref:${escapeHtml(ev.ref||'')} — R$${escapeHtml(ev.amount||'0')}</div>`;
-      } else {
-        return `<div style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.03)">${fmtDate(ev.ts)} — <strong>Clique</strong> ref:${escapeHtml(ev.ref||'')} — produto:${escapeHtml(ev.productId||'')}</div>`;
-      }
-    }).join('');
-  }catch(e){
-    console.error(e);
-    activityList.innerHTML = '<div class="placeholder">Erro ao carregar atividade</div>';
-  }
-}
-
-// Export CSV (Afiliados)
-async function exportAffiliatesCSV(){
-  if(!afiliadosSnapshot){ alert('Nenhum afiliado para exportar'); return; }
-  const rows = [['id','nome','sobrenome','email','pix','codigo','idade','totalSales','totalEarnings','criadoEm']];
-  Object.values(afiliadosSnapshot).forEach(a=>{
-    rows.push([a.id||'', a.nome||'', a.sobrenome||'', a.email||'', a.pix||'', a.codigo||'', a.idade||'', a.totalSales||a.totalVendas||0, a.totalEarnings||a.totalGanhos||0, a.criadoEm||'']);
-  });
-  const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
-  const blob = new Blob([csv], {type:'text/csv'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a'); a.href = url; a.download = 'afiliados_export.csv'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-}
-
-// UTILS
-function escapeHtml(s){ if(s==null) return ''; return String(s).replace(/[&<>"']/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; }); }
-
-// Initialize realtime watchers for products & afiliados
-function watchProdutos(){ watchProdutos_f(); } // placeholder for hoisting
-function watchProdutos_f(){ /* overwritten by watchProdutos actual impl below */ }
-watchProdutos_f = function(){ /* will be replaced */ };
-
-// call actual watchers when auth present
-function initRealtime(){
-  // defined above (noop) but we already created initRealtime earlier; keep idempotency
-}
-
-// we already defined watchProdutos earlier inside initRealtime scope; so call explicit funcs:
-watchProdutos = function(){ // real impl re-declared for scoping
-  const r = ref(db, 'produtos');
-  onValue(r, snap=>{
-    productsSnapshot = snap.exists() ? snap.val() : null;
-    renderProductsTable();
-  }, err=>{ console.error('Erro watch produtos', err); tbodyProd.innerHTML = '<tr><td colspan="4" class="placeholder">Erro</td></tr>'; });
 };
 
-// Start watchers when signed in (onAuthStateChanged calls initRealtime that calls watchProdutos/watchAfiliados/loadActivity)
+/* ========= NAVEGAÇÃO ========= */
+window.mostrarAba = function(aba) {
+    document.querySelectorAll(".aba").forEach(div => div.style.display = "none");
+    document.getElementById(aba).style.display = "block";
 
-// small initialization: nothing to do until auth
+    document.querySelectorAll(".nav button").forEach(b => b.classList.remove("active"));
+    event.target.classList.add("active");
+};
 
-// Export functions to console for debug (optional)
-window._admin = {
-  db, watchAfiliados, watchProdutos, loadActivity, exportAffiliatesCSV
+/* ========= DASHBOARD ========= */
+async function carregarDashboard() {
+    let afiliadosSnap = await get(ref(db, "afiliados"));
+    let produtosSnap = await get(ref(db, "produtos"));
+
+    document.getElementById("countAfiliados").innerText = afiliadosSnap.exists()
+        ? Object.keys(afiliadosSnap.val()).length
+        : 0;
+
+    document.getElementById("countProdutos").innerText = produtosSnap.exists()
+        ? Object.keys(produtosSnap.val()).length
+        : 0;
+}
+
+/* ========= AFILIADOS ========= */
+async function carregarAfiliados() {
+    const tabela = document.getElementById("tabelaAfiliados");
+
+    const snap = await get(ref(db, "afiliados"));
+
+    if (!snap.exists()) return;
+
+    Object.values(snap.val()).forEach(a => {
+        let tr = document.createElement("tr");
+
+        tr.innerHTML = `
+            <td>${a.nome} ${a.sobrenome}</td>
+            <td>${a.email}</td>
+            <td>${a.codigo}</td>
+            <td>${a.idade}</td>
+            <td>${a.pix}</td>
+            <td>${a.totalVendas}</td>
+        `;
+
+        tabela.appendChild(tr);
+    });
+}
+
+/* ========= PRODUTOS ========= */
+async function carregarProdutos() {
+    const tabela = document.getElementById("tabelaProdutos");
+
+    const snap = await get(ref(db, "produtos"));
+    if (!snap.exists()) return;
+
+    const dados = snap.val();
+
+    Object.keys(dados).forEach(id => {
+        const p = dados[id];
+        let tr = document.createElement("tr");
+
+        tr.innerHTML = `
+            <td>${p.nome}</td>
+            <td>R$ ${p.preco}</td>
+            <td>
+                <button onclick="excluirProduto('${id}')" style="background:#ff3b3b;padding:6px;border:none;border-radius:6px;">Excluir</button>
+            </td>
+        `;
+
+        tabela.appendChild(tr);
+    });
+}
+
+window.salvarProduto = async function() {
+    const nome = document.getElementById("produtoNome").value;
+    const desc = document.getElementById("produtoDesc").value;
+    const preco = document.getElementById("produtoPreco").value;
+
+    if (!nome || !desc || !preco) {
+        alert("Preencha tudo.");
+        return;
+    }
+
+    const id = Date.now();
+
+    await set(ref(db, "produtos/" + id), {
+        nome, desc, preco
+    });
+
+    alert("Produto salvo!");
+    location.reload();
+};
+
+window.excluirProduto = async function(id) {
+    if (!confirm("Deseja mesmo excluir esse produto?")) return;
+
+    await remove(ref(db, "produtos/" + id));
+
+    alert("Produto removido.");
+    location.reload();
 };
 
 </script>
